@@ -1,0 +1,4 @@
+#!/bin/bash
+export PATH=.:../../FRCGazebo/wpilib/libs:$PATH
+pushd ../../FRCGazebo/bin
+java -cp gzsim.jar utils.PlotServer "server"
