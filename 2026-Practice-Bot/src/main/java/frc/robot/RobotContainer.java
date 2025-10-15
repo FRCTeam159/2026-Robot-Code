@@ -15,9 +15,10 @@ public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
 
-
+  private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller);
 
   public RobotContainer() {
+    m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
     configureBindings();
   }
 
