@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.DriveWithGamepad;
-import frc.robot.subsystems.SwerveModules;
+import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.Drivetrain;
 
 public class RobotContainer {
@@ -19,12 +19,10 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
-    configureBindings();
   }
 
-  private void configureBindings() {}
-
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+  public void robotInit() {
+    m_drivetrain.init();
+    // m_drivetrain.reset();
   }
 }
