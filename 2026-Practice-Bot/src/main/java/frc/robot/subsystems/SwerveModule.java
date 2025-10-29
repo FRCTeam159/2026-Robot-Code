@@ -18,12 +18,18 @@ public class SwerveModule {
     double m_valueOfPID=0;
     double m_targetAngle=0;
 
+    private final PIDController m_drivePIDController = new PIDController(1, 0.0, 0);
+
     public int m_drive_chnl;
     public int m_turn_chnl;
+
+    static boolean debug=false;
 
     public static String chnlnames[] = { "FL", "FR", "BL", "BR" };
 
     String name;
+
+    private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.01, 0.25);
 
     private final ProfiledPIDController m_turningPIDController =
     new ProfiledPIDController(0.5,0,0,
@@ -61,5 +67,39 @@ public class SwerveModule {
     
       public double getDistance(){
         return m_driveMotor.getPosition();
+      }
+
+      public double getVelocity() {
+        return m_driveMotor.getVelocity();
+      }
+
+      public void setDesiredState(SwerveModuleState desiredState) {
+        // Optimize the reference state to avoid spinning further than 90 degrees
+        // SwerveModuleState state = desiredState;  // don't optimize
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, getRotation2d());
+        
+        double velocity=getVelocity();
+        
+        // Calculate the drive output from the drive PID controller.
+        final double driveOutput = m_drivePIDController.calculate(m_driveMotor.getVelocity(), state.speedMetersPerSecond);
+        final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
+        double turn_angle=getRotation2d().getRadians(); // rotations in radians
+        m_targetAngle = state.angle.getRadians();
+    
+        final double turnOutput = -m_turningPIDController.calculate(turn_angle,state.angle.getRadians());
+        final double turnFeedforward = 0;//m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+        //final double turnFeedforward = m_turnFeedforward.calculate(state.angle.getRadians());
+        m_valueOfPID = turnOutput;
+    
+        double set_drive=driveOutput+driveFeedforward;
+        double set_turn=turnOutput;//+turnFeedforward;
+    
+        if(debug){
+          String s = String.format("Vel %-2.2f(%-2.2f) -> %-2.2f Angle %-3.3f(%-2.3f) -> %-2.3f\n", 
+          velocity,state.speedMetersPerSecond,set_drive,Math.toDegrees(turn_angle), state.angle.getDegrees(), set_turn); 
+          SmartDashboard.putString(name, s);
+        }
+        m_driveMotor.set(set_drive);
+        m_turnMotor.set(set_turn);
       }
 }
