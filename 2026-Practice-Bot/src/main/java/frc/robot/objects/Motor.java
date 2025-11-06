@@ -93,6 +93,15 @@ public class Motor {
         setConfig(false, false, d);
     }
     
+    public void enable() {
+        m_enabled = true;
+    }
+
+    public void disable() {
+        m_enabled = false;
+        rev_motor.disable();
+    }
+
     public double getPosition() {
         return rev_encoder.getPosition();
     }

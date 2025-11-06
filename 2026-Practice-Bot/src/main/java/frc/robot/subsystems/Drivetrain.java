@@ -5,9 +5,11 @@ import static frc.robot.Constants.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -78,9 +80,80 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean useOffsets = true;
 
-    public void init() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'init'");
+
+  public void setConfig() {
+    m_frontRight.setConfig(false, kDistPerRot);
+    m_backRight.setConfig(false, kDistPerRot);
+    m_frontLeft.setConfig(true, kDistPerRot);
+    m_backLeft.setConfig(true, kDistPerRot);
+  }
+
+  public void setOffsets(boolean useOffsets) {
+    if (useOffsets) {
+      m_frontLeft.setOffset(kFrontLeftOffset);
+      m_frontRight.setOffset(kFrontRightOffset);
+      m_backRight.setOffset(kBackRightOffset);
+      m_backLeft.setOffset(kBackLeftOffset);
     }
-   
+
+  }
+
+  public void init() {
+    setOffsets(useOffsets);
+    setConfig();
+    enable();
+    m_gyro.reset();
+    SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
+  }
+  
+  public void enable() {
+    m_disabled = false;
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].enable();
+    }
+  }
+
+  public void disable() {
+    m_disabled = true;
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].disable();
+    }
+  }
+
+  public boolean isFieldOriented() {
+    return m_fieldOriented;
+  }
+
+  public Rotation2d getRotation2d() {
+    double angle = m_gyro.getAngle();
+    angle = unwrap(last_heading, angle);
+    last_heading = angle;
+    return Rotation2d.fromDegrees(angle);
+  }
+
+  private void updatePositions() {
+    for (int i = 0; i < modules.length; i++)
+      m_positions[i] = modules[i].getPosition();
+  }
+
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
+        fieldRelative
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * m_driveScale, ySpeed * m_driveScale, rot * m_turnScale, getRotation2d())
+            : new ChassisSpeeds(xSpeed * m_driveScale, ySpeed * m_driveScale, rot * m_turnScale));
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxVelocity);
+    for (int i = 0; i < modules.length; i++)
+      modules[i].setDesiredState(swerveModuleStates[i]);
+
+    // modules[0].setDesiredState(swerveModuleStates[0]);
+
+    //updateOdometry();
+  }
+
+  // removes heading discontinuity at 180 degrees
+  public static double unwrap(double previous_angle, double new_angle) {
+    double d = new_angle - previous_angle;
+    d = d >= 180 ? d - 360 : (d <= -180 ? d + 360 : d);
+    return previous_angle + d;
+  }
 }

@@ -36,6 +36,9 @@ public class SwerveModule {
         new TrapezoidProfile.Constraints(
             Drivetrain.kMaxAngularVelocity, Drivetrain.kMaxAngularAcceleration));
 
+    // delete later
+    boolean m_enabled=false;
+    
     public SwerveModule(int driveMotorChannel,int turningMotorChannel,int turningEncoderChannel,int  i) {
         m_drive_chnl=driveMotorChannel;
         m_turn_chnl=turningMotorChannel;
@@ -47,6 +50,25 @@ public class SwerveModule {
         name = chnlnames[i - 1];
         
         m_turnEncoder=new Encoder(turningEncoderChannel);
+      }
+
+      public void setConfig(boolean isInverted, double distancePerRotation) {
+        m_driveMotor.setConfig(isInverted, distancePerRotation);
+      }
+
+      public void setOffset(double offset){
+        m_turnEncoder.setOffset(offset);
+      }
+
+      public void enable(){
+        m_enabled=true;
+        m_driveMotor.enable();
+        m_turnMotor.enable();
+      }
+      public void disable(){
+        m_enabled=false;
+        m_driveMotor.disable();
+        m_turnMotor.disable();
       }
 
       public double getRotations(){
