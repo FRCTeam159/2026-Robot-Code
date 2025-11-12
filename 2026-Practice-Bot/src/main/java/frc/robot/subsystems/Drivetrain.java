@@ -120,6 +120,12 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  public void setFieldOriented(boolean v){
+    m_fieldOriented = v;
+    if (v)
+    m_gyro.reset();
+  }
+
   public boolean isFieldOriented() {
     return m_fieldOriented;
   }
@@ -132,9 +138,30 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void updatePositions() {
-    for (int i = 0; i < modules.length; i++)
+    for (int i = 0; i < modules.length; i++) {
       m_positions[i] = modules[i].getPosition();
+    }
   }
+
+  public void updateOdometry() {
+    updatePositions();
+    m_pose = m_odometry.update(getRotation2d(), m_positions);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_gyro.reset();
+    //resetPositions();
+    m_odometry.resetPosition(getRotation2d(), m_positions, pose);
+    last_heading = 0;
+    m_pose = pose;
+    //updateOdometry();
+    System.out.println("gryo angle" + m_gyro.getAngle());
+  }
+
+  public void resetOdometry() {
+      resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+  }
+
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(

@@ -15,7 +15,6 @@ public class DriveWithGamepad extends Command {
     double pVal = 2.0;
 
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
-        // TODO Auto-generated constructor stub
 
         m_drive = drivetrain;
         m_controller = controller;
@@ -46,8 +45,13 @@ public class DriveWithGamepad extends Command {
                 * Drivetrain.kMaxVelocity;
         double rVal = MathUtil.applyDeadband(vr, .2);
         double sgn = rVal < 0 ? -1 : 1;
-        var rot = -sgn * Math.abs(Math.pow(Math.abs(rVal), pVal) * Drivetrain.kMaxAngularVelocity);
+        var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Drivetrain.kMaxAngularVelocity);
+        
         m_drive.drive(xSpeed, ySpeed, rot, m_drive.isFieldOriented());
+
+        if (m_controller.getRightStickButtonPressed()){
+            m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
+          }
     }
 
     @Override

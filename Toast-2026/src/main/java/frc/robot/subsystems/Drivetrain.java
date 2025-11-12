@@ -173,8 +173,9 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void updatePositions() {
-    for (int i = 0; i < modules.length; i++)
+    for (int i = 0; i < modules.length; i++) {
       m_positions[i] = modules[i].getPosition();
+    }
   }
 
   public void resetPose(Pose2d pose) {
