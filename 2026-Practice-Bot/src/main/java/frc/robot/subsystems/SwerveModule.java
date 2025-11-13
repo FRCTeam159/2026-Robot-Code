@@ -71,6 +71,14 @@ public class SwerveModule {
         m_turnMotor.disable();
       }
 
+      public void reset(){
+        m_drivePIDController.reset();
+       m_turningPIDController.reset(0.0);
+       m_enabled=false;
+       m_driveMotor.reset();
+       m_turnMotor.reset();
+     }
+
       public double getRotations(){
         return m_turnEncoder.getPosition();
       }

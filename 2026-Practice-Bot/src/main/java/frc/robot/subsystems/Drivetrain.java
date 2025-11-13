@@ -76,8 +76,6 @@ public class Drivetrain extends SubsystemBase {
   public static boolean m_fieldOriented = false;
   boolean m_disabled = true;
 
-  private int cnt = 0;
-
   public boolean useOffsets = true;
 
 
@@ -104,6 +102,14 @@ public class Drivetrain extends SubsystemBase {
     enable();
     m_gyro.reset();
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
+  }
+
+  public boolean enabled() {
+    return !m_disabled;
+  }
+
+  public boolean disabled() {
+    return m_disabled;
   }
   
   public void enable() {
@@ -176,6 +182,26 @@ public class Drivetrain extends SubsystemBase {
 
     //updateOdometry();
   }
+
+ 
+
+  public void reset() {
+    m_disabled = true;
+    if (debug)
+      System.out.println("Drivetrain.reset");
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].reset();
+    }
+    m_gyro.reset();
+    last_heading = 0;
+  }
+
+  public void resetPose() {
+    last_heading = 0;
+    resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+  }
+
+
 
   // removes heading discontinuity at 180 degrees
   public static double unwrap(double previous_angle, double new_angle) {

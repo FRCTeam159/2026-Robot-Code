@@ -23,9 +23,10 @@ public class RobotContainer {
 
   public void robotInit() {
     m_drivetrain.init();
-    // m_drivetrain.reset();
+    m_drivetrain.reset();
   }
   public void teleopInit() {
+    m_drivetrain.resetOdometry();
     m_drivetrain.enable();
   }
 }

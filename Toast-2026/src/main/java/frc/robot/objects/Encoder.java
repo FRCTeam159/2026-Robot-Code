@@ -41,9 +41,8 @@ public class Encoder {
     public double getPosition() {// return rotations
         StatusSignal<Angle> val = can_encoder.getPosition(true);
         double pos =val.getValueAsDouble();
-        double gpos = pos;//-offset;
-        //System.out.println("pos = " + pos + " getpos = " + gpos);
-        return gpos;
+        System.out.println("pos = " + getAbsolutePosition());
+        return pos;
     }
     public double getAbsolutePosition() {// return rotations
         StatusSignal<Angle> val = can_encoder.getAbsolutePosition(true);

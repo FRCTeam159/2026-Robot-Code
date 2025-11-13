@@ -5,7 +5,6 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
 
 public class Encoder {
     CANcoder can_encoder;
@@ -32,6 +31,11 @@ public class Encoder {
         StatusSignal<Angle> val = can_encoder.getPosition(true);
         double pos =val.getValueAsDouble();
         return pos;
+    }
+
+    public double getAbsolutePosition() {// return rotations
+        StatusSignal<Angle> val = can_encoder.getAbsolutePosition(true);
+        return val.getValueAsDouble()-offset; 
     }
 
 }
