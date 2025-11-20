@@ -11,7 +11,7 @@ public class DriveWithGamepad extends Command {
     private final XboxController m_controller;
     private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(1.5);
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(1.5);
-    private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(.5, -10, 0);
+    private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3, -10, 0);
     double pVal = 2.0;
 
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {

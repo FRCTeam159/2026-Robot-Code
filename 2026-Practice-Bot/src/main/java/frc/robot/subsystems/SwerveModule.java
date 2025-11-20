@@ -31,10 +31,11 @@ public class SwerveModule {
 
     private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.01, 0.25);
 
-    private final ProfiledPIDController m_turningPIDController =
-    new ProfiledPIDController(0.5,0,0,
-        new TrapezoidProfile.Constraints(
-            Drivetrain.kMaxAngularVelocity, Drivetrain.kMaxAngularAcceleration));
+    private final PIDController m_turningPIDController = new PIDController(0.5, 0.0, 0);
+   // private final ProfiledPIDController m_turningPIDController =
+    //new ProfiledPIDController(0.5,0,0,);
+        // new TrapezoidProfile.Constraints(
+        //     Drivetrain.kMaxAngularVelocity, Drivetrain.kMaxAngularAcceleration));
 
     // delete later
     boolean m_enabled=false;
@@ -73,7 +74,7 @@ public class SwerveModule {
 
       public void reset(){
         m_drivePIDController.reset();
-       m_turningPIDController.reset(0.0);
+      // m_turningPIDController.reset(0.0);
        m_enabled=false;
        m_driveMotor.reset();
        m_turnMotor.reset();
