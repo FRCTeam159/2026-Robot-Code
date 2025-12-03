@@ -125,11 +125,7 @@ public class SwerveModule {
         double set_drive=driveOutput+driveFeedforward;
         double set_turn=turnOutput;//+turnFeedforward;
     
-        if(debug){
-          String s = String.format("Vel %-2.2f(%-2.2f) -> %-2.2f Angle %-3.3f(%-2.3f) -> %-2.3f\n", 
-          velocity,state.speedMetersPerSecond,set_drive,Math.toDegrees(turn_angle), state.angle.getDegrees(), set_turn); 
-          SmartDashboard.putString(name, s);
-        }
+
         m_driveMotor.set(set_drive);
         m_turnMotor.set(set_turn);
       }

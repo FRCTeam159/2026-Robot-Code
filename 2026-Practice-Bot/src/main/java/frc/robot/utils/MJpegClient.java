@@ -24,7 +24,7 @@ import java.io.ByteArrayInputStream;
 //  images from an http stream "CAP_IMAGES: can't find starting number"
 // -Couldn't find an approriate http client utility in CameraServer
 //  or cscore wppi libraries 
-// -So adapted this code from MjpegStreamViewer in Smartdashboard
+// -So adapted this code from MjpegStreamViewer in Smart Dashboard
 // 1) connects to a Mjpeg server using a url of the form: 
 //    e.g. http://localhost:9000/?action=stream
 // 2) reads images from the stream (from an external thread)

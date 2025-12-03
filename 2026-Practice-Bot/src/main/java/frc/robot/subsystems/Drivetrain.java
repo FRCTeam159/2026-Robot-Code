@@ -76,6 +76,8 @@ public class Drivetrain extends SubsystemBase {
   public static boolean m_fieldOriented = false;
   boolean m_disabled = true;
 
+  private int count = 0;
+
   public boolean useOffsets = true;
 
 
@@ -201,7 +203,45 @@ public class Drivetrain extends SubsystemBase {
     resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
   }
 
+  public Pose2d getPose() {
+    return m_pose;
+  }
 
+  public double getVelocity() {
+    double speed = 0;
+    for (int i = 0; i < modules.length; i++)
+      speed += modules[i].getVelocity();
+    return speed / modules.length;
+  }
+
+  public double getDistance() {
+    double distance = 0;
+    for (int i = 0; i < modules.length; i++)
+      distance += modules[i].getDistance();
+    return distance / modules.length;
+  }
+
+  void displayAngles() {
+    if ((count % 100) == 0) {
+      String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f\n",
+          m_frontLeft.getRotations(), m_frontRight.getRotations(), m_backLeft.getRotations(),
+          m_backRight.getRotations());
+      SmartDashboard.putString("Wheels ", str);
+    }
+    count++;
+  }
+
+  public void log() {
+    Pose2d pose = getPose();
+    String s = String.format(" X:%-5.2f Y:%-5.2f H:%-4.1f D:%-3.1f V:%-3.1f",
+        pose.getX(), pose.getY(), pose.getRotation().getDegrees(), getDistance(), getVelocity());
+    SmartDashboard.putString("Pose", s);
+
+    m_fieldOriented = SmartDashboard.getBoolean("Field Oriented", m_fieldOriented);
+    SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
+    
+    displayAngles();
+  }
 
   // removes heading discontinuity at 180 degrees
   public static double unwrap(double previous_angle, double new_angle) {
@@ -209,4 +249,11 @@ public class Drivetrain extends SubsystemBase {
     d = d >= 180 ? d - 360 : (d <= -180 ? d + 360 : d);
     return previous_angle + d;
   }
+
+  @Override
+  public void periodic() {
+    updateOdometry();
+    log();
+  }
+
 }
