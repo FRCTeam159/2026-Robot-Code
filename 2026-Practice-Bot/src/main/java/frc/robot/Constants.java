@@ -40,5 +40,7 @@ public class Constants {
 
     public static final int mTest = 13; // 16
 
+    public static final int kPigeonCanId = 14;
+
 
 }

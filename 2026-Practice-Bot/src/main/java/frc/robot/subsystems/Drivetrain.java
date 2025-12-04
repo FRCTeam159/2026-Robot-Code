@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.objects.DriveGyro;
 import frc.robot.objects.Gyro;
 
 public class Drivetrain extends SubsystemBase {
@@ -69,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
 
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d(), m_positions, new Pose2d());
 
-  Gyro m_gyro = new Gyro();
+  DriveGyro m_gyro = new DriveGyro(DriveGyro.gyros.FRC450);
   double last_heading = 0;
   Pose2d m_pose;
   boolean m_resetting = false;
@@ -132,6 +133,7 @@ public class Drivetrain extends SubsystemBase {
     m_fieldOriented = v;
     if (v)
     m_gyro.reset();
+    SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
   }
 
   public boolean isFieldOriented() {
