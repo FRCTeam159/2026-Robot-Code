@@ -70,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
 
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, new Rotation2d(), m_positions, new Pose2d());
 
-  DriveGyro m_gyro = new DriveGyro(DriveGyro.gyros.FRC450);
+  DriveGyro m_gyro = new DriveGyro(DriveGyro.gyros.PIGEON);
   double last_heading = 0;
   Pose2d m_pose;
   boolean m_resetting = false;

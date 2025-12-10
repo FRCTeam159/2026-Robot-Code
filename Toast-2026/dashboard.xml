@@ -1,13 +1,12 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="241" y="4"/>
+	</widget>
 	<widget field="Wheels " type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="4" y="20"/>
 		<width>269</width>
 		<height>19</height>
-	</widget>
-	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="241" y="4"/>
-		<height>13</height>
 	</widget>
 	<widget field="Gyro" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
 		<location x="5" y="42"/>

@@ -1,0 +1,105 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="3" y="1"/>
+	</widget>
+	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1" y="43"/>
+	</widget>
+	<widget field="Gyro" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="2" y="22"/>
+		<width>77</width>
+	</widget>
+</dashboard>
+<live-window>
+	<widget field="Targeting" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="132"/>
+	</widget>
+	<widget field="Intake" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="110"/>
+	</widget>
+	<widget field="Cameras" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="88"/>
+	</widget>
+	<widget field="DriveTrain" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="66"/>
+	</widget>
+	<widget field="Shooter" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="44"/>
+	</widget>
+	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="Compressor[0]" type="Compressor" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalOutputController">
+			<location x="66" y="15"/>
+			<height>21</height>
+			<width>131</width>
+		</widget>
+		<widget field="DoubleSolenoid[0,0]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="36"/>
+			<height>19</height>
+			<width>250</width>
+		</widget>
+		<widget field="DoubleSolenoid[0,2]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="55"/>
+			<height>19</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[3]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="74"/>
+			<height>90</height>
+			<width>250</width>
+		</widget>
+		<widget field="ADXRS450_Gyro[0]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
+			<location x="6" y="164"/>
+			<height>150</height>
+			<width>250</width>
+		</widget>
+		<widget field="DoubleSolenoid[0,6]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="314"/>
+			<height>19</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[1]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="333"/>
+			<height>90</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[2]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="423"/>
+			<height>90</height>
+			<width>250</width>
+		</widget>
+		<widget field="DoubleSolenoid[0,4]" type="Double Solenoid" class="edu.wpi.first.smartdashboard.livewindow.elements.RelayController">
+			<location x="6" y="513"/>
+			<height>19</height>
+			<width>250</width>
+		</widget>
+		<widget field="Scheduler" type="Scheduler" class="edu.wpi.first.smartdashboard.gui.elements.Scheduler">
+			<location x="6" y="532"/>
+			<height>13</height>
+			<width>250</width>
+		</widget>
+		<location x="0" y="22"/>
+		<width>262</width>
+		<height>551</height>
+	</widget>
+	<widget field="Climber" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="0"/>
+	</widget>
+</live-window>
+	<hidden field="onTarget"/>
+	<hidden field="Front"/>
+	<hidden field="Angle Rotation"/>
+	<hidden field="IsAtBottom"/>
+	<hidden field="Targets"/>
+	<hidden field="Revolutions"/>
+	<hidden field="Shoot Value"/>
+	<hidden field="V angle"/>
+	<hidden field="autotarget"/>
+	<hidden field="is Targeting Finished"/>
+	<hidden field="IsAtTop"/>
+	<hidden field="Show HSV"/>
+	<hidden field="Low Gear"/>
+	<hidden field="H angle"/>
+	<hidden field="Distance"/>
+	<hidden field="Target distance"/>
+</xml>
