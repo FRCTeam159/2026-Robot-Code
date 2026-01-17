@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <title>Xbox controller annotated (overlay)</title>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- base image (controller template) scaled to fit 1200px width -->
+  <image href="controller_template.png" x="0" y="0" width="1200" height="600" preserveAspectRatio="xMidYMid meet"/>
+
+  <!-- Left-side annotation: connected textbox -->
+  <!-- connecting line (approximate left-stick location -> textbox) -->
+  <!-- (connection line removed) -->
+
+  <!-- textbox positioned so its RIGHT edge aligns with the red dot in the embedded image (accounts for image centering in the SVG) -->
+  <!-- left textbox resized to fit four lines more tightly; right edge aligned to red dot -->
+  <rect x="111.782705" y="158.784530" width="200" height="120" rx="10" ry="10" fill="#ffffff" stroke="#333" stroke-width="2" opacity="0.95"/>
+  <text x="131.782705" y="188.784530" font-family="Arial" font-size="16" fill="#000">Up: Forward</text>
+  <text x="131.782705" y="210.784530" font-family="Arial" font-size="16" fill="#000">Down: Reverse</text>
+  <text x="131.782705" y="232.784530" font-family="Arial" font-size="16" fill="#000">Left: Strafe-left</text>
+  <text x="131.782705" y="254.784530" font-family="Arial" font-size="16" fill="#000">Right: Strafe-right</text>
+
+  <!-- small marker at joystick connection point -->
+  <!-- marker placed inside textbox on right side -->
+  <!-- marker and connecting line removed; textbox is positioned so its right edge aligns with the red dot in the base image -->
+
+  <!-- footer note -->
+  <text x="20" y="585" font-size="12" fill="#666">Annotated export of controller_template.png — edit this SVG to move/alter the textbox.</text>
+  <!-- Right joystick textbox: align its LEFT edge to the blue marker (auto-detected) -->
+  <!-- mapped overlay coords for blue marker: approx (897.92818, 388.67403) -->
+  <!-- We'll place a box whose left edge equals that x, vertically centered on that y -->
+  <!-- textbox width 220, height 100 -->
+  <g id="right-joystick-annotation">
+    <!-- right textbox resized to fit two lines more tightly; nudge text down to balance padding -->
+    <rect x="897.92818" y="348.67403" width="180" height="80" rx="8" ry="8" fill="#ffffff" stroke="#333" stroke-width="2"/>
+    <text x="915.92818" y="377.67403" font-family="Arial" font-size="16" fill="#000">Left: rotate CCW</text>
+    <text x="915.92818" y="399.67403" font-family="Arial" font-size="16" fill="#000">Right: rotate CW</text>
+  </g>
+</svg>
