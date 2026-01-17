@@ -13,15 +13,11 @@ public class Constants {
 
     public static test testMode = test.NONE;
 
-    // public static final double kBackRightOffset = -0.169434;
-    // public static final double kBackLeftOffset = -0.215332;
-    // public static final double kFrontRightOffset = -0.400635;
-    // public static final double kFrontLeftOffset = 0.039062;
-    // can ids for drive train
-    public static final double kBackRightOffset = -0.165771;
-    public static final double kBackLeftOffset = -0.214844;
-    public static final double kFrontRightOffset = -0.388672;
-    public static final double kFrontLeftOffset = 0.050537;
+
+    public static final double kBackRightOffset = -0.339355;
+    public static final double kBackLeftOffset = 0.343994;
+    public static final double kFrontRightOffset = 0.271240;
+    public static final double kFrontLeftOffset = 0.165283;
 
 
     public static final int kFl_Drive = 3;
@@ -46,7 +42,7 @@ public class Constants {
 
     public static final int mTest = 13; // 16
 
-    public static final int kPigeonCanId = 0;
+    public static final int kPigeonCanId = 30;
 
 
 }

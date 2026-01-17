@@ -40,9 +40,8 @@ public class Constants {
     public static final int kBr_Turn = 1;
     public static final int kBr_Encoder = 11;
 
-    public static final int kArm = 13; // 13
-    public static final int kTopRollers = 13; // 14
-    public static final int kBottomRollers = 13; // 15
+   public static final int top_shooter = 13;
+   public static final int bottom_shooter = 14;
 
     public static final int mTest = 13; // 16
 

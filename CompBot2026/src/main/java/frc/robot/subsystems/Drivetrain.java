@@ -39,8 +39,8 @@ public class Drivetrain extends SubsystemBase {
   
   public static final double kRobotLength = Units.inchesToMeters(24); // Waffle side length
 
-  public static final double kFrontWheelBase = Units.inchesToMeters(18.5); // distance bewteen front wheels
-  public static final double kSideWheelBase = Units.inchesToMeters(18.5); // distance beteen side wheels
+  public static final double kFrontWheelBase = Units.inchesToMeters(21.25); // distance bewteen front wheels
+  public static final double kSideWheelBase = Units.inchesToMeters(21.25); // distance beteen side wheels
   public static final double kTrackRadius = 0.5
       * Math.sqrt(kFrontWheelBase * kFrontWheelBase + kSideWheelBase * kSideWheelBase);
 
@@ -88,10 +88,10 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void setConfig() {
-    m_frontRight.setConfig(false, kDistPerRot);
-    m_backRight.setConfig(false, kDistPerRot);
-    m_frontLeft.setConfig(true, kDistPerRot);
-    m_backLeft.setConfig(true, kDistPerRot);
+    m_frontRight.setConfig(true, kDistPerRot);
+    m_backRight.setConfig(true, kDistPerRot);
+    m_frontLeft.setConfig(false, kDistPerRot);
+    m_backLeft.setConfig(false, kDistPerRot);
   }
 
   public void setOffsets(boolean useOffsets) {
@@ -187,17 +187,17 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    target_angle += rot * m_turnScale;
+    // target_angle += rot * m_turnScale;
 
-    double current_angle = getRotation2d().getDegrees();
+    // double current_angle = getRotation2d().getDegrees();
     
-    if (Math.abs(target_angle - current_angle) < 0.5){
-      current_angle = target_angle;
-    }//else if (Math.abs(angle_diff) < 1){
+    // if (Math.abs(target_angle - current_angle) < 0.5){
+    //   current_angle = target_angle;
+    // }//else if (Math.abs(angle_diff) < 1){
     //   angle_diff = Math.signum(angle_diff) * Math.sqrt(Math.abs(angle_diff));
     // }
 
-    double turn_speed = turn_pid_controller.calculate(current_angle, target_angle);
+    double turn_speed = rot;//turn_pid_controller.calculate(current_angle, target_angle);
 
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
         fieldRelative
@@ -252,8 +252,8 @@ public class Drivetrain extends SubsystemBase {
   void displayAngles() {
     if ((count % 100) == 0) {
       String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f\n",
-          m_frontLeft.getRotations(), m_frontRight.getRotations(), m_backLeft.getRotations(),
-          m_backRight.getRotations());
+          m_frontLeft.getRotations(), m_frontRight.getRotations(), 
+          m_backLeft.getRotations(), m_backRight.getRotations());
       SmartDashboard.putString("Wheels ", str);
     }
     count++;

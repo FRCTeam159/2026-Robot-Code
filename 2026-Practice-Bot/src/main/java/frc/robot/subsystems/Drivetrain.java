@@ -187,17 +187,17 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    target_angle += rot * m_turnScale;
+    // target_angle += rot * m_turnScale;
 
-    double current_angle = getRotation2d().getDegrees();
+    // double current_angle = getRotation2d().getDegrees();
     
-    if (Math.abs(target_angle - current_angle) < 0.5){
-      current_angle = target_angle;
-    }//else if (Math.abs(angle_diff) < 1){
-    //   angle_diff = Math.signum(angle_diff) * Math.sqrt(Math.abs(angle_diff));
-    // }
+    // if (Math.abs(target_angle - current_angle) < 0.5){
+    //   current_angle = target_angle;
+    // }//else if (Math.abs(angle_diff) < 1){
+    // //   angle_diff = Math.signum(angle_diff) * Math.sqrt(Math.abs(angle_diff));
+    // // }
 
-    double turn_speed = turn_pid_controller.calculate(current_angle, target_angle);
+    double turn_speed = rot;//turn_pid_controller.calculate(current_angle, target_angle);
 
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
         fieldRelative

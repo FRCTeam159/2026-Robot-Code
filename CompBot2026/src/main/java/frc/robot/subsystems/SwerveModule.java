@@ -31,7 +31,7 @@ public class SwerveModule {
 
     private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.01, 0.25);
 
-    private final PIDController m_turningPIDController = new PIDController(0.5, 0.0, 0);
+    private final PIDController m_turningPIDController = new PIDController(0.2, 0.0, 0);
    // private final ProfiledPIDController m_turningPIDController =
     //new ProfiledPIDController(0.5,0,0,);
         // new TrapezoidProfile.Constraints(
@@ -118,6 +118,7 @@ public class SwerveModule {
         m_targetAngle = state.angle.getRadians();
     
         final double turnOutput = -m_turningPIDController.calculate(turn_angle,state.angle.getRadians());
+        System.out.println(turnOutput);
         final double turnFeedforward = 0;//m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
         //final double turnFeedforward = m_turnFeedforward.calculate(state.angle.getRadians());
         m_valueOfPID = turnOutput;
