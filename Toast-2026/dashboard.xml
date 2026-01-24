@@ -1,5 +1,17 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Bottom Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="6" y="128"/>
+		<width>122</width>
+		<height>20</height>
+	</widget>
+	<widget field="Top Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="3" y="109"/>
+		<width>107</width>
+	</widget>
+	<widget field="Auto" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="64"/>
+	</widget>
 	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="241" y="4"/>
 	</widget>

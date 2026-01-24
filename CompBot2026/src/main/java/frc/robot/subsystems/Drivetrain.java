@@ -88,10 +88,10 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void setConfig() {
-    m_frontRight.setConfig(true, kDistPerRot);
-    m_backRight.setConfig(true, kDistPerRot);
-    m_frontLeft.setConfig(false, kDistPerRot);
-    m_backLeft.setConfig(false, kDistPerRot);
+    m_frontRight.setConfig(false, kDistPerRot);
+    m_backRight.setConfig(false, kDistPerRot);
+    m_frontLeft.setConfig(true, kDistPerRot);
+    m_backLeft.setConfig(true, kDistPerRot);
   }
 
   public void setOffsets(boolean useOffsets) {

@@ -14,10 +14,10 @@ public class Constants {
     public static test testMode = test.NONE;
 
 
-    public static final double kBackRightOffset = -0.339355;
-    public static final double kBackLeftOffset = 0.343994;
-    public static final double kFrontRightOffset = 0.271240;
-    public static final double kFrontLeftOffset = 0.165283;
+    public static final double kBackRightOffset = 0.160400;//0.140381;
+    public static final double kBackLeftOffset = -0.156738; //-0.168701;//0.343994;
+    public static final double kFrontRightOffset = -0.230713; //-0.227783;//0.271240;
+    public static final double kFrontLeftOffset = -0.332031; //-0.330566;//0.165283;
 
 
     public static final int kFl_Drive = 3;
@@ -36,9 +36,8 @@ public class Constants {
     public static final int kBr_Turn = 1;
     public static final int kBr_Encoder = 11;
 
-    public static final int kArm = 13; // 13
-    public static final int kTopRollers = 13; // 14
-    public static final int kBottomRollers = 13; // 15
+    public static final int top_shooter = 13;
+    public static final int bottom_shooter = 14;
 
     public static final int mTest = 13; // 16
 
