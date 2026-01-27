@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.DriveWithGamepad;
 import frc.robot.commands.ShootWithGamepad;
 import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.Autonomous;
 //import frc.robot.subsystems.TagDetector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -23,6 +24,7 @@ public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Limelight m_limelight = new Limelight();
+   public final Autonomous m_autonomous;
   //private final TagDetector m_Detector = new TagDetector(m_drivetrain);
 
   //private final Shooter m_shooter = new Shooter();
@@ -35,10 +37,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
    // m_shooter.setDefaultCommand(m_ShootWithGamepad);
-
-    //m_chooser.setDefaultOption("Auto", "Auto");
-
-    //SmartDashboard.putData("Auto", m_chooser);
+    m_autonomous = new Autonomous(m_drivetrain);
   }
 
   public void robotInit() {
@@ -49,5 +48,14 @@ public class RobotContainer {
   public void teleopInit() {
     m_drivetrain.resetOdometry();
     m_drivetrain.enable();
+  }
+
+    public void autonomousInit() {
+    m_drivetrain.resetOdometry();
+    m_autonomous.initAuto();
+  }
+
+    public Command getAutonomousCommand() {
+    return m_autonomous.getCommand();
   }
 }

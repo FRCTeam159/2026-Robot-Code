@@ -61,7 +61,7 @@ public class DriveWithGamepad extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("DriveWithGampad cancelled");
+        System.out.println("DriveWithGamepad cancelled");
     }
 
     @Override

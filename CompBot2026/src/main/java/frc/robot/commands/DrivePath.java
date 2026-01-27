@@ -37,7 +37,7 @@ public class DrivePath extends Command {
   ArrayList<PathData> pathdata = new ArrayList<PathData>();
 
   final HolonomicDriveController m_hcontroller = new HolonomicDriveController(new PIDController(3, 0, 0),
-      new PIDController(2, 0, 0),
+      new PIDController(0.5, 0, 0),
       new ProfiledPIDController(0.5, 0, 0,
           new TrapezoidProfile.Constraints(Drivetrain.kMaxAngularVelocity * Rscale, Drivetrain.kMaxAngularAcceleration)));
 
@@ -73,7 +73,6 @@ public class DrivePath extends Command {
     m_drive = drive;
     nSub = table.getIntegerTopic("NumTags").subscribe(0);
     addRequirements(drive);
-    System.out.println("Drive To Tag");
   }
 
   // =================================================
@@ -111,35 +110,35 @@ public class DrivePath extends Command {
   @Override
   public void execute() {
 
-    // elapsed = m_timer.get();
-    // Trajectory.State reference = null;
-    // ChassisSpeeds speeds;
+    elapsed = m_timer.get();
+    Trajectory.State reference = null;
+    ChassisSpeeds speeds;
 
-    // reference = m_trajectory.sample(elapsed);
-    // double angle = Drivetrain.unwrap(last_heading, reference.poseMeters.getRotation().getDegrees());
-    // last_heading = angle;
-    // Rotation2d rot = Rotation2d.fromDegrees(angle);
-    // reference.poseMeters = new Pose2d(reference.poseMeters.getTranslation(), rot);
-    // speeds = m_hcontroller.calculate(m_drive.getPose(), reference, rot);
+    reference = m_trajectory.sample(elapsed);
+    double angle = Drivetrain.unwrap(last_heading, reference.poseMeters.getRotation().getDegrees());
+    last_heading = angle;
+    Rotation2d rot = Rotation2d.fromDegrees(angle);
+    reference.poseMeters = new Pose2d(reference.poseMeters.getTranslation(), rot);
+    speeds = m_hcontroller.calculate(m_drive.getPose(), reference, rot);
 
-    // if (debug) {
-    //   Pose2d p = m_drive.getPose();
-    //   System.out.format(
-    //       "%-1.3f X a:%-1.2f t:%-1.2f c:%-1.2f Y a:%-1.1f t:%-1.1f c:%-1.1f R a:%-3.1f t:%-3.1f c:%-2.1f \n", elapsed,
-    //       p.getTranslation().getX(), reference.poseMeters.getX(), speeds.vxMetersPerSecond,
-    //       p.getTranslation().getY(), reference.poseMeters.getY(), speeds.vyMetersPerSecond,
-    //       p.getRotation().getDegrees(), reference.poseMeters.getRotation().getDegrees(),
-    //       Math.toDegrees(speeds.omegaRadiansPerSecond));
-    // }
+    if (debug) {
+      Pose2d p = m_drive.getPose();
+      System.out.format(
+          "%-1.3f X a:%-1.2f t:%-1.2f c:%-1.2f Y a:%-1.1f t:%-1.1f c:%-1.1f R a:%-3.1f t:%-3.1f c:%-2.1f \n", elapsed,
+          p.getTranslation().getX(), reference.poseMeters.getX(), speeds.vxMetersPerSecond,
+          p.getTranslation().getY(), reference.poseMeters.getY(), speeds.vyMetersPerSecond,
+          p.getRotation().getDegrees(), reference.poseMeters.getRotation().getDegrees(),
+          Math.toDegrees(speeds.omegaRadiansPerSecond));
+    }
 
-    // m_drive.drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false);
+    m_drive.drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false);
 
-    // if (plot_type == PlotUtils.PLOT_LOCATION)
-    //   plotLocation(reference);
-    // else if (plot_type == PlotUtils.PLOT_DYNAMICS)
-    //   plotDynamics(reference);
-    // else if (plot_type == PlotUtils.PLOT_POSITION)
-    //   plotPosition(reference);
+    if (plot_type == PlotUtils.PLOT_LOCATION)
+      plotLocation(reference);
+    else if (plot_type == PlotUtils.PLOT_DYNAMICS)
+      plotDynamics(reference);
+    else if (plot_type == PlotUtils.PLOT_POSITION)
+      plotPosition(reference);
   }
 
   // =================================================
@@ -166,7 +165,7 @@ public class DrivePath extends Command {
         return true;
       }
     }
-    if (elapsed >= 1.0 * runtime) {
+    if (elapsed >= 1.1 * runtime) {
       System.out.println("DriveStraight Target Reached");
       return true;
     }

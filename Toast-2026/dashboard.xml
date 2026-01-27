@@ -1,17 +1,30 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="209" y="62"/>
+		<width>437</width>
+		<height>333</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="27" y="89"/>
+	</widget>
+	<widget field="limelight_Interface" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="4" y="384"/>
+		<height>19</height>
+	</widget>
+	<widget field="limelight_Stream" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="5" y="402"/>
+	</widget>
+	<widget field="limelight_PipelineName" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="5" y="360"/>
+	</widget>
 	<widget field="Show Tags" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="5" y="222"/>
 	</widget>
 	<widget field="Tags" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="4" y="198"/>
 	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="158" y="50"/>
-		<width>497</width>
-		<height>369</height>
-		<property name="Camera Choice" value="RobotCamera"/>
-	</static-widget>
 	<widget field="Bottom Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="5" y="165"/>
 		<width>122</width>

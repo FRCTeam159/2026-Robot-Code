@@ -28,7 +28,7 @@ public class Drivetrain extends SubsystemBase {
   double m_driveScale = 1;
   double m_turnScale = 0.6;
 
-  public static final double kWheelRadius = 2;
+  public static final double kWheelRadius = 1.89; // o1d 1.94
   public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
   public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
   

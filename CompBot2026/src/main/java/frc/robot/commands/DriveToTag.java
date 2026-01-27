@@ -11,7 +11,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.TagDetector;
 
 public class DriveToTag extends Command {
   /** Creates a new DriveToTag. */
@@ -50,24 +49,23 @@ public class DriveToTag extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // long n = nSub.get();
-    // if(n>0){
-    //   double x = xSub.get();
-    //   double y = ySub.get();
-    //   //System.out.println("distance = " + x + " Offset = " + y);
-    //   double d = m_drivePID.calculate(x, m_target);
-    //   double r = m_rotationPID.calculate(y, 0);
-    //  // System.out.println("distance = " + s + " correction = " + d);
-    //   m_drive.drive(-d, 0, -r, false);
-    //   m_started=true;
-    // }
+    long n = nSub.get();
+    if(n>0){
+      double x = xSub.get();
+      double y = ySub.get();
+      //System.out.println("distance = " + x + " Offset = " + y);
+      double d = m_drivePID.calculate(x, m_target);
+      double r = m_rotationPID.calculate(y, 0);
+     // System.out.println("distance = " + s + " correction = " + d);
+      m_drive.drive(-d, 0, -r, false);
+      m_started=true;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     System.out.println("DriveToTag.end " + interrupted);
-    TagDetector.setTargeting(false);
    }
 
   // Returns true when the command should end.
