@@ -19,6 +19,9 @@ public class Constants {
     public static final double kFrontRightOffset = -0.230713; //-0.227783;//0.271240;
     public static final double kFrontLeftOffset = -0.332031; //-0.330566;//0.165283;
 
+    public static final double limelight_height = 17.5;
+    public static final double limelight_angle = 0.0;
+    public static final double apriltag_height = 42;
 
     public static final int kFl_Drive = 3;
     public static final int kFl_Turn = 8;

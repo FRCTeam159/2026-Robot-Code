@@ -1,19 +1,31 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Show Tags" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="5" y="222"/>
+	</widget>
+	<widget field="Tags" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="4" y="198"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="158" y="50"/>
+		<width>497</width>
+		<height>369</height>
+		<property name="Camera Choice" value="RobotCamera"/>
+	</static-widget>
 	<widget field="Bottom Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="6" y="128"/>
+		<location x="5" y="165"/>
 		<width>122</width>
 		<height>20</height>
 	</widget>
 	<widget field="Top Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="3" y="109"/>
+		<location x="6" y="140"/>
 		<width>107</width>
 	</widget>
 	<widget field="Auto" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="64"/>
+		<location x="6" y="91"/>
 	</widget>
 	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="241" y="4"/>
+		<location x="371" y="6"/>
 	</widget>
 	<widget field="Wheels " type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="4" y="20"/>
@@ -30,7 +42,7 @@
 		<height>21</height>
 	</widget>
 	<widget field="Power Value" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="327" y="5"/>
+		<location x="6" y="68"/>
 		<width>79</width>
 		<height>20</height>
 	</widget>

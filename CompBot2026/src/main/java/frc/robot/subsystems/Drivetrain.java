@@ -264,7 +264,7 @@ public class Drivetrain extends SubsystemBase {
     String s = String.format(" X:%-5.2f Y:%-5.2f H:%-4.1f D:%-3.1f V:%-3.1f",
         pose.getX(), pose.getY(), pose.getRotation().getDegrees(), getDistance(), getVelocity());
     SmartDashboard.putString("Pose", s);
-
+    
     m_fieldOriented = SmartDashboard.getBoolean("Field Oriented", m_fieldOriented);
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
     

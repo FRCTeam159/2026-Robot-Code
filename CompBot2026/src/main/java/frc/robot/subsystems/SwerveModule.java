@@ -118,7 +118,7 @@ public class SwerveModule {
         m_targetAngle = state.angle.getRadians();
     
         final double turnOutput = -m_turningPIDController.calculate(turn_angle,state.angle.getRadians());
-        System.out.println(turnOutput);
+       // System.out.println(turnOutput);
         final double turnFeedforward = 0;//m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
         //final double turnFeedforward = m_turnFeedforward.calculate(state.angle.getRadians());
         m_valueOfPID = turnOutput;
