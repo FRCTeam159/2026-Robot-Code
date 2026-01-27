@@ -28,11 +28,6 @@ public class Drivetrain extends SubsystemBase {
   double m_driveScale = 1;
   double m_turnScale = 0.6;
 
-  private double target_angle = 0.0;
-  private double max_turn_speed = 4.0;
-
-  private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
-
   public static final double kWheelRadius = 2;
   public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
   public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
@@ -110,7 +105,6 @@ public class Drivetrain extends SubsystemBase {
     enable();
 
     m_gyro.reset();
-    target_angle = 0.0;
 
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
   }
@@ -141,7 +135,6 @@ public class Drivetrain extends SubsystemBase {
     m_fieldOriented = v;
     if (v)
     m_gyro.reset();
-    target_angle = 0.0;
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
   }
 
@@ -172,7 +165,6 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     m_gyro.reset();
-    target_angle = 0.0;
     //resetPositions();
     m_odometry.resetPosition(getRotation2d(), m_positions, pose);
     last_heading = 0;
@@ -222,7 +214,6 @@ public class Drivetrain extends SubsystemBase {
       modules[i].reset();
     }
     m_gyro.reset();
-    target_angle = 0.0;
     last_heading = 0;
   }
 
