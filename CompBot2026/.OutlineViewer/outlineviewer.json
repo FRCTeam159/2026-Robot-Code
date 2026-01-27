@@ -1,0 +1,14 @@
+{
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "159"
+  },
+  "retained": {
+    "SmartDashboard": {
+      "open": true
+    },
+    "limelight": {
+      "open": true
+    }
+  }
+}
