@@ -263,6 +263,13 @@ public class Drivetrain extends SubsystemBase {
     return distance / modules.length;
   }
 
+  public double getAbsoluteDistance() {
+    double distance = 0;
+    for (int i = 0; i < modules.length; i++)
+      distance += modules[i].getAbsoluteDistance();
+    return distance / modules.length;
+  }
+
   void displayAngles() {
     if ((count % 100) == 0) {
       String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f\n",

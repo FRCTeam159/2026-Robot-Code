@@ -4,9 +4,6 @@
   },
   "retained": {
     "limelight": {
-      "double[]##v_/limelight/tc": {
-        "open": true
-      },
       "open": true
     }
   }

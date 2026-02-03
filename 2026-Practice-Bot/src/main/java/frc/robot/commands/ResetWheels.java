@@ -34,7 +34,7 @@ public class ResetWheels extends Command {
 
     @Override
     public boolean isFinished(){
-        return m_timer.get() > 0.25;
+        return m_timer.get() > 0.5;
     }
 
     @Override

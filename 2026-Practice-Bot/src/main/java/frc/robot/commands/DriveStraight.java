@@ -12,10 +12,16 @@ public class DriveStraight extends Command {
     Drivetrain m_drive;
     PIDController m_PID;
 
-    double m_target = 3;
+    private static final double max_speed = 0.3;
+
+    private double sign;
+
+    double m_target = 1;
 
     public DriveStraight(Drivetrain drive, double distance) {
-        m_target = distance;
+        sign = Math.signum(distance);
+
+        m_target = Math.abs(distance);
 
         m_PID = new PIDController(0.15, 0, 0);
 
@@ -35,10 +41,12 @@ public class DriveStraight extends Command {
 
     @Override
     public void execute() {
-        double s = m_drive.getDistance();
+        double s = m_drive.getAbsoluteDistance();
         double d = m_PID.calculate(s, m_target);
 
-        m_drive.drive(d, 0, 0, false);
+        d = Math.max(-max_speed, Math.min(max_speed, d));
+
+        m_drive.drive(d * sign, 0, 0, false);
     }
 
     @Override

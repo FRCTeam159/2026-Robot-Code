@@ -102,6 +102,10 @@ public class SwerveModule {
         return m_driveMotor.getPosition();
       }
 
+      public double getAbsoluteDistance(){
+        return Math.abs(getDistance());
+      }
+
       public double getVelocity() {
         return m_driveMotor.getVelocity();
       }
