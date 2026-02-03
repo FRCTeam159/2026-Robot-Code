@@ -170,15 +170,29 @@ public class Drivetrain extends SubsystemBase {
     m_pose = m_odometry.update(getRotation2d(), m_positions);
   }
 
+  public void resetPositions() {
+    for (int i = 0; i < modules.length; i++)
+      modules[i].reset();
+    updatePositions();
+  }
+
   public void resetOdometry(Pose2d pose) {
     m_gyro.reset();
     target_angle = 0.0;
-    //resetPositions();
+
+    resetPositions();
+
     m_odometry.resetPosition(getRotation2d(), m_positions, pose);
     last_heading = 0;
     m_pose = pose;
     //updateOdometry();
     System.out.println("gryo angle" + m_gyro.getAngle());
+  }
+
+  public void resetWheels() {
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].resetWheel();
+    }
   }
 
   public void resetOdometry() {
@@ -268,6 +282,8 @@ public class Drivetrain extends SubsystemBase {
     m_fieldOriented = SmartDashboard.getBoolean("Field Oriented", m_fieldOriented);
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
     
+    SmartDashboard.putNumber("Drive Distance", getDistance());
+
     displayAngles();
   }
 

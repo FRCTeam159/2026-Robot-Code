@@ -1,10 +1,12 @@
 {
   "NetworkTables Settings": {
-    "mode": "Client (NT4)",
-    "serverTeam": "159"
+    "mode": "Client (NT4)"
   },
   "retained": {
     "limelight": {
+      "double[]##v_/limelight/tc": {
+        "open": true
+      },
       "open": true
     }
   }

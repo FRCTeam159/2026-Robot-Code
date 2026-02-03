@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
 
     public void setConfig() {
         top_shoot_motor.setConfig(true, 1);
-        bottom_shoot_motor.setConfig(false, 1);
+        bottom_shoot_motor.setConfig(true, 1);
     }
 
     public void init() {

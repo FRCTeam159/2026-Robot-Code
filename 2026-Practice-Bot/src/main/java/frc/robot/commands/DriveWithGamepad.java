@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.ResetWheels;
 
 public class DriveWithGamepad extends Command {
     private final Drivetrain m_drive;
@@ -57,6 +58,12 @@ public class DriveWithGamepad extends Command {
         if (m_controller.getRightStickButtonPressed()){
             m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
             }
+        
+        if (m_controller.getAButtonPressed()){
+            m_drive.resetWheels();
+
+        
+        }
     }
 
     @Override

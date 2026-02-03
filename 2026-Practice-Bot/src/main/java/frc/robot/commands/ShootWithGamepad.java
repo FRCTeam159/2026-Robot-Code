@@ -24,6 +24,7 @@ public class ShootWithGamepad extends Command {
         SmartDashboard.putNumber("Bottom Shoot Speed", bottom_speed);
     }
 
+    @Override
     public void execute() {
         top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed);
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed);

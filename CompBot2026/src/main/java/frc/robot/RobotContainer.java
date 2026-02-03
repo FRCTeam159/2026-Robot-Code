@@ -18,29 +18,33 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Limelight;
+import com.ctre.phoenix6.SignalLogger;
 
 
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
-  private final Limelight m_limelight = new Limelight();
-   public final Autonomous m_autonomous;
+  //private final Limelight m_limelight = new Limelight();
+  public final Autonomous m_autonomous;
   //private final TagDetector m_Detector = new TagDetector(m_drivetrain);
 
-  //private final Shooter m_shooter = new Shooter();
+  private final Shooter m_shooter = new Shooter();
 
   private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller);
-  //private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
+  private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
 
   //private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
-   // m_shooter.setDefaultCommand(m_ShootWithGamepad);
+    m_shooter.setDefaultCommand(m_ShootWithGamepad);
     m_autonomous = new Autonomous(m_drivetrain);
   }
 
   public void robotInit() {
+    //Disable phoenix diagnostics automatic logging
+    SignalLogger.enableAutoLogging(false);
+
     m_drivetrain.init();
     m_drivetrain.reset();
     //m_Detector.start();

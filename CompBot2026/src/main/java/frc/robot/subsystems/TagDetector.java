@@ -70,7 +70,7 @@ public class TagDetector extends Thread {
   static int IMAGE_HEIGHT = 480;
   static int IMAGE_FPS = 60;
 
-  public double hFOV = 60; //40.107];
+  public double hFOV = 60; //40.107;
   public double aspect = ((double) IMAGE_WIDTH) / IMAGE_HEIGHT;
   public double vFOV = hFOV / aspect;
   public double cx = IMAGE_WIDTH / 2.0;

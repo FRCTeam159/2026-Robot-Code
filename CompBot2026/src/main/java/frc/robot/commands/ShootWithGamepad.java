@@ -9,17 +9,17 @@ import frc.robot.subsystems.Limelight;
 public class ShootWithGamepad extends Command {
     private final Shooter m_Shoot;
     private final XboxController m_controller;
-    private final Limelight m_limelight;
+    //private final Limelight m_limelight;
 
     boolean shooting = false;
 
     double top_speed = 0.2;
     double bottom_speed = 0.2;
 
-    public ShootWithGamepad(Shooter shooter, XboxController controller, Limelight limelight) {
+    public ShootWithGamepad(Shooter shooter, XboxController controller) {
 
         m_Shoot = shooter;
-        m_limelight = limelight;
+        //m_limelight = limelight;
         m_controller = controller;
         addRequirements(shooter);
 
@@ -43,6 +43,16 @@ public class ShootWithGamepad extends Command {
         else {
             m_Shoot.shoot(0, 0);
         }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("ShootWithGamepad cancelled");
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 
 }

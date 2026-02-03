@@ -20,9 +20,9 @@ public class Constants {
     public static final double kFrontLeftOffset = -0.332031; //-0.330566;//0.165283;
 
     // distance for everything is in meters
-    public static final double limelight_height = 0.4445;
+    public static final double limelight_height = 0.6096;
     public static final double limelight_angle = 0.0;
-    public static final double apriltag_height = 1.0668;
+    public static final double apriltag_height = 1.1234;
 
     public static final int kFl_Drive = 3;
     public static final int kFl_Turn = 8;

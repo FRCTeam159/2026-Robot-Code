@@ -31,7 +31,7 @@ public class SwerveModule {
 
     private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.01, 0.25);
 
-    private final PIDController m_turningPIDController = new PIDController(0.2, 0.0, 0);
+    private final PIDController m_turningPIDController = new PIDController(0.3, 0.0, 0.01);
    // private final ProfiledPIDController m_turningPIDController =
     //new ProfiledPIDController(0.5,0,0,);
         // new TrapezoidProfile.Constraints(
