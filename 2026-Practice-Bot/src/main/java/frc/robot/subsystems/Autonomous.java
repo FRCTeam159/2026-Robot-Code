@@ -63,7 +63,7 @@ public class Autonomous {
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
                     new DriveStraight(m_drivetrain, -3),
-                    new Wait(m_drivetrain, 3),
+                    new Wait(m_drivetrain, 1.5),
                     new DriveToTag(m_drivetrain)
                 );
         }

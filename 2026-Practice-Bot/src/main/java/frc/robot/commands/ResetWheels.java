@@ -29,12 +29,12 @@ public class ResetWheels extends Command {
 
     @Override
     public void execute() {
-        m_drive.drive(0, 0, 0, false);
+        m_drive.drive(1e-5, 0, 0, false);
     }
 
     @Override
     public boolean isFinished(){
-        return m_timer.get() > 0.5;
+        return m_timer.get() > 1;
     }
 
     @Override
