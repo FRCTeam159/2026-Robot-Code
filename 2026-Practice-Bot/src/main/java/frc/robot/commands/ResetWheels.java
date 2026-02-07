@@ -22,6 +22,7 @@ public class ResetWheels extends Command {
 
         m_drive.resetPositions();
         m_drive.resetWheels();
+        m_drive.resetOdometry();
 
         m_timer.reset();
         m_timer.start();

@@ -47,7 +47,10 @@ public class Autonomous {
             case DRIVE_TO_TAG:
                 return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
             case DRIVE_PATH:
-                return new SequentialCommandGroup(new DrivePath(m_drivetrain, m_Target));
+                return new SequentialCommandGroup(
+                    new ResetWheels(m_drivetrain),
+                    new DrivePath(m_drivetrain, m_Target)
+                    );
             case DRIVE_STRAIGHT:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
@@ -77,6 +80,6 @@ public class Autonomous {
     }
 
     public void initAuto() {
-        
+        m_drivetrain.resetOdometry();
     }
 }

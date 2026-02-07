@@ -17,6 +17,8 @@ public class DriveWithGamepad extends Command {
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3, -10, 0);
     double pVal = 2.0;
 
+    boolean m_aligning = false;
+
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
 
         m_drive = drivetrain;
@@ -61,9 +63,11 @@ public class DriveWithGamepad extends Command {
             }
         
         if (m_controller.getAButtonPressed()){
-            m_drive.resetWheels();
+            m_aligning = !m_aligning;
+        }
 
-        
+        if (m_aligning) {
+            m_drive.resetPose();
         }
     }
 
