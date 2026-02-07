@@ -1,65 +1,67 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="tags" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="5" y="115"/>
+		<width>121</width>
+		<height>19</height>
+	</widget>
+	<widget field="Drive Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="16" y="455"/>
+	</widget>
+	<widget field="Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="6" y="163"/>
+	</widget>
+	<widget field="angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="6" y="139"/>
+	</widget>
+	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="8" y="274"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="209" y="62"/>
-		<width>437</width>
-		<height>333</height>
+		<location x="238" y="113"/>
+		<width>475</width>
+		<height>357</height>
 		<property name="Camera Choice" value=""/>
 	</static-widget>
 	<widget field="distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="27" y="89"/>
-	</widget>
-	<widget field="limelight_Interface" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="4" y="384"/>
-		<height>19</height>
-	</widget>
-	<widget field="limelight_Stream" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="5" y="402"/>
-	</widget>
-	<widget field="limelight_PipelineName" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="5" y="360"/>
-	</widget>
-	<widget field="Show Tags" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
-		<location x="5" y="222"/>
-	</widget>
-	<widget field="Tags" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="4" y="198"/>
+		<location x="5" y="186"/>
+		<width>113</width>
 	</widget>
 	<widget field="Bottom Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="5" y="165"/>
+		<location x="6" y="223"/>
 		<width>122</width>
 		<height>20</height>
 	</widget>
 	<widget field="Top Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="6" y="140"/>
+		<location x="5" y="246"/>
 		<width>107</width>
 	</widget>
-	<widget field="Auto" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="6" y="91"/>
-	</widget>
 	<widget field="Field Oriented" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="371" y="6"/>
+		<location x="300" y="8"/>
 	</widget>
 	<widget field="Wheels " type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="4" y="20"/>
+		<location x="5" y="29"/>
 		<width>269</width>
 		<height>19</height>
 	</widget>
 	<widget field="Gyro" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="5" y="42"/>
+		<location x="6" y="52"/>
 		<width>83</width>
 	</widget>
 	<widget field="Pose" type="String" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="4" y="0"/>
+		<location x="4" y="3"/>
 		<width>226</width>
 		<height>21</height>
 	</widget>
 	<widget field="Power Value" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="6" y="68"/>
+		<location x="5" y="79"/>
 		<width>79</width>
 		<height>20</height>
 	</widget>
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="limelight_Interface"/>
+	<hidden field="limelight_PipelineName"/>
+	<hidden field="limelight_Stream"/>
 </xml>

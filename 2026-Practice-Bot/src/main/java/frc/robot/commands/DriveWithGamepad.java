@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.ResetWheels;
+import frc.robot.commands.DrivePath;
 
 public class DriveWithGamepad extends Command {
     private final Drivetrain m_drive;
