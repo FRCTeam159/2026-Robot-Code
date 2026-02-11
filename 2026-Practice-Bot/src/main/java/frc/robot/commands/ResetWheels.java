@@ -21,7 +21,6 @@ public class ResetWheels extends Command {
         SwerveModule.optimize_enabled = false;
 
         m_drive.resetPositions();
-        m_drive.resetWheels();
         m_drive.resetOdometry();
 
         m_timer.reset();

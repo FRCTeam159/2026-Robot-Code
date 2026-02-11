@@ -67,7 +67,7 @@ public class DriveWithGamepad extends Command {
         }
 
         if (m_aligning) {
-            m_drive.resetPose();
+            m_drive.resetPositions();
         }
     }
 
