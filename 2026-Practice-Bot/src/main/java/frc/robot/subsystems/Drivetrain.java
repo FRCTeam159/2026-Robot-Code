@@ -33,7 +33,7 @@ public class Drivetrain extends SubsystemBase {
 
   private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
 
-  public static final double kWheelRadius = 2;
+  public static final double kWheelRadius = 1.94;
   public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
   public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
   
