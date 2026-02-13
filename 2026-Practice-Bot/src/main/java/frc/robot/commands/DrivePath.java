@@ -21,10 +21,14 @@ import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.PathData;
 import frc.robot.utils.PlotUtils;
+
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PIDConstants;
 
 // =================================================
 // DrivePath: class constructor (called from RobotContainer)
@@ -35,6 +39,9 @@ public class DrivePath extends Command {
   double Rscale = 1.4;
 
   ArrayList<PathData> pathdata = new ArrayList<PathData>();
+
+  final PPHolonomicDriveController m_ppcontroller = new PPHolonomicDriveController(
+      new PIDConstants(6.0, 0.0, 0), new PIDConstants(6, 0.0, 0.0), Drivetrain.kMaxVelocity, Drivetrain.kTrackRadius);
 
   final HolonomicDriveController m_hcontroller = new HolonomicDriveController(new PIDController(3, 0, 0),
       new PIDController(0.5, 0, 0),
@@ -54,9 +61,9 @@ public class DrivePath extends Command {
   double elapsed = 0;
   int states;
   int intervals;
-  double yPath = 0;
-  double xPath = 1;
-  double rPath = 0;
+  public static double yPath = 0;
+  public static double xPath = 1;
+  public static double rPath = 0;
   static boolean m_endAtTag = false;
 
   double last_heading = 0;
@@ -80,6 +87,10 @@ public class DrivePath extends Command {
   // =================================================
   @Override
   public void initialize() {
+    xPath = SmartDashboard.getNumber("xPath", xPath);
+    yPath = SmartDashboard.getNumber("yPath", yPath);
+    rPath = SmartDashboard.getNumber("rPath", rPath);
+
     System.out.println("Starting drive path");
     //m_drive.resetPose(new Pose2d());
     plot_type = frc.robot.utils.PlotUtils.PLOT_LOCATION;
@@ -114,6 +125,11 @@ public class DrivePath extends Command {
     Trajectory.State reference = null;
     ChassisSpeeds speeds;
 
+    if (using_pathplanner) {
+      speeds = m_ppcontroller.calculateRobotRelativeSpeeds(m_drive.getPose(), pstate);
+
+     } else {
+
     reference = m_trajectory.sample(elapsed);
     reference.velocityMetersPerSecond = 0;
 
@@ -123,6 +139,7 @@ public class DrivePath extends Command {
     Rotation2d rot = Rotation2d.fromDegrees(angle);
     reference.poseMeters = new Pose2d(reference.poseMeters.getTranslation(), rot);
     speeds = m_hcontroller.calculate(m_drive.getPose(), reference, rot);
+    }
 
     if (debug) {
       Pose2d p = m_drive.getPose();
@@ -168,7 +185,7 @@ public class DrivePath extends Command {
         return true;
       }
     }
-    if (elapsed >= 1.1 * runtime) {
+    if (elapsed >= runtime) {
       System.out.println("DriveStraight Target Reached");
       return true;
     }

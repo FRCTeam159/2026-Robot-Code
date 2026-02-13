@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveToTag;
 import frc.robot.commands.ShootForTime;
+import frc.robot.commands.Wait;
 import frc.robot.commands.DrivePath;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.ResetWheels;
@@ -17,6 +18,7 @@ public class Autonomous {
     public static final int DRIVE_PATH = 2;
     public static final int DRIVE_STRAIGHT = 3;
     public static final int SHOOT = 4;
+    public static final int ALIGN = 5;
 
     static SendableChooser<Integer> m_autochooser = new SendableChooser<Integer>();
     double m_Target = 1;
@@ -30,6 +32,7 @@ public class Autonomous {
         m_autochooser.addOption("Drive Path", DRIVE_PATH);
         m_autochooser.addOption("Drive Straight", DRIVE_STRAIGHT);
         m_autochooser.addOption("Simple Shoot", SHOOT);
+        m_autochooser.addOption("Align With Tag", ALIGN);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -44,7 +47,10 @@ public class Autonomous {
             case DRIVE_TO_TAG:
                 return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
             case DRIVE_PATH:
-                return new SequentialCommandGroup(new DrivePath(m_drivetrain, m_Target));
+                return new SequentialCommandGroup(
+                    new ResetWheels(m_drivetrain),
+                    new DrivePath(m_drivetrain, m_Target)
+                    );
             case DRIVE_STRAIGHT:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
@@ -55,6 +61,13 @@ public class Autonomous {
                     new ResetWheels(m_drivetrain),
                     new DriveStraight(m_drivetrain, -1),
                     new ShootForTime()
+                );
+            case ALIGN:
+                return new SequentialCommandGroup(
+                    new ResetWheels(m_drivetrain),
+                    new DriveStraight(m_drivetrain, -3),
+                    new Wait(m_drivetrain, 1.5),
+                    new DriveToTag(m_drivetrain)
                 );
         }
 
@@ -67,6 +80,6 @@ public class Autonomous {
     }
 
     public void initAuto() {
-        
+        m_drivetrain.resetOdometry();
     }
 }

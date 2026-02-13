@@ -54,7 +54,7 @@ public class RobotContainer {
   }
 
     public void autonomousInit() {
-    m_drivetrain.resetOdometry();
+    //m_drivetrain.resetOdometry();
     m_autonomous.initAuto();
   }
 

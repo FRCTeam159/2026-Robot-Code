@@ -2,11 +2,16 @@
   "NetworkTables Settings": {
     "mode": "Client (NT4)"
   },
+  "Transitory Values": {
+    "open": false
+  },
   "retained": {
     "limelight": {
-      "double[]##v_/limelight/tc": {
-        "open": true
-      },
+      "open": true
+    }
+  },
+  "transitory": {
+    "limelight": {
       "open": true
     }
   }

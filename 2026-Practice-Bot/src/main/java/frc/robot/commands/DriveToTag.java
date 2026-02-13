@@ -5,13 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Averager;
+import frc.robot.objects.LimelightHelpers;
+import frc.robot.objects.LimelightHelpers.RawFiducial;
+import frc.robot.objects.LimelightHelpers.RawTarget;
 
 public class DriveToTag extends Command {
   /** Creates a new DriveToTag. */
@@ -20,8 +24,15 @@ public class DriveToTag extends Command {
   PIDController m_drivePID;
   PIDController m_rotationPID;
 
-  double m_target=1.5;
+  double m_target=1.75;
   boolean m_started=false;
+
+  double average_tags;
+  double previous_distance;
+
+  private Averager tag_averager = new Averager(5);
+
+  private static final double max_speed = 0.2;
 
   private NetworkTable tag_table = NetworkTableInstance.getDefault().getTable("datatable");
   private DoubleSubscriber distance_sub = tag_table.getDoubleTopic("Distance").subscribe(0.0);
@@ -29,7 +40,7 @@ public class DriveToTag extends Command {
   private IntegerSubscriber num_tag_sub = tag_table.getIntegerTopic("NumTags").subscribe(0);
 
   public DriveToTag(Drivetrain drive) {
-    m_drivePID = new PIDController(0.12, 0, 0);
+    m_drivePID = new PIDController(0.2, 0, 0);
     m_rotationPID = new PIDController(0.005, 0, 0);
 
     m_drive = drive;
@@ -46,7 +57,7 @@ public class DriveToTag extends Command {
     m_started=false;
 
     m_drivePID.setSetpoint(m_target);
-    m_drivePID.setTolerance(0.1);
+    m_drivePID.setTolerance(0.05);
 
     m_rotationPID.setSetpoint(0);
     m_rotationPID.setTolerance(10);
@@ -55,15 +66,23 @@ public class DriveToTag extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    long n = num_tag_sub.get();
+    
 
-    if(n>0){
+    double tv = num_tag_sub.get();
+    average_tags = tag_averager.getAve(tv);
+
+    if(average_tags>0){
       double x = distance_sub.get();
       double y = offset_sub.get();
 
-      //System.out.println("distance = " + x + " Offset = " + y);
-      double d = m_drivePID.calculate(x, m_target);
+     if (tv != 0) {
+      previous_distance = x;
+     }
+
+      double d = m_drivePID.calculate(previous_distance, m_target);
       double r = m_rotationPID.calculate(y, 0);
+
+      d = Math.max(-max_speed, Math.min(max_speed, d));
 
      // System.out.println("distance = " + s + " correction = " + d);
       m_drive.drive(-d, 0, r, false);
@@ -80,9 +99,8 @@ public class DriveToTag extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    long n = num_tag_sub.get();
 
-    if (m_started && n==0) {
+    if (m_started && average_tags==0) {
       System.out.println("Lost Tags");
       return true;
     }

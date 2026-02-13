@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.ResetWheels;
+import frc.robot.commands.DrivePath;
 
 public class DriveWithGamepad extends Command {
     private final Drivetrain m_drive;
@@ -15,6 +16,8 @@ public class DriveWithGamepad extends Command {
     private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(1.5);
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3, -10, 0);
     double pVal = 2.0;
+
+    boolean m_aligning = false;
 
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
 
@@ -40,16 +43,16 @@ public class DriveWithGamepad extends Command {
         double vx = m_controller.getLeftY();
         double vy = m_controller.getLeftX();
         double vr = m_controller.getRightX();
-        final var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(vx, 0.2))
+        final var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(vx, 0.1))
                 * Drivetrain.kMaxVelocity;
 
         // Get the y speed or sideways/strafe speed.
-        final var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(vy, 0.2))
+        final var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(vy, 0.1))
                 * Drivetrain.kMaxVelocity;
 
         pVal = SmartDashboard.getNumber("Power Value", 2);
 
-        double rVal = MathUtil.applyDeadband(vr, .2);
+        double rVal = MathUtil.applyDeadband(vr, .1);
         double sgn = rVal < 0 ? -1 : 1;
         var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Drivetrain.kMaxAngularVelocity);
         
@@ -60,9 +63,11 @@ public class DriveWithGamepad extends Command {
             }
         
         if (m_controller.getAButtonPressed()){
-            m_drive.resetWheels();
+            m_aligning = !m_aligning;
+        }
 
-        
+        if (m_aligning) {
+            m_drive.resetPositions();
         }
     }
 
