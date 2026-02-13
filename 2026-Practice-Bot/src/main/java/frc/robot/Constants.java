@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.RobotConfig;
+
+import edu.wpi.first.math.util.Units;
+
 /** Add your docs here. */
 public class Constants {
 
@@ -43,13 +47,32 @@ public class Constants {
     public static final int kBr_Turn = 1;
     public static final int kBr_Encoder = 11;
 
-   public static final int top_shooter = 13;
-   public static final int bottom_shooter = 14;
-   public static final int shooter_feeder = 15;
+    public static final int top_shooter = 13;
+    public static final int bottom_shooter = 14;
+    public static final int shooter_feeder = 15;
 
     public static final int mTest = 13; // 16
 
     public static final int kPigeonCanId = 0;
 
+    static public final double kDriveGearRatio = 8.14; // MK4i drive (standard)
+    static public final double kTurnGearRatio = 21.429; // MK4i turn (all)
 
+    public static final double kWheelRadius = 2;
+    public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
+    public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
+  
+    public static final double kRobotLength = Units.inchesToMeters(24); // Waffle side length
+
+    public static final double kFrontWheelBase = Units.inchesToMeters(18.5); // distance bewteen front wheels
+    public static final double kSideWheelBase = Units.inchesToMeters(18.5); // distance beteen side wheels
+    public static final double kTrackRadius = 0.5
+        * Math.sqrt(kFrontWheelBase * kFrontWheelBase + kSideWheelBase * kSideWheelBase);
+
+    public static final double kMaxVelocity = 0.5;
+    public static final double kMaxAcceleration = 1;
+    public static final double kMaxAngularVelocity = Math.toRadians(720); // radians/s
+    public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s
+
+    //public static final RobotConfig m_EMPTY_CONFIG = new RobotConfig(22.68, 10, );
 }

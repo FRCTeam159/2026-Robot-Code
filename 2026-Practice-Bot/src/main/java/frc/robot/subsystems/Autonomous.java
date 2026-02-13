@@ -19,6 +19,7 @@ public class Autonomous {
     public static final int DRIVE_STRAIGHT = 3;
     public static final int SHOOT = 4;
     public static final int ALIGN = 5;
+    public static final int PATH_PLANNER = 6;
 
     static SendableChooser<Integer> m_autochooser = new SendableChooser<Integer>();
     double m_Target = 1;
@@ -33,6 +34,7 @@ public class Autonomous {
         m_autochooser.addOption("Drive Straight", DRIVE_STRAIGHT);
         m_autochooser.addOption("Simple Shoot", SHOOT);
         m_autochooser.addOption("Align With Tag", ALIGN);
+        m_autochooser.addOption("Path Planner", PATH_PLANNER);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -41,7 +43,13 @@ public class Autonomous {
         // m_driveStraitTarget = SmartDashboard.getNumber("target", 0);
         DrivePath.setEndAtTag(false);
         int automode = m_autochooser.getSelected();
-        switch (automode) {
+        return getAutoSequence(automode);
+        // driveToTag();
+        // return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
+    }
+
+    private SequentialCommandGroup getAutoSequence(int automode) {
+     switch (automode) {
             default:
                 return null;
             case DRIVE_TO_TAG:
@@ -69,10 +77,9 @@ public class Autonomous {
                     new Wait(m_drivetrain, 1.5),
                     new DriveToTag(m_drivetrain)
                 );
+            case PATH_PLANNER:
+            return null;
         }
-
-        // driveToTag();
-        // return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
     }
 
     public void endAuto() {
