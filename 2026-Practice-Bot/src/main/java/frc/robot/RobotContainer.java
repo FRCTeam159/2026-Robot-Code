@@ -19,18 +19,20 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Limelight;
 import com.ctre.phoenix6.SignalLogger;
 import frc.robot.commands.ResetWheels;
+import frc.robot.subsystems.Test;
 
 
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Limelight m_limelight = new Limelight();
+  private final Test m_test = new Test();
   public final Autonomous m_autonomous;
   //private final TagDetector m_Detector = new TagDetector(m_drivetrain);
 
   //private final Shooter m_shooter = new Shooter();
 
-  private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller);
+  private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller, m_test);
  // private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
 
   // private final SendableChooser<String> m_chooser = new SendableChooser<>();

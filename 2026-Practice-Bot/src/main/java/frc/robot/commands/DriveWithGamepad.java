@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.commands.ResetWheels;
+import frc.robot.Constants;
 import frc.robot.commands.DrivePath;
+import frc.robot.subsystems.Test;
 
 public class DriveWithGamepad extends Command {
     private final Drivetrain m_drive;
@@ -18,12 +20,14 @@ public class DriveWithGamepad extends Command {
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3, -10, 0);
     double pVal = 2.0;
 
+    private final Test m_test;
+
     boolean m_aligning = false;
     AlignWheels m_align = null;
     boolean m_optimed=false;
 
-    public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
-        m_optimed= SwerveModule.optimize_enabled;
+    public DriveWithGamepad(Drivetrain drivetrain, XboxController controller, Test test) {
+        m_test = test;
         m_drive = drivetrain;
         m_controller = controller;
         m_align = new AlignWheels(m_drive, 2.0);
@@ -48,17 +52,17 @@ public class DriveWithGamepad extends Command {
         double vy = m_controller.getLeftX();
         double vr = m_controller.getRightX();
         final var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(vx, 0.1))
-                * Drivetrain.kMaxVelocity;
+                * Constants.kMaxVelocity;
 
         // Get the y speed or sideways/strafe speed.
         final var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(vy, 0.1))
-                * Drivetrain.kMaxVelocity;
+                * Constants.kMaxVelocity;
 
         pVal = SmartDashboard.getNumber("Power Value", 2);
 
         double rVal = MathUtil.applyDeadband(vr, .1);
         double sgn = rVal < 0 ? -1 : 1;
-        var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Drivetrain.kMaxAngularVelocity);
+        var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Constants.kMaxAngularVelocity);
         
         
         m_drive.drive(xSpeed, ySpeed, rot, m_drive.isFieldOriented());

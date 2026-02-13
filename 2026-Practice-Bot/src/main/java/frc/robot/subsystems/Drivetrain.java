@@ -18,9 +18,6 @@ import frc.robot.commands.DrivePath;
 import frc.robot.objects.DriveGyro;
 
 public class Drivetrain extends SubsystemBase {
-    static public final double kDriveGearRatio = 8.14; // MK4i drive (standard)
-  static public final double kTurnGearRatio = 21.429; // MK4i turn (all)
-
   static public boolean debug = false;
   static public boolean debug_angles = false;
 
@@ -29,26 +26,11 @@ public class Drivetrain extends SubsystemBase {
   double m_driveScale = 1;
   double m_turnScale = 0.6;
 
-  private double target_angle = 0.0;
   private double max_turn_speed = 4.0;
 
   private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
 
-  public static final double kWheelRadius = 2;
-  public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
-  public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
   
-  public static final double kRobotLength = Units.inchesToMeters(24); // Waffle side length
-
-  public static final double kFrontWheelBase = Units.inchesToMeters(18.5); // distance bewteen front wheels
-  public static final double kSideWheelBase = Units.inchesToMeters(18.5); // distance beteen side wheels
-  public static final double kTrackRadius = 0.5
-      * Math.sqrt(kFrontWheelBase * kFrontWheelBase + kSideWheelBase * kSideWheelBase);
-
-  public static final double kMaxVelocity = 0.5;
-  public static final double kMaxAcceleration = 1;
-  public static final double kMaxAngularVelocity = Math.toRadians(720); // radians/s
-  public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s
 
   public static double dely = 0.5 * kSideWheelBase; // 0.2949 meters
   public static double delx = 0.5 * kFrontWheelBase;
@@ -111,7 +93,6 @@ public class Drivetrain extends SubsystemBase {
     enable();
 
     m_gyro.reset();
-    target_angle = 0.0;
 
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
 
@@ -146,7 +127,6 @@ public class Drivetrain extends SubsystemBase {
     m_fieldOriented = v;
     if (v)
     m_gyro.reset();
-    target_angle = 0.0;
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
   }
 
@@ -183,7 +163,6 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     m_gyro.reset();
-    target_angle = 0.0;
 
     resetPositions();
 
@@ -241,7 +220,6 @@ public class Drivetrain extends SubsystemBase {
       modules[i].reset();
     }
     m_gyro.reset();
-    target_angle = 0.0;
     last_heading = 0;
   }
 

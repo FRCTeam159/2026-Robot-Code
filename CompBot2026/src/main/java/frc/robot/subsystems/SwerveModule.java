@@ -25,6 +25,8 @@ public class SwerveModule {
 
     static boolean debug=false;
 
+    public static boolean optimize_enabled = true;
+
     public static String chnlnames[] = { "FL", "FR", "BL", "BR" };
 
     String name;
@@ -100,6 +102,10 @@ public class SwerveModule {
         return m_driveMotor.getPosition();
       }
 
+      public double getAbsoluteDistance(){
+        return Math.abs(getDistance());
+      }
+
       public double getVelocity() {
         return m_driveMotor.getVelocity();
       }
@@ -107,7 +113,7 @@ public class SwerveModule {
       public void setDesiredState(SwerveModuleState desiredState) {
         // Optimize the reference state to avoid spinning further than 90 degrees
         // SwerveModuleState state = desiredState;  // don't optimize
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, getRotation2d());
+        SwerveModuleState state = optimize_enabled ? SwerveModuleState.optimize(desiredState, getRotation2d()) : desiredState;
         
         double velocity=getVelocity();
         
@@ -129,5 +135,17 @@ public class SwerveModule {
 
         m_driveMotor.set(set_drive);
         m_turnMotor.set(set_turn);
+      }
+
+      public void alignWheel(){
+        setAngle(0);
+      }
+
+      public void resetWheel(){
+        alignWheel();
+      }
+
+      public void setAngle(double a){
+        m_targetAngle = a;
       }
 }

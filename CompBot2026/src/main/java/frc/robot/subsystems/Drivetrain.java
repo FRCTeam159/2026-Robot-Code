@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.DrivePath;
 import frc.robot.objects.DriveGyro;
 
 public class Drivetrain extends SubsystemBase {
@@ -28,21 +29,11 @@ public class Drivetrain extends SubsystemBase {
   double m_driveScale = 1;
   double m_turnScale = 0.6;
 
-  public static final double kWheelRadius = 1.89; // o1d 1.94
-  public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
-  public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
+  private double max_turn_speed = 4.0;
+
+  private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
+
   
-  public static final double kRobotLength = Units.inchesToMeters(24); // Waffle side length
-
-  public static final double kFrontWheelBase = Units.inchesToMeters(21.25); // distance bewteen front wheels
-  public static final double kSideWheelBase = Units.inchesToMeters(21.25); // distance beteen side wheels
-  public static final double kTrackRadius = 0.5
-      * Math.sqrt(kFrontWheelBase * kFrontWheelBase + kSideWheelBase * kSideWheelBase);
-
-  public static final double kMaxVelocity = 0.5;
-  public static final double kMaxAcceleration = 1;
-  public static final double kMaxAngularVelocity = Math.toRadians(720); // radians/s
-  public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s
 
   public static double dely = 0.5 * kSideWheelBase; // 0.2949 meters
   public static double delx = 0.5 * kFrontWheelBase;
@@ -107,6 +98,10 @@ public class Drivetrain extends SubsystemBase {
     m_gyro.reset();
 
     SmartDashboard.putBoolean("Field Oriented", m_fieldOriented);
+
+    SmartDashboard.putNumber("xPath", DrivePath.xPath);
+    SmartDashboard.putNumber("yPath", DrivePath.yPath);
+    SmartDashboard.putNumber("rPath", DrivePath.rPath);
   }
 
   public boolean enabled() {
@@ -163,14 +158,28 @@ public class Drivetrain extends SubsystemBase {
     m_pose = m_odometry.update(getRotation2d(), m_positions);
   }
 
+  public void resetPositions() {
+    for (int i = 0; i < modules.length; i++)
+      modules[i].reset();
+    updatePositions();
+  }
+
   public void resetOdometry(Pose2d pose) {
     m_gyro.reset();
-    //resetPositions();
+
+    resetPositions();
+
     m_odometry.resetPosition(getRotation2d(), m_positions, pose);
     last_heading = 0;
     m_pose = pose;
     //updateOdometry();
     System.out.println("gryo angle" + m_gyro.getAngle());
+  }
+
+  public void resetWheels() {
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].resetWheel();
+    }
   }
 
   public void resetOdometry() {
@@ -240,6 +249,13 @@ public class Drivetrain extends SubsystemBase {
     return distance / modules.length;
   }
 
+  public double getAbsoluteDistance() {
+    double distance = 0;
+    for (int i = 0; i < modules.length; i++)
+      distance += modules[i].getAbsoluteDistance();
+    return distance / modules.length;
+  }
+
   void displayAngles() {
     if ((count % 100) == 0) {
       String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f\n",
@@ -258,6 +274,8 @@ public class Drivetrain extends SubsystemBase {
     
     m_fieldOriented = SmartDashboard.getBoolean("Field Oriented", m_fieldOriented);
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
+    
+    SmartDashboard.putNumber("Drive Distance", getDistance());
     
     displayAngles();
   }

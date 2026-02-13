@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static frc.robot.Constants.shooter_feeder;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +17,7 @@ public class ShootWithGamepad extends Command {
 
     double top_speed = 0.2;
     double bottom_speed = 0.2;
+    double feeder_speed = 0.2;
 
     public ShootWithGamepad(Shooter shooter, XboxController controller) {
 
@@ -25,12 +28,14 @@ public class ShootWithGamepad extends Command {
 
         SmartDashboard.putNumber("Top Shoot Speed", top_speed);
         SmartDashboard.putNumber("Bottom Shoot Speed", bottom_speed);
+        SmartDashboard.putNumber("Shooter feed Speed", feeder_speed);
     }
 
     public void execute() {
 
         top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed);
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed);
+        feeder_speed = SmartDashboard.getNumber("Shooter feed Speed", feeder_speed);
 
         if (m_controller.getRightBumperButtonPressed()) {
             //System.out.println("top: " + top_speed + ", bottom: " + bottom_speed);
@@ -38,10 +43,10 @@ public class ShootWithGamepad extends Command {
         }  
 
         if (shooting) {
-            m_Shoot.shoot(top_speed, bottom_speed);
+            m_Shoot.shoot(top_speed, bottom_speed, feeder_speed);
         }
         else {
-            m_Shoot.shoot(0, 0);
+            m_Shoot.shoot(0, 0, 0);
         }
     }
 
