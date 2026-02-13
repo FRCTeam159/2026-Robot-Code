@@ -51,7 +51,6 @@ public class Constants {
     public static final int mTest = 17;
 
     public static final int kPigeonCanId = 30;
-<<<<<<< HEAD
 
     static public final double kDriveGearRatio = 8.14; // MK4i drive (standard)
     static public final double kTurnGearRatio = 21.429; // MK4i turn (all)
@@ -73,6 +72,4 @@ public class Constants {
     public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s
 
     //public static final RobotConfig = new RobotConfig(22.68, 10, );
-=======
->>>>>>> 678830c43f124d5ea807b7a22cda98441f167a6c
 }

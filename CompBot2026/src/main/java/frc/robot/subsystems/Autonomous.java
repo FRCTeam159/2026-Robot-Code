@@ -78,6 +78,7 @@ public class Autonomous {
                     new DriveToTag(m_drivetrain)
                 );
             case PATH_PLANNER:
+            return null;
         }
 
     }

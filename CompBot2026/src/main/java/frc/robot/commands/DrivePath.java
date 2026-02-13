@@ -205,12 +205,12 @@ public class DrivePath extends Command {
   // =================================================
   // programPath: build a two-point trajectory from variables
   // =================================================
-  PathPlannerTrajectory pathplannerProgramPath(){
-    PathPlannerPath path = PathPlannerPath.fromPathFile("deploy/pathplanner/paths/PAth.path");
+  // PathPlannerTrajectory pathplannerProgramPath(){
+  //   PathPlannerPath path = PathPlannerPath.fromPathFile("deploy/pathplanner/paths/PAth.path");
 
-    PathPlannerTrajectory traj = new PathPlannerTrajectory(path, new ChassisSpeeds(), Rotation2d.fromDegrees(0), );
-    return traj;
-  }
+  //   PathPlannerTrajectory traj = new PathPlannerTrajectory(path, new ChassisSpeeds(), Rotation2d.fromDegrees(0), );
+  //   return traj;
+  // }
 
   Trajectory programPath() {
     List<Pose2d> points = new ArrayList<Pose2d>();
@@ -227,7 +227,7 @@ public class DrivePath extends Command {
   // =================================================
   boolean getTrajectory() {
     if (using_pathplanner) {
-      m_pptrajectory = pathplannerProgramPath();
+      //m_pptrajectory = pathplannerProgramPath();
       if (m_pptrajectory == null)
         return false;
       runtime = m_pptrajectory.getTotalTimeSeconds();
