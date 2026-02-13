@@ -76,7 +76,7 @@ public class SwerveModule {
 
       public void reset(){
         m_drivePIDController.reset();
-      // m_turningPIDController.reset(0.0);
+       //m_turningPIDController.reset(0.0);
        m_enabled=false;
        m_driveMotor.reset();
        m_turnMotor.reset();
@@ -141,10 +141,15 @@ public class SwerveModule {
       }
 
       public void resetWheel(){
+        //optimize_enabled=false;
         alignWheel();
+      }
+      public boolean wheelReset() {
+        return m_turningPIDController.atSetpoint();
       }
 
       public void setAngle(double a){
         m_targetAngle = a;
+        m_turningPIDController.setSetpoint(a);
       }
 }

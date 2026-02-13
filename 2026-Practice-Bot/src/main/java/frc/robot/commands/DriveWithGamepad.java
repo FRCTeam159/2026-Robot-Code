@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.SwerveModule;
 import frc.robot.commands.ResetWheels;
 import frc.robot.commands.DrivePath;
 
@@ -18,11 +19,14 @@ public class DriveWithGamepad extends Command {
     double pVal = 2.0;
 
     boolean m_aligning = false;
+    AlignWheels m_align = null;
+    boolean m_optimed=false;
 
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
-
+        m_optimed= SwerveModule.optimize_enabled;
         m_drive = drivetrain;
         m_controller = controller;
+        m_align = new AlignWheels(m_drive, 2.0);
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
         SmartDashboard.putNumber("Power Value", pVal);
@@ -39,7 +43,7 @@ public class DriveWithGamepad extends Command {
 
     @Override
     public void execute() {
-
+    if (!m_aligning){
         double vx = m_controller.getLeftY();
         double vy = m_controller.getLeftX();
         double vr = m_controller.getRightX();
@@ -56,19 +60,35 @@ public class DriveWithGamepad extends Command {
         double sgn = rVal < 0 ? -1 : 1;
         var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Drivetrain.kMaxAngularVelocity);
         
+        
         m_drive.drive(xSpeed, ySpeed, rot, m_drive.isFieldOriented());
 
         if (m_controller.getRightStickButtonPressed()){
             m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
-            }
-        
-        if (m_controller.getAButtonPressed()){
-            m_aligning = !m_aligning;
         }
+    }
+        // if (m_controller.getBButtonPressed()){
+        //      SwerveModule.optimize_enabled=!SwerveModule.optimize_enabled;
+        //      System.out.println("Optimized="+SwerveModule.optimize_enabled);
+                 
+        // }
 
-        if (m_aligning) {
-            m_drive.resetPose();
-        }
+        // if (m_aligning) {
+        //     m_drive.resetPose();
+        // }
+
+    if (m_controller.getAButtonPressed()) {
+      if (!m_aligning) {
+        System.out.println("Aligning");
+        m_align.initialize();
+        m_aligning = true;
+      } else{
+        m_aligning = false;
+        m_align.end(true);
+      }
+    }
+    if (m_aligning)
+      align();  
     }
 
     @Override
@@ -80,4 +100,12 @@ public class DriveWithGamepad extends Command {
     public boolean isFinished() {
         return false;
     }
+    
+    void align() {
+    if (m_align.isFinished()) {
+      m_align.end(false);
+      m_aligning = false;
+    } else
+      m_align.execute();
+  }
 }

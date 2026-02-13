@@ -191,7 +191,7 @@ public class Drivetrain extends SubsystemBase {
     last_heading = 0;
     m_pose = pose;
     //updateOdometry();
-    System.out.println("gryo angle" + m_gyro.getAngle());
+    //System.out.println("gryo angle" + m_gyro.getAngle());
   }
 
   public void resetWheels() {
@@ -285,6 +285,29 @@ public class Drivetrain extends SubsystemBase {
     count++;
   }
 
+  // reset wheels turn motor to starting position
+  public void resetWheels(boolean begin) {
+    if (begin) {
+      m_resetting = true;
+      System.out.println("Drivetrain-ALIGNING_WHEELS");
+    }
+    for (int i = 0; i < modules.length; i++) {
+      modules[i].resetWheel();
+    }
+  }
+
+  // return true if all wheels are reset
+  public boolean wheelsReset() {
+    for (int i = 0; i < modules.length; i++) {
+      if (!modules[i].wheelReset())
+        return false;
+    }
+    if (m_resetting)
+      System.out.println("Drivetrain-WHEELS_ALIGNED");
+    m_resetting = false;
+    return true;
+  }
+  
   public void log() {
     Pose2d pose = getPose();
     String s = String.format(" X:%-5.2f Y:%-5.2f H:%-4.1f D:%-3.1f V:%-3.1f",
