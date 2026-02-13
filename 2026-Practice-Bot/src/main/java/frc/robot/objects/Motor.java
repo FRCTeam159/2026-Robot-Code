@@ -1,8 +1,11 @@
 package frc.robot.objects;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -14,6 +17,9 @@ public class Motor {
 
     boolean upperLimitNormalyClosed = false;
     boolean lowerLimitNormalyClosed = false;
+
+    SparkClosedLoopController velocity_controller;
+
     SparkMax rev_motor = null;
     RelativeEncoder rev_encoder;
     int m_chnl;
@@ -64,12 +70,13 @@ public class Motor {
      public void setConfig(boolean isInverted, boolean isBreak, double d) {
         m_dpr = d;
         SparkMaxConfig config = new SparkMaxConfig();
+        config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
         config
                 .inverted(isInverted)
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);
         config.encoder
                 .positionConversionFactor(d)
-                .velocityConversionFactor(d / 60);
+                .velocityConversionFactor(d);
         if (m_upperLimit != null){
             LimitSwitchConfig.Type upperType = upperLimitNormalyClosed?LimitSwitchConfig.Type.kNormallyClosed:LimitSwitchConfig.Type.kNormallyOpen;
             config.limitSwitch.forwardLimitSwitchType(upperType);
@@ -83,6 +90,8 @@ public class Motor {
         // .pid(1.0, 0.0, 0.0);
 
         rev_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        velocity_controller = rev_motor.getClosedLoopController();
     }
 
     public void setConfig(boolean isInverted, double d) {
@@ -120,6 +129,10 @@ public class Motor {
 
     public double getVelocity() {
         return rev_encoder.getVelocity() / 60; // rpm to rps
+    }
+
+    public void setVelocity(double velocity) {
+        velocity_controller.setSetpoint(velocity, ControlType.kVelocity);
     }
 
     public void set(double speed) {

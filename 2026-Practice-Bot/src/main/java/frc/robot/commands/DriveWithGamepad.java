@@ -9,6 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.ResetWheels;
 import frc.robot.Constants;
 import frc.robot.commands.DrivePath;
+import frc.robot.subsystems.Test;
 
 public class DriveWithGamepad extends Command {
     private final Drivetrain m_drive;
@@ -18,10 +19,12 @@ public class DriveWithGamepad extends Command {
     private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3, -10, 0);
     double pVal = 2.0;
 
+    private final Test m_test;
+
     boolean m_aligning = false;
 
-    public DriveWithGamepad(Drivetrain drivetrain, XboxController controller) {
-
+    public DriveWithGamepad(Drivetrain drivetrain, XboxController controller, Test test) {
+        m_test = test;
         m_drive = drivetrain;
         m_controller = controller;
         // Use addRequirements() here to declare subsystem dependencies.
@@ -70,6 +73,8 @@ public class DriveWithGamepad extends Command {
         if (m_aligning) {
             m_drive.resetPositions();
         }
+
+        m_test.shoot(m_controller.getRightBumperButton() ? 5000 : 0);
     }
 
     @Override
