@@ -70,13 +70,13 @@ public class Motor {
      public void setConfig(boolean isInverted, boolean isBreak, double d) {
         m_dpr = d;
         SparkMaxConfig config = new SparkMaxConfig();
-        config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
+        //config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
         config
                 .inverted(isInverted)
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);
         config.encoder
                 .positionConversionFactor(d)
-                .velocityConversionFactor(d);
+                .velocityConversionFactor(d / 60);
         if (m_upperLimit != null){
             LimitSwitchConfig.Type upperType = upperLimitNormalyClosed?LimitSwitchConfig.Type.kNormallyClosed:LimitSwitchConfig.Type.kNormallyOpen;
             config.limitSwitch.forwardLimitSwitchType(upperType);

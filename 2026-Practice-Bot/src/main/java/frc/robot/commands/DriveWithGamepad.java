@@ -69,30 +69,17 @@ public class DriveWithGamepad extends Command {
 
         if (m_controller.getRightStickButtonPressed()){
             m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
+            }
+        
+        if (m_controller.getAButtonPressed()){
+            m_aligning = !m_aligning;
         }
-    }
-        // if (m_controller.getBButtonPressed()){
-        //      SwerveModule.optimize_enabled=!SwerveModule.optimize_enabled;
-        //      System.out.println("Optimized="+SwerveModule.optimize_enabled);
-                 
-        // }
 
-        // if (m_aligning) {
-        //     m_drive.resetPose();
-        // }
+        if (m_aligning) {
+            m_drive.resetPositions();
+        }
 
-    if (m_controller.getAButtonPressed()) {
-      if (!m_aligning) {
-        System.out.println("Aligning");
-        m_align.initialize();
-        m_aligning = true;
-      } else{
-        m_aligning = false;
-        m_align.end(true);
-      }
-    }
-    if (m_aligning)
-      align();  
+        m_test.shoot(m_controller.getRightBumperButton() ? 5000 : 0);
     }
 
     @Override
