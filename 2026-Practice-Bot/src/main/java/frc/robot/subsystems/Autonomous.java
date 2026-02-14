@@ -57,13 +57,13 @@ public class Autonomous {
             case DRIVE_PATH:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
-                    new DrivePath(m_drivetrain, m_Target)
-                    );
+                    new DrivePath(m_drivetrain, m_Target, false)
+                );
             case DRIVE_STRAIGHT:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
                     new DriveStraight(m_drivetrain, -1)
-                    );
+                );
             case SHOOT:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
@@ -78,7 +78,10 @@ public class Autonomous {
                     new DriveToTag(m_drivetrain)
                 );
             case PATH_PLANNER:
-            return null;
+                return new SequentialCommandGroup(
+                    new ResetWheels(m_drivetrain),
+                    new DrivePath(m_drivetrain, m_Target, false)
+                );
         }
     }
 

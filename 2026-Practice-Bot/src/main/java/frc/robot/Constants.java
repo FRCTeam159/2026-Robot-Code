@@ -5,7 +5,10 @@
 package frc.robot;
 
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.config.ModuleConfig;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
@@ -74,5 +77,14 @@ public class Constants {
     public static final double kMaxAngularVelocity = Math.toRadians(720); // radians/s
     public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s
 
-    //public static final RobotConfig m_EMPTY_CONFIG = new RobotConfig(22.68, 10, );
+    public static final double dely = 0.5 * kSideWheelBase; // 0.2949 meters
+    public static final double delx = 0.5 * kFrontWheelBase;
+
+    public static final Translation2d m_frontLeftLocation = new Translation2d(delx, dely);
+    public static final Translation2d m_frontRightLocation = new Translation2d(delx, -dely);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-delx, dely);
+    public static final Translation2d m_backRightLocation = new Translation2d(-delx, -dely);
+
+    public static final ModuleConfig m_module_config = new ModuleConfig(Units.inchesToMeters(kWheelRadius), kMaxVelocity, 1, DCMotor.getNEO(4), 40, 4);
+    public static final RobotConfig m_robot_config = new RobotConfig(22.68, 10, m_module_config, m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 }

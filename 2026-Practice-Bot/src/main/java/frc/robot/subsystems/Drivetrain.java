@@ -33,16 +33,6 @@ public class Drivetrain extends SubsystemBase {
 
   private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
 
-  
-
-  public static double dely = 0.5 * kSideWheelBase; // 0.2949 meters
-  public static double delx = 0.5 * kFrontWheelBase;
-
-  private final Translation2d m_frontLeftLocation = new Translation2d(delx, dely);
-  private final Translation2d m_frontRightLocation = new Translation2d(delx, -dely);
-  private final Translation2d m_backLeftLocation = new Translation2d(-delx, dely);
-  private final Translation2d m_backRightLocation = new Translation2d(-delx, -dely);
-
   private SwerveModule m_frontLeft = new SwerveModule(kFl_Drive, kFl_Turn, kFl_Encoder, 1);
   private SwerveModule m_frontRight = new SwerveModule(kFr_Drive, kFr_Turn, kFr_Encoder, 2);
   private SwerveModule m_backLeft = new SwerveModule(kBl_Drive, kBl_Turn, kBl_Encoder, 3);
