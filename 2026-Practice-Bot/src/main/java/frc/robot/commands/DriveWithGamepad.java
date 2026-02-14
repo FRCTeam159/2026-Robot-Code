@@ -74,7 +74,7 @@ public class DriveWithGamepad extends Command {
             m_drive.resetPositions();
         }
 
-        m_test.shoot(m_controller.getRightBumperButton() ? 5000 : 0);
+        //m_test.shoot(m_controller.getRightBumperButton() ? 5000 : 0);
     }
 
     @Override

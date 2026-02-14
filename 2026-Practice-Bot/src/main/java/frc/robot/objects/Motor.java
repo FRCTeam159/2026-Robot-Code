@@ -76,7 +76,7 @@ public class Motor {
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);
         config.encoder
                 .positionConversionFactor(d)
-                .velocityConversionFactor(d);
+                .velocityConversionFactor(d / 60);
         if (m_upperLimit != null){
             LimitSwitchConfig.Type upperType = upperLimitNormalyClosed?LimitSwitchConfig.Type.kNormallyClosed:LimitSwitchConfig.Type.kNormallyOpen;
             config.limitSwitch.forwardLimitSwitchType(upperType);
