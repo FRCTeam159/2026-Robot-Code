@@ -53,7 +53,7 @@ public class Constants {
 
     public static final int mTest = 17;
     
-    public static final int kPigeonCanId = 0;
+    public static final int kPigeonCanId = 30;
 
     static public final double kDriveGearRatio = 8.14; // MK4i drive (standard)
     static public final double kTurnGearRatio = 21.429; // MK4i turn (all)

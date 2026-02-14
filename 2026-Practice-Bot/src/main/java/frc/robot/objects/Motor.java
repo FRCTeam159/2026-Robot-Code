@@ -70,7 +70,7 @@ public class Motor {
      public void setConfig(boolean isInverted, boolean isBreak, double d) {
         m_dpr = d;
         SparkMaxConfig config = new SparkMaxConfig();
-        config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
+        //config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
         config
                 .inverted(isInverted)
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);

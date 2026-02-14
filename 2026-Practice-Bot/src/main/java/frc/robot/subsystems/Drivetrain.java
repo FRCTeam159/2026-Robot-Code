@@ -2,6 +2,9 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -68,6 +71,23 @@ public class Drivetrain extends SubsystemBase {
   private int count = 0;
 
   public boolean useOffsets = true;
+
+  
+
+  // public Drivetrain() {
+  //   init();
+
+  //   RobotConfig config;
+  //   try{
+  //     config = RobotConfig.fromGUISettings();
+  //   } catch (Exception e) {
+  //     e.printStackTrace();
+  //   }
+
+  //   AutoBuilder.configure( 
+  //     this::getPose
+  //   )
+  // }
 
 
   public void setConfig() {
