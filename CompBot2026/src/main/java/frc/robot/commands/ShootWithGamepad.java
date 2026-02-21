@@ -15,9 +15,10 @@ public class ShootWithGamepad extends Command {
 
     boolean shooting = false;
 
-    double top_speed = 0.2;
-    double bottom_speed = 0.2;
+    double top_speed = 600;
+    double bottom_speed = 600;
     double feeder_speed = 0.2;
+    double roller_speed = 0.12;
 
     public ShootWithGamepad(Shooter shooter, XboxController controller) {
 
@@ -43,10 +44,10 @@ public class ShootWithGamepad extends Command {
         }  
 
         if (shooting) {
-            m_Shoot.shoot(top_speed, bottom_speed, feeder_speed);
+            m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
         }
         else {
-            m_Shoot.shoot(0, 0, 0);
+            m_Shoot.shoot(0, 0, 0, 0);
         }
     }
 

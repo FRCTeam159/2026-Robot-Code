@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.kDistPerRot;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -12,7 +14,7 @@ import frc.robot.objects.Motor;
 import frc.robot.objects.Encoder;
 
 public class SwerveModule {
-    private Motor m_driveMotor = null;
+    public Motor m_driveMotor = null;
     private Motor m_turnMotor = null;
     private Encoder m_turnEncoder=null;
     double m_valueOfPID=0;
@@ -134,6 +136,20 @@ public class SwerveModule {
 
         m_driveMotor.set(set_drive);
         m_turnMotor.set(set_turn);
+      }
+
+      public void setDesiredStateSpeed(SwerveModuleState desiredState){
+        SwerveModuleState state = optimize_enabled ? SwerveModuleState.optimize(desiredState, getRotation2d()) : desiredState;
+
+        double turn_angle=getRotation2d().getRadians(); // rotations in radians
+        m_targetAngle = state.angle.getRadians();
+    
+        final double turnOutput = -m_turningPIDController.calculate(turn_angle,state.angle.getRadians());
+
+        double speedRotationsPerMinute = state.speedMetersPerSecond / kDistPerRot * 60;
+
+        m_driveMotor.setVelocity(speedRotationsPerMinute);
+        m_turnMotor.set(turnOutput);
       }
 
       public void alignWheel(){
