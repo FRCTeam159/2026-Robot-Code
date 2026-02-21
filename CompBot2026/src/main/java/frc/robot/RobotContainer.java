@@ -15,6 +15,7 @@ import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.Autonomous;
 //import frc.robot.subsystems.TagDetector;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Limelight;
@@ -29,9 +30,10 @@ public class RobotContainer {
   //private final TagDetector m_Detector = new TagDetector(m_drivetrain);
 
   private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = new Intake();
 
   private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller);
-  private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
+  private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_intake, m_controller);
 
   //private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
