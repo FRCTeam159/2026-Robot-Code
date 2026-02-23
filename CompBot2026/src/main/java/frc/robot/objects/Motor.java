@@ -1,8 +1,10 @@
 package frc.robot.objects;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -14,13 +16,19 @@ public class Motor {
 
     boolean upperLimitNormalyClosed = false;
     boolean lowerLimitNormalyClosed = false;
+
     SparkMax rev_motor = null;
     RelativeEncoder rev_encoder;
+
+    SparkClosedLoopController velocity_controller;
+
     int m_chnl;
     boolean m_inverted = false;
     boolean m_enabled = true;
+
     SparkLimitSwitch m_upperLimit;
     SparkLimitSwitch m_lowerLimit;
+
     double m_dpr = 1;
 
    public Motor(int id, boolean isBrushed) {
@@ -61,9 +69,12 @@ public class Motor {
         return m_lowerLimit == null ? false : m_lowerLimit.isPressed();
     }
 
-     public void setConfig(boolean isInverted, boolean isBreak, double d) {
+     public void setConfig(boolean isInverted, boolean isBreak, double d, double kP) {
         m_dpr = d;
         SparkMaxConfig config = new SparkMaxConfig();
+        
+        config.closedLoop.pid(kP, 0, 0).feedForward.kV(0.00201475).kS(0.125);
+
         config
                 .inverted(isInverted)
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);
@@ -83,14 +94,20 @@ public class Motor {
         // .pid(1.0, 0.0, 0.0);
 
         rev_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        velocity_controller = rev_motor.getClosedLoopController();
+    }
+
+    public void setConfig(boolean isInverted, boolean isBreak, double d){
+        setConfig(isInverted, isBreak, d, 0);
     }
 
     public void setConfig(boolean isInverted, double d) {
-        setConfig(isInverted, false, d);
+        setConfig(isInverted, false, d, 0);
     }
 
     public void setConfig(double d) {
-        setConfig(false, false, d);
+        setConfig(false, false, d, 0);
     }
     
     public void enable() {
@@ -120,6 +137,10 @@ public class Motor {
 
     public double getVelocity() {
         return rev_encoder.getVelocity() / 60; // rpm to rps
+    }
+
+    public void setVelocity(double velocity) {
+        velocity_controller.setSetpoint(velocity, ControlType.kVelocity);
     }
 
     public void set(double speed) {

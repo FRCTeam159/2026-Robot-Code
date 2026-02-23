@@ -90,14 +90,20 @@ public class Motor {
     // @param d position/velocity conversion factor (distance per motor revolution)
      public void setConfig(boolean isInverted, boolean isBreak, double d) {
         m_dpr = d;
+
         SparkMaxConfig config = new SparkMaxConfig();
-        //config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475);
+        
+        config.encoder.uvwMeasurementPeriod(10);
+
+        //config.closedLoop.pid(0, 0, 0).feedForward.kV(0.00201475).kS(0.125);
+
         config
                 .inverted(isInverted)
                 .idleMode(isBreak ? IdleMode.kBrake : IdleMode.kCoast);
         config.encoder
                 .positionConversionFactor(d)
                 .velocityConversionFactor(d / 60);
+
         if (m_upperLimit != null){
             LimitSwitchConfig.Type upperType = upperLimitNormalyClosed?LimitSwitchConfig.Type.kNormallyClosed:LimitSwitchConfig.Type.kNormallyOpen;
             config.limitSwitch.forwardLimitSwitchType(upperType);
@@ -111,7 +117,7 @@ public class Motor {
         // .pid(1.0, 0.0, 0.0);
 
         rev_motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+        
         velocity_controller = rev_motor.getClosedLoopController();
     }
 
@@ -172,7 +178,21 @@ public class Motor {
     // Command a closed-loop target velocity (uses SparkMax closed-loop controller).
     // @param velocity target velocity (units must match controller's conversion factors)
     public void setVelocity(double velocity) {
+
+        // if(Math.abs(velocity) > 15){
+        //     if(velocity <= 295){
+        //         velocity -= 5;
+        //     }
+        //     if(velocity <= 245){
+        //         velocity -= 5;
+        //     }
+        //     if(velocity <= 90){
+        //         velocity -= 5;
+        //     }
+        //     System.out.println(velocity);
+        // }
         velocity_controller.setSetpoint(velocity, ControlType.kVelocity);
+        //rev_motor.setVoltage(0.125 + 0.00208 * velocity);
     }
 
     // Open-loop set the motor output (-1.0 to 1.0 typical).

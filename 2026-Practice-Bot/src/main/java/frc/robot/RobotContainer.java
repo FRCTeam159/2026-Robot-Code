@@ -26,7 +26,7 @@ public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Limelight m_limelight = new Limelight();
-  private final Test m_test = new Test();
+  private final Test m_test = new Test(m_drivetrain);
   public final Autonomous m_autonomous;
   //private final TagDetector m_Detector = new TagDetector(m_drivetrain);
 

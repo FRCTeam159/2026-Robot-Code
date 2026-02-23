@@ -1,29 +1,31 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.kDistPerRot;
 import static frc.robot.Constants.mTest;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.objects.Motor;
 
 public class Test extends SubsystemBase {
-    //private Motor motor = new Motor(mTest);
+    Motor motor;
+    
+    Drivetrain m_drive;
 
-    // public Test() {
-    //     init();
-    // }
+    public Test(Drivetrain drive) {
+        m_drive = drive;
 
-    // public void setConfig() {
-    //      motor.setConfig(true, 1);
-    // }
+        motor = drive.m_backLeft.m_driveMotor;
 
-    // public void init() {
-    //     setConfig();
+        setConfig();
+    }
 
-    // }
+    public void setConfig() {
+        motor.setConfig(true, 1);
+    }
 
-    // public void shoot(double speed) {
-    //     motor.setVelocity(speed);
-    // }
+    public void shoot(double speed) {
+        motor.setVelocity(speed);
+    }
     
 }

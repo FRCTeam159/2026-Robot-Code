@@ -26,16 +26,12 @@ public class Drivetrain extends SubsystemBase {
 
   boolean m_percisionDriving = false;
 
-  double m_driveScale = 1;
+  double m_driveScale = 1.0;
   double m_turnScale = 0.6;
-
-  private double max_turn_speed = 4.0;
-
-  private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
 
   private SwerveModule m_frontLeft = new SwerveModule(kFl_Drive, kFl_Turn, kFl_Encoder, 1);
   private SwerveModule m_frontRight = new SwerveModule(kFr_Drive, kFr_Turn, kFr_Encoder, 2);
-  private SwerveModule m_backLeft = new SwerveModule(kBl_Drive, kBl_Turn, kBl_Encoder, 3);
+  public SwerveModule m_backLeft = new SwerveModule(kBl_Drive, kBl_Turn, kBl_Encoder, 3);
   private SwerveModule m_backRight = new SwerveModule(kBr_Drive, kBr_Turn, kBr_Encoder, 4);
 
   public static String chnlnames[] = { "FL", "FR", "BL", "BR" };
@@ -174,7 +170,7 @@ public class Drivetrain extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     m_gyro.reset();
 
-    resetPositions();
+    //resetPositions();
 
     m_odometry.resetPosition(getRotation2d(), m_positions, pose);
     last_heading = 0;
@@ -213,9 +209,9 @@ public class Drivetrain extends SubsystemBase {
             : new ChassisSpeeds(xSpeed * m_driveScale, ySpeed * m_driveScale, turn_speed));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxVelocity);
     for (int i = 0; i < modules.length; i++)
-      modules[i].setDesiredState(swerveModuleStates[i]);
+      //modules[i].setDesiredStateSpeed(swerveModuleStates[i]);
 
-    // modules[0].setDesiredState(swerveModuleStates[0]);
+        modules[i].setDesiredState(swerveModuleStates[i]);
 
     //updateOdometry();
   }
