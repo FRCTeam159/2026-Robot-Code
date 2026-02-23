@@ -246,6 +246,12 @@ public class DrivePath extends Command {
   // getTrajectory: return a selected trajectory
   // =================================================
   boolean getTrajectory() {
+    System.out.format("DrivePath.getTrajectory: using_pathplanner=%b xPath=%f yPath=%f rPath=%f\n", using_pathplanner, xPath, yPath, rPath);
+    double dist = Math.hypot(xPath, yPath);
+    if (dist < 1e-6) {
+      System.out.println("[DrivePath] Warning: target distance appears to be zero — check xPath/yPath or SmartDashboard values");
+    }
+
     if (using_pathplanner) {
       m_pptrajectory = pathplannerProgramPath();
       if (m_pptrajectory == null)
@@ -253,6 +259,13 @@ public class DrivePath extends Command {
 
       runtime = m_pptrajectory.getTotalTimeSeconds();
       states = m_pptrajectory.getStates().size();
+
+      System.out.println("[DrivePath] PathPlanner trajectory created: totalTime=" + runtime + " states=" + states);
+      // Dump each state's toString() to help diagnose zero-duration trajectories
+      for (int i = 0; i < m_pptrajectory.getStates().size(); i++) {
+        Object s = m_pptrajectory.getStates().get(i);
+        System.out.println("[DrivePath] state[" + i + "] = " + s);
+      }
 
       PlotUtils.setInitialPose(m_pptrajectory.sample(0).pose, kFrontWheelBase);
       m_ppcontroller.setEnabled(true);
