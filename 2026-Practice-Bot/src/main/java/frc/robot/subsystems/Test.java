@@ -8,14 +8,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.objects.Motor;
 
 public class Test extends SubsystemBase {
-    Motor motor;
+    Motor motor = new Motor(mTest);
     
     Drivetrain m_drive;
 
     public Test(Drivetrain drive) {
         m_drive = drive;
-
-        motor = drive.m_backLeft.m_driveMotor;
 
         setConfig();
     }
@@ -25,7 +23,7 @@ public class Test extends SubsystemBase {
     }
 
     public void shoot(double speed) {
-        motor.setVelocity(speed);
+        motor.set(speed);
     }
     
 }

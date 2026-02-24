@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import static frc.robot.Constants.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
+import choreo.trajectory.EventMarker;
 
 public class DriveChoreo extends Command {
     Drivetrain m_drive;
@@ -37,6 +39,10 @@ public class DriveChoreo extends Command {
 
     Optional<Trajectory<SwerveSample>> trajectory;
 
+    List<EventMarker> events;
+
+    private double previous_sample = 0.0;
+
     private Timer m_timer = new Timer();
 
     public DriveChoreo(Drivetrain drive, String path) {
@@ -50,24 +56,38 @@ public class DriveChoreo extends Command {
     public void initialize() {
         trajectory = Choreo.loadTrajectory(file_path);
 
+        events = trajectory.get().events();
+
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
         
         m_timer.reset();
         m_timer.start();
     }
 
+    private void proccessEvents(EventMarker event, double sample_time){
+        if (previous_sample < event.timestamp && sample_time >= event.timestamp) {
+            //trigger event
+            System.out.println(event.event);
+        }
+    }
+
     @Override
     public void execute() {
-        Optional<SwerveSample> sample = trajectory.get().sampleAt(m_timer.get(), false);
-        
+        double sample_time = m_timer.get();
+        Optional<SwerveSample> sample = trajectory.get().sampleAt(sample_time, false);
+
         Pose2d target_pose = sample.get().getPose();
         ChassisSpeeds target_speed = sample.get().getChassisSpeeds();
+
+        events.forEach((EventMarker event) -> proccessEvents(event, sample_time));
+
+        previous_sample = sample_time;
 
         Pose2d current_pose = m_drive.getPose();
 
         m_drive.drive(
-            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 2.5,
-            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 2.5,
+            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 3,
+            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 3,
             r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / 2,
             true
         );

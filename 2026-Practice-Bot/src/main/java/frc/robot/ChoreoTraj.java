@@ -27,9 +27,9 @@ public record ChoreoTraj(
     public static final ChoreoTraj straight_path = new ChoreoTraj(
 	    "straight_path",
 	    OptionalInt.empty(),
-	    4.6829,
+	    2.02263,
 	    new Pose2d(1, 1, Rotation2d.fromRadians(0)),
-	    new Pose2d(3, 2, Rotation2d.fromRadians(0))
+	    new Pose2d(2, 1, Rotation2d.fromRadians(0))
 	);
 
     /**
