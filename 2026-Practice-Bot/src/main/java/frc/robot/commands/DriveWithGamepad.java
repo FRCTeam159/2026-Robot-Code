@@ -28,7 +28,7 @@ public class DriveWithGamepad extends Command {
 
     boolean m_aligning = false;
     AlignWheels m_align = null;
-    boolean m_optimed=false;
+    boolean m_optimed = false;
 
     public DriveWithGamepad(Drivetrain drivetrain, XboxController controller, Test test) {
         m_test = test;
@@ -55,39 +55,33 @@ public class DriveWithGamepad extends Command {
 
     @Override
     public void execute() {
-    if (!m_aligning){
-        double vx = m_controller.getLeftY();
-        double vy = m_controller.getLeftX();
-        double vr = m_controller.getRightX();
-        final var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(vx, 0.2))
-                * Constants.kMaxVelocity;
+        if (!m_aligning) {
+            double vx = m_controller.getLeftY();
+            double vy = m_controller.getLeftX();
+            double vr = m_controller.getRightX();
+            final var xSpeed = -m_xspeedLimiter.calculate(MathUtil.applyDeadband(vx, 0.2))
+                    * Constants.kMaxVelocity;
 
-        // Get the y speed or sideways/strafe speed.
-        final var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(vy, 0.2))
-                * Constants.kMaxVelocity;
+            // Get the y speed or sideways/strafe speed.
+            final var ySpeed = -m_yspeedLimiter.calculate(MathUtil.applyDeadband(vy, 0.2))
+                    * Constants.kMaxVelocity;
 
-        pVal = SmartDashboard.getNumber("Power Value", 2);
+            pVal = SmartDashboard.getNumber("Power Value", 2);
 
-        double rVal = MathUtil.applyDeadband(vr, 0.1);
-        double sgn = rVal < 0 ? -1 : 1;
-        var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Constants.kMaxAngularVelocity);
-        
-        
-        m_drive.drive(xSpeed*kMaxVelocity, ySpeed*kMaxVelocity, rot, m_drive.isFieldOriented());
+            double rVal = MathUtil.applyDeadband(vr, 0.1);
+            double sgn = rVal < 0 ? -1 : 1;
+            var rot = -sgn * Math.abs(Math.pow((rVal), pVal) * Constants.kMaxAngularVelocity);
 
-        if (m_controller.getRightStickButtonPressed()){
-            m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
+            m_drive.drive(xSpeed * kMaxVelocity, ySpeed * kMaxVelocity, rot, m_drive.isFieldOriented());
+            if (m_controller.getRightStickButtonPressed()) {
+                m_drive.setFieldOriented(!m_drive.isFieldOriented());
             }
-        
-        if (m_controller.getAButtonPressed()){
-            m_aligning = !m_aligning;
-        }
-
-        if (m_aligning) {
+        } else {
             m_drive.resetPositions();
         }
-
-        //m_test.shoot(m_controller.getRightBumperButton() ? 5000 : 0);
+        if (m_controller.getAButtonPressed()) {
+            m_aligning = !m_aligning;
+        }
     }
 
     @Override
@@ -99,12 +93,12 @@ public class DriveWithGamepad extends Command {
     public boolean isFinished() {
         return false;
     }
-    
+
     void align() {
-    if (m_align.isFinished()) {
-      m_align.end(false);
-      m_aligning = false;
-    } else
-      m_align.execute();
-  }
+        if (m_align.isFinished()) {
+            m_align.end(false);
+            m_aligning = false;
+        } else
+            m_align.execute();
+    }
 }

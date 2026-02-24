@@ -60,7 +60,7 @@ public class Autonomous {
             case DRIVE_PATH:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
-                    new DrivePath(m_drivetrain, m_Target)
+                    new DrivePath(m_drivetrain, m_Target, false)
                 );
             case DRIVE_STRAIGHT:
                 return new SequentialCommandGroup(
