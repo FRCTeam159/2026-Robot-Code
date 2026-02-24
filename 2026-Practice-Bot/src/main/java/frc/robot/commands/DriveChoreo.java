@@ -85,6 +85,8 @@ public class DriveChoreo extends Command {
 
         Pose2d current_pose = m_drive.getPose();
 
+        System.out.println(String.format("X:%.2f Y:%.2f R:%.2f", target_pose.getX(), target_pose.getY(), target_pose.getRotation()));
+
         m_drive.drive(
             x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 3,
             y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 3,

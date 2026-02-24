@@ -144,7 +144,7 @@ public class Drivetrain extends SubsystemBase {
     double angle = m_gyro.getAngle();
 
     // the angle returned by the gyro does not reset to 0 when it wraps around
-    // angle = unwrap(last_heading, angle);
+    angle = unwrap(last_heading, angle);
 
     last_heading = angle;
     return Rotation2d.fromDegrees(angle);
