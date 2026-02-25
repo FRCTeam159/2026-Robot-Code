@@ -13,7 +13,7 @@ import frc.robot.commands.ResetWheels;
 
 public class Autonomous {
     Drivetrain m_drivetrain;
-    //Shooter m_shoot;
+    Test m_shoot;
 
     enum AutoMode {
         DRIVE_TO_TAG,
@@ -28,9 +28,9 @@ public class Autonomous {
     double m_Target = 1;
     // distance for everything is in meters
 
-    public Autonomous(Drivetrain drivetrain/*, Shooter shoot*/) {
+    public Autonomous(Drivetrain drivetrain, Test shoot) {
         m_drivetrain = drivetrain;
-        //m_shoot = shoot;
+        m_shoot = shoot;
 
         m_autochooser.addOption("Drive To Tag", AutoMode.DRIVE_TO_TAG);
         m_autochooser.addOption("Drive Path", AutoMode.DRIVE_PATH);
@@ -83,7 +83,7 @@ public class Autonomous {
             case CHOREO:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, "Comp_1")
+                    new DriveChoreo(m_drivetrain, m_shoot, "Comp_1")
                 );
         }
     }

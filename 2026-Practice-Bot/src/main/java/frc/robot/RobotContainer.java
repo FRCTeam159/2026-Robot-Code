@@ -33,7 +33,7 @@ public class RobotContainer {
   //private final Shooter m_shooter = new Shooter();
 
   private final DriveWithGamepad m_DriveWithGamepad = new DriveWithGamepad(m_drivetrain, m_controller, m_test);
- // private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
+  //private final ShootWithGamepad m_ShootWithGamepad = new ShootWithGamepad(m_shooter, m_controller);
 
   // private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -43,7 +43,7 @@ public class RobotContainer {
 
     m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
    // m_shooter.setDefaultCommand(m_ShootWithGamepad);
-    m_autonomous = new Autonomous(m_drivetrain/*, m_shooter*/);
+    m_autonomous = new Autonomous(m_drivetrain, m_test);
   }
 
   public void robotInit() {
