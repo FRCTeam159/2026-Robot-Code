@@ -12,7 +12,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Test;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -28,13 +28,13 @@ import choreo.trajectory.EventMarker;
 
 public class DriveChoreo extends Command {
     Drivetrain m_drive;
-    Test m_shooter;
+    Shooter m_shooter;
 
     boolean shooting = false;
 
-    final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(2, 0, 0);
+    final PIDController x_PID_controller = new PIDController(2.5, 0, 0);
+    final PIDController y_PID_controller = new PIDController(2.5, 0, 0);
+    final PIDController r_PID_controller = new PIDController(3, 0, 0);
 
     final double horizontal_coeff = 1.0;
     final double rotation_coeff = 1.0;
@@ -49,7 +49,7 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Test shooter, String path) {
+    public DriveChoreo(Drivetrain drive, Shooter shooter, String path) {
         m_drive = drive;
         m_shooter = shooter;
         file_path = path;
@@ -74,10 +74,10 @@ public class DriveChoreo extends Command {
             switch (event.event) {
                 default:
                     break;
-                case "A":
+                case "Start":
                     shooting = true;
                     break;
-                case "B":
+                case "End":
                     shooting = false;
                     break;
             }
@@ -94,15 +94,15 @@ public class DriveChoreo extends Command {
 
         events.forEach((EventMarker event) -> proccessEvents(event, sample_time));
 
-        m_shooter.shoot(shooting ? 0.5 : 0);
+        m_shooter.shoot(shooting ? 1500 : 0, shooting ? 1500 : 0, 0, 0);
 
         previous_sample = sample_time;
 
         Pose2d current_pose = m_drive.getPose();
 
         m_drive.drive(
-            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 3,
-            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 3,
+            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 2,
+            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 2,
             r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / 3,
             true
         );
