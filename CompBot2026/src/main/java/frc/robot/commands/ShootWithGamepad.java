@@ -36,14 +36,16 @@ public class ShootWithGamepad extends Command {
 
         SmartDashboard.putNumber("Top Shoot Speed", top_speed);
         SmartDashboard.putNumber("Bottom Shoot Speed", bottom_speed);
-        SmartDashboard.putNumber("Shooter feed Speed", feeder_speed);
+        SmartDashboard.putNumber("Shooter Feed Speed", feeder_speed);
+        SmartDashboard.putNumber("Shooter Roll Speed", roller_speed);
     }
 
     public void execute() {
 
         top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed);
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed);
-        feeder_speed = SmartDashboard.getNumber("Shooter feed Speed", feeder_speed);
+        feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);
+        roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);
 
         if (m_controller.getRightBumperButtonPressed()) {
             m_timer.reset();

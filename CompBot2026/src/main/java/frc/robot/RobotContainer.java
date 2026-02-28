@@ -40,7 +40,7 @@ public class RobotContainer {
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(m_DriveWithGamepad);
     m_shooter.setDefaultCommand(m_ShootWithGamepad);
-    m_autonomous = new Autonomous(m_drivetrain);
+    m_autonomous = new Autonomous(m_drivetrain, m_shooter);
   }
 
   public void robotInit() {

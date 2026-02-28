@@ -83,7 +83,7 @@ public class Autonomous {
             case CHOREO:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, m_shoot, "Comp_1")
+                    new DriveChoreo(m_drivetrain, m_shoot, "straight_path")
                 );
         }
     }
