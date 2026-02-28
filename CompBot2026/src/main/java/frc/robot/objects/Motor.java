@@ -69,11 +69,11 @@ public class Motor {
         return m_lowerLimit == null ? false : m_lowerLimit.isPressed();
     }
 
-     public void setConfig(boolean isInverted, boolean isBreak, double d, double kP) {
+     public void setConfig(boolean isInverted, boolean isBreak, double d, double kP, double kD) {
         m_dpr = d;
         SparkMaxConfig config = new SparkMaxConfig();
         
-        config.closedLoop.pid(kP, 0, 0).feedForward.kV(0.00201475).kS(0.125);
+        config.closedLoop.pid(kP, 0, kD).feedForward.kV(0.120885).kS(0.125);
 
         config
                 .inverted(isInverted)
@@ -99,15 +99,15 @@ public class Motor {
     }
 
     public void setConfig(boolean isInverted, boolean isBreak, double d){
-        setConfig(isInverted, isBreak, d, 0);
+        setConfig(isInverted, isBreak, d, 0, 0);
     }
 
     public void setConfig(boolean isInverted, double d) {
-        setConfig(isInverted, false, d, 0);
+        setConfig(isInverted, false, d, 0, 0);
     }
 
     public void setConfig(double d) {
-        setConfig(false, false, d, 0);
+        setConfig(false, false, d, 0, 0);
     }
     
     public void enable() {

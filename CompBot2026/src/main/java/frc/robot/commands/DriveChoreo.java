@@ -12,6 +12,7 @@ import java.util.Optional;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -29,7 +30,9 @@ import choreo.trajectory.EventMarker;
 public class DriveChoreo extends Command {
     Drivetrain m_drive;
     Shooter m_shooter;
+    Intake m_intake;
 
+    boolean intaking = false;
     boolean shooting = false;
 
     final PIDController x_PID_controller = new PIDController(2.5, 0, 0);
@@ -49,12 +52,13 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Shooter shooter, String path) {
+    public DriveChoreo(Drivetrain drive, Shooter shooter, Intake intake, String path) {
         m_drive = drive;
         m_shooter = shooter;
+        m_intake = intake;
         file_path = path;
 
-        addRequirements(drive, shooter);
+        addRequirements(drive, shooter, intake);
     }
 
     @Override
@@ -74,10 +78,16 @@ public class DriveChoreo extends Command {
             switch (event.event) {
                 default:
                     break;
-                case "Start":
+                case "Intake_Start":
+                    intaking = true;
+                    break;
+                case "Intake_End":
+                    intaking = false;
+                    break;
+                case "Shoot_Start":
                     shooting = true;
                     break;
-                case "End":
+                case "Shoot_End":
                     shooting = false;
                     break;
             }
@@ -94,7 +104,7 @@ public class DriveChoreo extends Command {
 
         events.forEach((EventMarker event) -> proccessEvents(event, sample_time));
 
-        m_shooter.shoot(shooting ? 1500 : 0, shooting ? 1500 : 0, 0, 0);
+        m_intake.intake(intaking ? 3000 : 0);
 
         previous_sample = sample_time;
 

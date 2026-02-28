@@ -1,19 +1,22 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Shooter Roll Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="3" y="267"/>
+	</widget>
+	<widget field="Shooter Feed Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="2" y="246"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
 		<location x="232" y="106"/>
 		<width>527</width>
 		<height>371</height>
 		<property name="Camera Choice" value=""/>
 	</static-widget>
-	<widget field="Shooter feed Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="246"/>
-	</widget>
 	<widget field="Top Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="226"/>
+		<location x="2" y="226"/>
 	</widget>
 	<widget field="Bottom Shoot Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="206"/>
+		<location x="2" y="206"/>
 	</widget>
 	<widget field="rPath" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="418" y="62"/>
@@ -41,7 +44,7 @@
 		<location x="6" y="139"/>
 	</widget>
 	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="8" y="274"/>
+		<location x="10" y="341"/>
 	</widget>
 	<widget field="distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="5" y="186"/>
@@ -72,8 +75,4 @@
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="limelight_Interface"/>
-	<hidden field="limelight_PipelineName"/>
-	<hidden field="limelight_Stream"/>
-	<hidden field="PathPlanner"/>
 </xml>

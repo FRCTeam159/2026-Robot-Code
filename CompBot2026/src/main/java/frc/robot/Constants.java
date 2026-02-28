@@ -50,7 +50,6 @@ public class Constants {
 
     public static final int hopper_roller = 16;
     public static final int intake_1 = 17;
-    public static final int intake_2 = 18;
 
     public static final int kPigeonCanId = 30;
 

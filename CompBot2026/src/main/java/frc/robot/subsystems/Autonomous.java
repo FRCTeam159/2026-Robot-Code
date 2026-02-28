@@ -14,30 +14,28 @@ import frc.robot.commands.ResetWheels;
 public class Autonomous {
     Drivetrain m_drivetrain;
     Shooter m_shoot;
+    Intake m_intake;
 
     enum AutoMode {
-        DRIVE_TO_TAG,
-        DRIVE_PATH,
-        DRIVE_STRAIGHT,
         SHOOT,
         ALIGN,
-        CHOREO
+        HUMAN,
+        DEPOT
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
     double m_Target = 1;
     // distance for everything is in meters
 
-    public Autonomous(Drivetrain drivetrain, Shooter shoot) {
+    public Autonomous(Drivetrain drivetrain, Shooter shoot, Intake intake) {
         m_drivetrain = drivetrain;
         m_shoot = shoot;
+        m_intake = intake;
 
-        m_autochooser.addOption("Drive To Tag", AutoMode.DRIVE_TO_TAG);
-        m_autochooser.addOption("Drive Path", AutoMode.DRIVE_PATH);
-        m_autochooser.addOption("Drive Straight", AutoMode.DRIVE_STRAIGHT);
         m_autochooser.addOption("Simple Shoot", AutoMode.SHOOT);
         m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
-        m_autochooser.addOption("Choreo", AutoMode.CHOREO);
+        m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
+        m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -55,18 +53,6 @@ public class Autonomous {
      switch (automode) {
             default:
                 return null;
-            case DRIVE_TO_TAG:
-                return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
-            case DRIVE_PATH:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DrivePath(m_drivetrain, m_Target)
-                );
-            case DRIVE_STRAIGHT:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -1)
-                );
             case SHOOT:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
@@ -77,13 +63,21 @@ public class Autonomous {
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
                     new DriveStraight(m_drivetrain, -3),
-                    new Wait(m_drivetrain, 1.5),
+                    new Wait(m_drivetrain, 0.5),
                     new DriveToTag(m_drivetrain)
                 );
-            case CHOREO:
+            case HUMAN:
                 return new SequentialCommandGroup(
                     new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, m_shoot, "Comp_2"),
+                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_1"),
+                    new Wait(m_drivetrain, 5.0),
+                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_2"),
+                    new ShootForTime(m_drivetrain, m_shoot, 5.0)
+                );
+            case DEPOT:
+                return new SequentialCommandGroup(
+                    new ResetWheels(m_drivetrain),
+                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1"),
                     new ShootForTime(m_drivetrain, m_shoot, 5.0)
                 );
         }

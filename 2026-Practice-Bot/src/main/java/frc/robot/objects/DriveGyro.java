@@ -4,6 +4,8 @@
 
 package frc.robot.objects;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import static frc.robot.Constants.*;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -48,8 +50,17 @@ public class DriveGyro {
         adx450.reset();
         break;
       case PIGEON:
-        pigeon.reset();
+        pigeon.setYaw(0.0);
         break;
+    }
+  }
+
+  public void set_angle(double angle){
+    switch(gyro_type){
+      default:
+        break;
+      case PIGEON:
+        pigeon.setYaw(angle);
     }
   }
 

@@ -170,7 +170,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    m_gyro.reset();
+    m_gyro.set_angle(pose.getRotation().getDegrees());
 
     //resetPositions();
 
