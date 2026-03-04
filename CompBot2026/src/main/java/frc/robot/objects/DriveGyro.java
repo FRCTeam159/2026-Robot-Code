@@ -53,6 +53,10 @@ public class DriveGyro {
     }
   }
 
+  public void set_yaw(double angle) {
+    pigeon.setYaw(angle);
+  }
+
   public double getAngle() {
     switch(gyro_type){
       default:

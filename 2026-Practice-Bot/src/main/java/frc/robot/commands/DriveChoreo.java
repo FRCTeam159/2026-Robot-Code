@@ -30,6 +30,8 @@ public class DriveChoreo extends Command {
     Drivetrain m_drive;
     Test m_shooter;
 
+    double more_time;
+
     boolean shooting = false;
 
     final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
@@ -49,10 +51,11 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Test shooter, String path) {
+    public DriveChoreo(Drivetrain drive, Test shooter, String path, double extra_duration) {
         m_drive = drive;
         m_shooter = shooter;
         file_path = path;
+        more_time = extra_duration;
 
         addRequirements(drive, shooter);
     }
@@ -110,6 +113,6 @@ public class DriveChoreo extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_timer.get() >= trajectory.get().getTotalTime() + 0.05;
+        return m_timer.get() >= trajectory.get().getTotalTime() + more_time;
     }
 }

@@ -32,6 +32,8 @@ public class DriveChoreo extends Command {
     Shooter m_shooter;
     Intake m_intake;
 
+    double more_time;
+
     boolean intaking = false;
     boolean shooting = false;
 
@@ -52,11 +54,12 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Shooter shooter, Intake intake, String path) {
+    public DriveChoreo(Drivetrain drive, Shooter shooter, Intake intake, String path, double extra_duration) {
         m_drive = drive;
         m_shooter = shooter;
         m_intake = intake;
         file_path = path;
+        more_time = extra_duration;
 
         addRequirements(drive, shooter, intake);
     }
@@ -68,6 +71,7 @@ public class DriveChoreo extends Command {
         events = trajectory.get().events();
 
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
+        System.out.println(m_drive.getPose());
         
         m_timer.reset();
         m_timer.start();
@@ -104,7 +108,7 @@ public class DriveChoreo extends Command {
 
         events.forEach((EventMarker event) -> proccessEvents(event, sample_time));
 
-        m_intake.intake(intaking ? 3000 : 0);
+        m_intake.intake(intaking ? 50 : 0);
 
         previous_sample = sample_time;
 
@@ -120,6 +124,6 @@ public class DriveChoreo extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_timer.get() >= trajectory.get().getTotalTime() + 0.05;
+        return m_timer.get() >= trajectory.get().getTotalTime() + more_time;
     }
 }

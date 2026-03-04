@@ -16,12 +16,12 @@ public class Autonomous {
     Test m_shoot;
 
     enum AutoMode {
-        DRIVE_TO_TAG,
-        DRIVE_PATH,
-        DRIVE_STRAIGHT,
         SHOOT,
         ALIGN,
-        CHOREO
+        HUMAN,
+        DEPOT,
+        CENTER,
+        WIGGLE
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -32,12 +32,12 @@ public class Autonomous {
         m_drivetrain = drivetrain;
         m_shoot = shoot;
 
-        m_autochooser.addOption("Drive To Tag", AutoMode.DRIVE_TO_TAG);
-        m_autochooser.addOption("Drive Path", AutoMode.DRIVE_PATH);
-        m_autochooser.addOption("Drive Straight", AutoMode.DRIVE_STRAIGHT);
         m_autochooser.addOption("Simple Shoot", AutoMode.SHOOT);
         m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
-        m_autochooser.addOption("Choreo", AutoMode.CHOREO);
+        m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
+        m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
+        m_autochooser.addOption("Center pickup", AutoMode.CENTER);
+        m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -53,38 +53,47 @@ public class Autonomous {
 
     private SequentialCommandGroup getAutoSequence(AutoMode automode) {
      switch (automode) {
-            default:
-                return null;
-            case DRIVE_TO_TAG:
-                return new SequentialCommandGroup(new DriveToTag(m_drivetrain));
-            case DRIVE_PATH:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DrivePath(m_drivetrain, m_Target, false)
-                );
-            case DRIVE_STRAIGHT:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -1)
-                );
-            case SHOOT:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -1),
-                    new ShootForTime()
-                );
-            case ALIGN:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -3),
-                    new Wait(m_drivetrain, 1.5),
-                    new DriveToTag(m_drivetrain)
-                );
-            case CHOREO:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, m_shoot, "straight_path")
-                );
+        default:
+            return null;
+        case SHOOT:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveStraight(m_drivetrain, -1)
+            );
+        case ALIGN:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveStraight(m_drivetrain, -3),
+                new Wait(m_drivetrain, 0.5),
+                new DriveToTag(m_drivetrain)
+            );
+        case HUMAN:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_1_1", 0.05)
+            );
+        case DEPOT:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_2_1", 0.05)
+            );
+        case CENTER:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_3_1", 0.05)
+            );
+        case WIGGLE:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2)
+            );
+
         }
     }
 

@@ -11,11 +11,10 @@ public class ShootForTime extends Command {
     private final Drivetrain m_drive;
     private final Shooter m_Shoot;
     boolean shooting = false;
-    double top_speed = 600;     //RPM
-    double bottom_speed = 600;  //RPM
+    double top_speed = 4200;     //RPM
+    double bottom_speed = 4200;  //RPM
     double feeder_speed = 1;    //Duty Cycle
     double roller_speed = 0.12; //Duty Cycle
-    double intake_speed = 600;  //RPM
 
     double duration = 5.0;
 
@@ -41,7 +40,6 @@ public class ShootForTime extends Command {
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60; //RPM --> Rot per sec
         feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);      //Duty Cycle
         roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);      //Duty Cycle
-        intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;       //RPM --> Rot per sec
         
         m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
 

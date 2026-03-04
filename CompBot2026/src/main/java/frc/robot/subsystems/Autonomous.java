@@ -20,7 +20,9 @@ public class Autonomous {
         SHOOT,
         ALIGN,
         HUMAN,
-        DEPOT
+        DEPOT,
+        CENTER,
+        WIGGLE
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -36,6 +38,8 @@ public class Autonomous {
         m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
         m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
+        
+        m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -52,34 +56,46 @@ public class Autonomous {
     private SequentialCommandGroup getAutoSequence(AutoMode automode) {
      switch (automode) {
             default:
-                return null;
-            case SHOOT:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -1),
-                    new ShootForTime(m_drivetrain, m_shoot, 5.0)
-                );
-            case ALIGN:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveStraight(m_drivetrain, -3),
-                    new Wait(m_drivetrain, 0.5),
-                    new DriveToTag(m_drivetrain)
-                );
-            case HUMAN:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_1"),
-                    new Wait(m_drivetrain, 5.0),
-                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_2"),
-                    new ShootForTime(m_drivetrain, m_shoot, 5.0)
-                );
-            case DEPOT:
-                return new SequentialCommandGroup(
-                    new ResetWheels(m_drivetrain),
-                    new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1"),
-                    new ShootForTime(m_drivetrain, m_shoot, 5.0)
-                );
+            return null;
+        case SHOOT:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveStraight(m_drivetrain, -1)
+            );
+        case ALIGN:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveStraight(m_drivetrain, -3),
+                new Wait(m_drivetrain, 0.5),
+                new DriveToTag(m_drivetrain)
+            );
+        case HUMAN:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 0.5),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_1", 0.05)
+            );
+        case DEPOT:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 0.2),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1", 0.05)
+            );
+        case CENTER:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 0.2),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_3_1", 0.05)
+            );
+        case WIGGLE:
+            return new SequentialCommandGroup(
+                new ResetWheels(m_drivetrain),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 0.5)
+            );
+
         }
     }
 

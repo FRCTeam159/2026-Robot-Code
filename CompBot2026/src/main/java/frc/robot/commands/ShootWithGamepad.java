@@ -15,9 +15,10 @@ public class ShootWithGamepad extends Command {
 
     boolean shooting = false;
     boolean intaking = false;
+    boolean out_taking = false;
 
-    double top_speed = 5300;    //RPM
-    double bottom_speed = 5300; //RPM
+    double top_speed = 4200;    //RPM
+    double bottom_speed = 4200; //RPM
     double feeder_speed = 1;    //Duty Cycle
     double roller_speed = 0.35; //Duty Cycle
     double intake_speed = 4000; //RPM
@@ -26,11 +27,14 @@ public class ShootWithGamepad extends Command {
 
     public ShootWithGamepad(Shooter shooter, Intake intake, XboxController controller) {
         m_timer = new Timer();
-
         m_Shoot = shooter;
         m_Intake = intake;
         m_controller = controller;
         addRequirements(shooter, intake);
+
+        shooting = false;
+        intaking = false;
+        out_taking = false;
 
         SmartDashboard.putNumber("Top Shoot Speed", top_speed);
         SmartDashboard.putNumber("Bottom Shoot Speed", bottom_speed);
@@ -53,23 +57,33 @@ public class ShootWithGamepad extends Command {
             shooting = !shooting;
         }  
 
+        if (m_controller.getXButton()) {
+            m_timer.reset();
+            m_timer.start();
+            out_taking = true;
+        } else {
+            out_taking = false;
+        }
+
+        if (m_controller.getLeftBumperButtonPressed()) {
+            intaking = !intaking;
+        } 
+
         if (shooting) {
             if (m_timer.get() > 2) {
                 m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
             } else {
                 m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
             }
-            
-        }
-        else {
-            m_Shoot.shoot(0, 0, 0, intaking ? intake_speed : 0);
-        }
+        } else {
+                m_Shoot.shoot(0, 0, 0, intaking ? roller_speed : 0);
+        } 
 
-        if (m_controller.getLeftBumperButtonPressed()) {
-            intaking = !intaking;
-        }  
-        
-        m_Intake.intake(intaking ? intake_speed : 0);
+        if (out_taking) {
+            m_Intake.intake(-intake_speed);
+        } else {
+            m_Intake.intake(intaking ? intake_speed : 0);
+        }
     }
 
     @Override

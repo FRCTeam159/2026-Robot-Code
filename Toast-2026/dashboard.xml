@@ -1,5 +1,11 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Test Voltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="275" y="22"/>
+	</widget>
+	<widget field="Intake Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="3" y="287"/>
+	</widget>
 	<widget field="Shooter Roll Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="3" y="267"/>
 	</widget>
@@ -44,7 +50,7 @@
 		<location x="6" y="139"/>
 	</widget>
 	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="10" y="341"/>
+		<location x="2" y="313"/>
 	</widget>
 	<widget field="distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="5" y="186"/>
@@ -75,4 +81,6 @@
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="Choreo Alerts"/>
+	<hidden field="PathPlanner"/>
 </xml>
