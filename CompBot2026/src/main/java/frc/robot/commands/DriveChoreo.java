@@ -43,7 +43,7 @@ public class DriveChoreo extends Command {
 
     double top_speed = 4200;
     double bottom_speed = 4200;
-    double intake_speed = 4000;
+    double intake_speed = 3000;
 
     final double horizontal_coeff = 2;
     final double rotation_coeff = 3;

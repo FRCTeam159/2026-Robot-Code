@@ -43,6 +43,7 @@ public class ShootWithGamepad extends Command {
         SmartDashboard.putNumber("Intake Speed", intake_speed);
 
         SmartDashboard.putBoolean("Intaking", intaking);
+        SmartDashboard.putBoolean("Shooting", shooting);
     }
 
     public void execute() {
@@ -57,6 +58,7 @@ public class ShootWithGamepad extends Command {
             m_timer.reset();
             m_timer.start();
             shooting = !shooting;
+            SmartDashboard.putBoolean("Shooting", shooting);
         }  
 
         if (m_controller.getXButton()) {

@@ -21,7 +21,7 @@ public class Constants {
     public static final double kBackRightOffset = 0.160400;//0.140381;
     public static final double kBackLeftOffset = -0.156738; //-0.168701;//0.343994;
     public static final double kFrontRightOffset = -0.230713; //-0.227783;//0.271240;
-    public static final double kFrontLeftOffset = 0.155762; //-0.330566;//0.165283;
+    public static final double kFrontLeftOffset = 0.145752; //-0.330566;//0.165283;
 
     // distance for everything is in meters
     public static final double limelight_height = 0.6096;

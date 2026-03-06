@@ -75,14 +75,17 @@ public class Autonomous {
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new Wait(m_drivetrain, 0.02),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_1", 0.5),
-                new ShootForTime(m_drivetrain, m_shoot, 100)
+                new Wait(m_drivetrain, 0.02),
+                new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case DEPOT:
             return new SequentialCommandGroup(
                 new ResetWheels(m_drivetrain),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1", 0.5)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1", 0.5),
+                new Wait(m_drivetrain, 0.02),
+                new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case CENTER:
             return new SequentialCommandGroup(
