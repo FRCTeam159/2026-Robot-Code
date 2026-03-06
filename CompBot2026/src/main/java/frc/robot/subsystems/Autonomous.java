@@ -17,11 +17,11 @@ public class Autonomous {
     Intake m_intake;
 
     enum AutoMode {
-        SHOOT,
         ALIGN,
+        CENTER,
         HUMAN,
         DEPOT,
-        CENTER,
+        NEUTRAL,
         WIGGLE
     }
 
@@ -34,11 +34,10 @@ public class Autonomous {
         m_shoot = shoot;
         m_intake = intake;
 
-        m_autochooser.addOption("Simple Shoot", AutoMode.SHOOT);
         m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
+        m_autochooser.addOption("Center Shoot", AutoMode.CENTER);
         m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
-        
         m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
 
         SmartDashboard.putData(m_autochooser);
@@ -57,10 +56,13 @@ public class Autonomous {
      switch (automode) {
             default:
             return null;
-        case SHOOT:
+        case CENTER:
             return new SequentialCommandGroup(
                 new ResetWheels(m_drivetrain),
-                new DriveStraight(m_drivetrain, -1)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Center", 1),
+                new Wait(m_drivetrain, 0.02),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
+                new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case ALIGN:
             return new SequentialCommandGroup(
@@ -74,7 +76,7 @@ public class Autonomous {
                 new ResetWheels(m_drivetrain),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_1_1", 0.5),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human", 0.5),
                 new Wait(m_drivetrain, 0.02),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
@@ -83,16 +85,16 @@ public class Autonomous {
                 new ResetWheels(m_drivetrain),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_2_1", 0.5),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5),
                 new Wait(m_drivetrain, 0.02),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
-        case CENTER:
+        case NEUTRAL:
             return new SequentialCommandGroup(
                 new ResetWheels(m_drivetrain),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Comp_3_1", 0.5)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral", 0.5)
             );
         case WIGGLE:
             return new SequentialCommandGroup(
