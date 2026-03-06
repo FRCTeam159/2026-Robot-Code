@@ -69,29 +69,25 @@ public class Autonomous {
             );
         case HUMAN:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_1_1", 0.05)
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_1_1", 0.2)
             );
         case DEPOT:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_2_1", 0.05)
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_2_1", 0.2)
             );
         case CENTER:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2),
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
                 new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_3_1", 0.05)
+                new DriveChoreo(m_drivetrain, m_shoot, "Comp_3_1", 0.2)
             );
         case WIGGLE:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.2)
+                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5)
             );
 
         }

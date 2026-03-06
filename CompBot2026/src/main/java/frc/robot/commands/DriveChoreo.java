@@ -21,7 +21,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
@@ -39,10 +39,14 @@ public class DriveChoreo extends Command {
 
     final PIDController x_PID_controller = new PIDController(2.5, 0, 0);
     final PIDController y_PID_controller = new PIDController(2.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(3, 0, 0);
+    final PIDController r_PID_controller = new PIDController(2.5, 0, 0);
 
-    final double horizontal_coeff = 1.0;
-    final double rotation_coeff = 1.0;
+    double top_speed = 4200;
+    double bottom_speed = 4200;
+    double intake_speed = 4000;
+
+    final double horizontal_coeff = 2;
+    final double rotation_coeff = 3;
 
     private String file_path;
 
@@ -71,7 +75,6 @@ public class DriveChoreo extends Command {
         events = trajectory.get().events();
 
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
-        System.out.println(m_drive.getPose());
         
         m_timer.reset();
         m_timer.start();
@@ -108,16 +111,21 @@ public class DriveChoreo extends Command {
 
         events.forEach((EventMarker event) -> proccessEvents(event, sample_time));
 
-        m_intake.intake(intaking ? 50 : 0);
+        top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;
+        bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60;
+        intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;
+
+        m_intake.intake(intaking ? intake_speed : 0);
+        m_shooter.shoot(shooting ? top_speed : 0, shooting ? bottom_speed : 0, 0, 0);
 
         previous_sample = sample_time;
 
         Pose2d current_pose = m_drive.getPose();
 
         m_drive.drive(
-            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 2,
-            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 2,
-            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / 3,
+            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff,
+            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff,
+            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / rotation_coeff,
             true
         );
     }

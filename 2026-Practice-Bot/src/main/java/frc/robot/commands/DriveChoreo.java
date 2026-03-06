@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,7 +37,7 @@ public class DriveChoreo extends Command {
 
     final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
     final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(2, 0, 0);
+    final PIDController r_PID_controller = new PIDController(1, 0, 0);
 
     final double horizontal_coeff = 1.0;
     final double rotation_coeff = 1.0;
@@ -48,6 +49,15 @@ public class DriveChoreo extends Command {
     List<EventMarker> events;
 
     private double previous_sample = -1.0;
+
+    private double previous_is_finished_sample = 0.0;
+    private Pose2d previous_pose = new Pose2d();
+
+    private final double position_threshold = 0.025;
+    private final double rotation_threshold = 2;
+
+    private final double max_end_velocity_linear = 0.2;
+    private final double max_end_velocity_rotation = 5;
 
     private Timer m_timer = new Timer();
 
@@ -68,6 +78,8 @@ public class DriveChoreo extends Command {
 
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
         
+        previous_pose = m_drive.getPose();
+
         m_timer.reset();
         m_timer.start();
     }
@@ -90,7 +102,7 @@ public class DriveChoreo extends Command {
     @Override
     public void execute() {
         double sample_time = m_timer.get();
-        Optional<SwerveSample> sample = trajectory.get().sampleAt(sample_time, false);
+        Optional<SwerveSample> sample = trajectory.get().sampleAt(Math.min(sample_time, trajectory.get().getTotalTime()), false);
 
         Pose2d target_pose = sample.get().getPose();
         ChassisSpeeds target_speed = sample.get().getChassisSpeeds();
@@ -113,6 +125,53 @@ public class DriveChoreo extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_timer.get() >= trajectory.get().getTotalTime() + more_time;
+        double time = m_timer.get();
+        double duration = trajectory.get().getTotalTime();
+
+        Pose2d current_pose = m_drive.getPose();
+        double delta_t = time - previous_is_finished_sample;
+
+        double delta_x = current_pose.getX() - previous_pose.getX();
+        double delta_y = current_pose.getY() - previous_pose.getY();
+        double delta_r = current_pose.getRotation().getDegrees() - previous_pose.getRotation().getDegrees();
+
+        double x_velocity = delta_x / delta_t;
+        double y_velocity = delta_y / delta_t;
+        double r_velocity = delta_r / delta_t;
+
+        previous_is_finished_sample = time;
+        previous_pose = current_pose;
+
+        Optional<SwerveSample> sample = trajectory.get().sampleAt(trajectory.get().getTotalTime(), false);
+        Pose2d target_pose = sample.get().getPose();
+
+        double diff_x = target_pose.getX() - current_pose.getX();
+        double diff_y = target_pose.getY() - current_pose.getY();
+        double diff_r = target_pose.getRotation().getDegrees() - current_pose.getRotation().getDegrees();
+
+        System.out.println(String.format("VX: %.2f, VY: %.2f, VR: %.2f", x_velocity, y_velocity, r_velocity));
+        System.out.println(String.format("X: %.2f, Y: %.2f, R: %.2f", diff_x, diff_y, diff_r));
+
+        if (time >= duration + more_time ){
+            System.out.println("Terminated choreo sequence: Out of time");
+        } else if(time >= duration &&
+        (Math.abs(x_velocity) < max_end_velocity_linear) &&
+        (Math.abs(y_velocity) < max_end_velocity_linear) &&
+        (Math.abs(r_velocity) < max_end_velocity_rotation) &&
+        (Math.abs(diff_x) < position_threshold) &&
+        (Math.abs(diff_y) < position_threshold) &&
+        (Math.abs(diff_r) < rotation_threshold)
+        ){
+            System.out.println("Terminated choreo sequence: At Target Position");
+        }
+
+        return (time >= duration + more_time || (time >= duration &&
+        (Math.abs(x_velocity) < max_end_velocity_linear) &&
+        (Math.abs(y_velocity) < max_end_velocity_linear) &&
+        (Math.abs(r_velocity) < max_end_velocity_rotation) &&
+        (Math.abs(diff_x) < position_threshold) &&
+        (Math.abs(diff_y) < position_threshold) &&
+        (Math.abs(diff_r) < rotation_threshold)
+        ));
     }
 }

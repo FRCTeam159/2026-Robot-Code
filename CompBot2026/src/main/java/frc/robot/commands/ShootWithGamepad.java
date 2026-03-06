@@ -41,6 +41,8 @@ public class ShootWithGamepad extends Command {
         SmartDashboard.putNumber("Shooter Feed Speed", feeder_speed);
         SmartDashboard.putNumber("Shooter Roll Speed", roller_speed);
         SmartDashboard.putNumber("Intake Speed", intake_speed);
+
+        SmartDashboard.putBoolean("Intaking", intaking);
     }
 
     public void execute() {
@@ -67,6 +69,7 @@ public class ShootWithGamepad extends Command {
 
         if (m_controller.getLeftBumperButtonPressed()) {
             intaking = !intaking;
+            SmartDashboard.putBoolean("Intaking", intaking);
         } 
 
         if (shooting) {
@@ -76,13 +79,21 @@ public class ShootWithGamepad extends Command {
                 m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
             }
         } else {
-                m_Shoot.shoot(0, 0, 0, intaking ? roller_speed : 0);
+            if (intaking) {
+                m_Shoot.shoot(0, 0, 0, roller_speed);
+            } else {
+                m_Shoot.shoot(0, 0, 0, 0);
+            }
         } 
 
         if (out_taking) {
             m_Intake.intake(-intake_speed);
         } else {
-            m_Intake.intake(intaking ? intake_speed : 0);
+            if (intaking) {
+                m_Intake.intake(intake_speed);
+            } else {
+                m_Intake.intake(0);
+            }   
         }
     }
 
