@@ -36,6 +36,8 @@ public class DriveWithGamepad extends Command {
         m_xspeedLimiter.reset(now);
         m_yspeedLimiter.reset(now);
         m_rotLimiter.reset(now);
+
+        m_drive.setFieldOriented(true);
     }
 
     @Override

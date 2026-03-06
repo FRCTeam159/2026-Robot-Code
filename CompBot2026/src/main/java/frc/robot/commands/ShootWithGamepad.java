@@ -60,15 +60,16 @@ public class ShootWithGamepad extends Command {
         }  
 
         if (m_controller.getXButton()) {
-            m_timer.reset();
-            m_timer.start();
             out_taking = true;
         } else {
             out_taking = false;
         }
 
-        if (m_controller.getLeftBumperButtonPressed()) {
-            intaking = !intaking;
+        if (m_controller.getLeftBumperButton()) {
+            intaking = true;
+            SmartDashboard.putBoolean("Intaking", intaking);
+        } else {
+            intaking = false;
             SmartDashboard.putBoolean("Intaking", intaking);
         } 
 

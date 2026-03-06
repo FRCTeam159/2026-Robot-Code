@@ -51,7 +51,6 @@ public class RobotContainer {
   public void teleopInit() {
     m_drivetrain.resetOdometry();
     m_drivetrain.enable();
-    m_drivetrain.setFieldOriented(m_drivetrain.isFieldOriented());
   }
 
     public void autonomousInit() {
