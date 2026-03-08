@@ -36,10 +36,10 @@ public class ShootForTime extends Command {
     
     @Override
     public void execute() {
-        top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;          //RPM --> Rot per sec
-        bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60; //RPM --> Rot per sec
-        feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);      //Duty Cycle
-        roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);      //Duty Cycle
+        // top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;          //RPM --> Rot per sec
+        // bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60; //RPM --> Rot per sec
+        // feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);      //Duty Cycle
+        // roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);      //Duty Cycle
         
         m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
 

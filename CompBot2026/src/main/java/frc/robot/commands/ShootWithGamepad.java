@@ -14,11 +14,14 @@ public class ShootWithGamepad extends Command {
     //private final Limelight m_limelight;
 
     boolean shooting = false;
+    boolean shootFeeding = false;
+    boolean spewing = false;
     boolean intaking = false;
     boolean out_taking = false;
 
     double top_speed = 4200;    //RPM
     double bottom_speed = 4200; //RPM
+
     double feeder_speed = 1;    //Duty Cycle
     double roller_speed = 0.35; //Duty Cycle
     double intake_speed = 4000; //RPM
@@ -44,9 +47,13 @@ public class ShootWithGamepad extends Command {
 
         SmartDashboard.putBoolean("Intaking", intaking);
         SmartDashboard.putBoolean("Shooting", shooting);
+        SmartDashboard.putBoolean("Spewing", spewing);
     }
 
     public void execute() {
+        SmartDashboard.putBoolean("Shooting", shooting);
+        SmartDashboard.putBoolean("Spewing", spewing);
+        SmartDashboard.putBoolean("Intaking", intaking);
 
         top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;           //RPM --> Rot per sec
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60;  //RPM --> Rot per sec
@@ -54,12 +61,17 @@ public class ShootWithGamepad extends Command {
         roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);       //Duty Cycle
         intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;        //RPM --> Rot per sec
 
-        if (m_controller.getRightBumperButtonPressed()) {
-            m_timer.reset();
-            m_timer.start();
-            shooting = !shooting;
-            SmartDashboard.putBoolean("Shooting", shooting);
-        }  
+        if (m_controller.getRightBumperButton()) {
+            shooting = true; 
+        }  else {
+            shooting = false;
+        }
+
+        if (m_controller.getRightTriggerAxis() == 1) {
+            shootFeeding = true;
+        } else {
+            shootFeeding = false;
+        }
 
         if (m_controller.getXButton()) {
             out_taking = true;
@@ -69,25 +81,24 @@ public class ShootWithGamepad extends Command {
 
         if (m_controller.getLeftBumperButton()) {
             intaking = true;
-            SmartDashboard.putBoolean("Intaking", intaking);
         } else {
             intaking = false;
-            SmartDashboard.putBoolean("Intaking", intaking);
         } 
 
-        if (shooting) {
-            if (m_timer.get() > 2) {
-                m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
-            } else {
-                m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
-            }
+        
+        if (shootFeeding) {
+            m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
         } else {
-            if (intaking) {
-                m_Shoot.shoot(0, 0, 0, roller_speed);
+            if (shooting) {
+                m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
             } else {
-                m_Shoot.shoot(0, 0, 0, 0);
+                if (intaking) {
+                    m_Shoot.shoot(0, 0, 0, roller_speed);
+                } else {
+                    m_Shoot.shoot(0, 0, 0, 0);
+                }
             }
-        } 
+        }
 
         if (out_taking) {
             m_Intake.intake(-intake_speed);
