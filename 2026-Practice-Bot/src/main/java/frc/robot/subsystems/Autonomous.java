@@ -21,7 +21,8 @@ public class Autonomous {
         HUMAN,
         DEPOT,
         CENTER,
-        WIGGLE
+        WIGGLE,
+        NEUTRAL
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -38,6 +39,7 @@ public class Autonomous {
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
         m_autochooser.addOption("Center pickup", AutoMode.CENTER);
         m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
+        m_autochooser.addOption("Neutral Zone", AutoMode.NEUTRAL);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -87,9 +89,12 @@ public class Autonomous {
             );
         case WIGGLE:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5)
+                new DriveChoreo(m_drivetrain, m_shoot, "Test", 10)
             );
-
+        case NEUTRAL:
+            return new SequentialCommandGroup(
+                new DriveChoreo(m_drivetrain, m_shoot, "NeutralLeft", 10)
+            );
         }
     }
 

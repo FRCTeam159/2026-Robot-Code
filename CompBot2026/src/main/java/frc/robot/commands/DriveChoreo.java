@@ -34,6 +34,8 @@ public class DriveChoreo extends Command {
 
     double more_time;
 
+    private double[] rotation_matrix = {0,0};
+
     boolean intaking = false;
     boolean shooting = false;
 
@@ -45,7 +47,7 @@ public class DriveChoreo extends Command {
     double bottom_speed = 4200;
     double intake_speed = 3000;
 
-    final double horizontal_coeff = 2;
+    final double horizontal_coeff = 6;
     final double rotation_coeff = 3;
 
     private String file_path;
@@ -55,6 +57,7 @@ public class DriveChoreo extends Command {
     List<EventMarker> events;
 
     private double previous_sample = -1.0;
+    private double previous_rotation = 0.0;
 
     private Timer m_timer = new Timer();
 
@@ -76,6 +79,10 @@ public class DriveChoreo extends Command {
 
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
         
+        double rotation = trajectory.get().sampleAt(0, false).get().getPose().getRotation().getRadians();
+        rotation_matrix[0] = Math.cos(-rotation);
+        rotation_matrix[1] = Math.sin(-rotation);
+
         m_timer.reset();
         m_timer.start();
     }
@@ -122,16 +129,32 @@ public class DriveChoreo extends Command {
 
         Pose2d current_pose = m_drive.getPose();
 
+        double angle_diff = target_pose.getRotation().getDegrees() - previous_rotation;
+
+        double target_angle = previous_rotation + (angle_diff - 360 * Math.round(angle_diff / 360));
+        previous_rotation = target_angle;
+
+        System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
+
+        double vx = x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff;
+        double vy = y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff;
+
+        //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
-            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff,
-            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff,
+            vx * Math.cos(-current_pose.getRotation().getRadians()) - vy * Math.sin(-current_pose.getRotation().getRadians()),
+            vx * Math.sin(-current_pose.getRotation().getRadians()) + vy * Math.cos(-current_pose.getRotation().getRadians()),
             r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / rotation_coeff,
-            true
+            false
         );
     }
 
     @Override
     public boolean isFinished() {
         return m_timer.get() >= trajectory.get().getTotalTime() + more_time;
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        m_drive.drive(0, 0, 0, false);
     }
 }

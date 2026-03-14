@@ -140,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
   public Rotation2d getRotation2d() {
     double angle = m_gyro.getAngle();
 
-    // the angle returned by the gyro does not reset to 0 when it wraps around
+    // the angle returned by the pigeon gyro does not reset to 0 when it wraps around
     // angle = unwrap(last_heading, angle);
 
     last_heading = angle;

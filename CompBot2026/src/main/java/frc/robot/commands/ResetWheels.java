@@ -40,5 +40,6 @@ public class ResetWheels extends Command {
     @Override
     public void end(boolean interrupted){
         SwerveModule.optimize_enabled = true;
+        m_drive.drive(0, 0, 0, false);
     }
 }

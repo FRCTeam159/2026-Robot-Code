@@ -61,54 +61,28 @@ public class ShootWithGamepad extends Command {
         roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);       //Duty Cycle
         intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;        //RPM --> Rot per sec
 
-        if (m_controller.getRightBumperButton()) {
-            shooting = true; 
-        }  else {
-            shooting = false;
-        }
+        shooting = m_controller.getRightBumperButton();
+        shootFeeding = m_controller.getRightTriggerAxis() > 0.5;
+        out_taking = m_controller.getXButton();
+        intaking = m_controller.getLeftBumperButton();
 
-        if (m_controller.getRightTriggerAxis() == 1) {
-            shootFeeding = true;
-        } else {
-            shootFeeding = false;
-        }
-
-        if (m_controller.getXButton()) {
-            out_taking = true;
-        } else {
-            out_taking = false;
-        }
-
-        if (m_controller.getLeftBumperButton()) {
-            intaking = true;
-        } else {
-            intaking = false;
-        } 
-
-        
         if (shootFeeding) {
             m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
+        } else if (shooting) {
+            m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
+        } else if (intaking) {
+            m_Shoot.shoot(0, 0, 0, roller_speed);
         } else {
-            if (shooting) {
-                m_Shoot.shoot(top_speed, bottom_speed, 0, 0);
-            } else {
-                if (intaking) {
-                    m_Shoot.shoot(0, 0, 0, roller_speed);
-                } else {
-                    m_Shoot.shoot(0, 0, 0, 0);
-                }
-            }
+            m_Shoot.shoot(0, 0, 0, 0);
         }
 
         if (out_taking) {
             m_Intake.intake(-intake_speed);
+        } else if (intaking) {
+            m_Intake.intake(intake_speed);
         } else {
-            if (intaking) {
-                m_Intake.intake(intake_speed);
-            } else {
-                m_Intake.intake(0);
-            }   
-        }
+            m_Intake.intake(0);
+        }   
     }
 
     @Override

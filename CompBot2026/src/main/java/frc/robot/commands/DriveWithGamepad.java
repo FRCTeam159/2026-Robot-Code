@@ -62,8 +62,9 @@ public class DriveWithGamepad extends Command {
         m_drive.drive(xSpeed, ySpeed, rot, m_drive.isFieldOriented());
 
         if (m_controller.getBButtonPressed()){
-            m_drive.setFieldOriented(!m_drive.isFieldOriented()); 
-            }
+            m_drive.setFieldOriented(!m_drive.isFieldOriented());
+            m_drive.resetPose(); 
+        }
         
         if (m_controller.getAButtonPressed()){
             m_aligning = !m_aligning;

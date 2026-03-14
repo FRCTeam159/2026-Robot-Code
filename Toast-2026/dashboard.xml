@@ -1,8 +1,16 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Spewing" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="283" y="72"/>
+		<width>70</width>
+	</widget>
+	<widget field="Shooting" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="283" y="27"/>
+		<width>70</width>
+	</widget>
 	<widget field="Intaking" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="284" y="29"/>
-		<width>67</width>
+		<location x="283" y="56"/>
+		<width>66</width>
 		<height>13</height>
 	</widget>
 	<widget field="Test Voltage" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
@@ -46,7 +54,7 @@
 		<height>19</height>
 	</widget>
 	<widget field="Drive Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="16" y="455"/>
+		<location x="5" y="467"/>
 	</widget>
 	<widget field="Offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="6" y="163"/>
@@ -90,6 +98,5 @@
 	<hidden field="limelight_Interface"/>
 	<hidden field="limelight_PipelineName"/>
 	<hidden field="Choreo Alerts"/>
-	<hidden field="PathPlanner"/>
 	<hidden field="limelight_Stream"/>
 </xml>

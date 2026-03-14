@@ -72,7 +72,7 @@ public class Constants {
     public static final double kTrackRadius = 0.5
         * Math.sqrt(kFrontWheelBase * kFrontWheelBase + kSideWheelBase * kSideWheelBase);
 
-    public static final double kMaxVelocity = 0.5;
+    public static final double kMaxVelocity = 1;
     public static final double kMaxAcceleration = 1;
     public static final double kMaxAngularVelocity = Math.toRadians(720); // radians/s
     public static final double kMaxAngularAcceleration = Math.toRadians(360); // radians/s/s

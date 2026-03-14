@@ -35,9 +35,9 @@ public class DriveChoreo extends Command {
 
     boolean shooting = false;
 
-    final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(1, 0, 0);
+    final PIDController x_PID_controller = new PIDController(0, 0, 0);
+    final PIDController y_PID_controller = new PIDController(0, 0, 0);
+    final PIDController r_PID_controller = new PIDController(0, 0, 0);
 
     final double horizontal_coeff = 1.0;
     final double rotation_coeff = 1.0;
@@ -49,6 +49,7 @@ public class DriveChoreo extends Command {
     List<EventMarker> events;
 
     private double previous_sample = -1.0;
+    private double previous_rotation = 0.0;
 
     private double previous_is_finished_sample = 0.0;
     private Pose2d previous_pose = new Pose2d();
@@ -79,6 +80,7 @@ public class DriveChoreo extends Command {
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
         
         previous_pose = m_drive.getPose();
+        previous_rotation = previous_pose.getRotation().getDegrees();
 
         m_timer.reset();
         m_timer.start();
@@ -115,10 +117,20 @@ public class DriveChoreo extends Command {
 
         Pose2d current_pose = m_drive.getPose();
 
+        double angle_diff = target_pose.getRotation().getDegrees() - previous_rotation;
+
+        //Unwraps the angle when it passes 180 degrees
+        double target_angle = previous_rotation + (angle_diff - 360 * Math.round(angle_diff / 360));
+        previous_rotation = target_angle;
+        //System.out.println(String.format("TX: %.2f, TY: %.2f, TR: %.2f", target_pose.getX(), target_pose.getY(), target_angle));
+        System.out.println(String.format("%.2f, %.2f", current_pose.getX(), current_pose.getY()));
+        target_angle *= Math.PI/180;
+
+
         m_drive.drive(
             x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 3,
             y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 3,
-            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / 3,
+            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / 3,
             true
         );
     }
@@ -149,8 +161,8 @@ public class DriveChoreo extends Command {
         double diff_y = target_pose.getY() - current_pose.getY();
         double diff_r = target_pose.getRotation().getDegrees() - current_pose.getRotation().getDegrees();
 
-        System.out.println(String.format("VX: %.2f, VY: %.2f, VR: %.2f", x_velocity, y_velocity, r_velocity));
-        System.out.println(String.format("X: %.2f, Y: %.2f, R: %.2f", diff_x, diff_y, diff_r));
+        //System.out.println(String.format("VX: %.2f, VY: %.2f, VR: %.2f", x_velocity, y_velocity, r_velocity));
+        //System.out.println(String.format("X: %.2f, Y: %.2f, R: %.2f", diff_x, diff_y, diff_r));
 
         if (time >= duration + more_time ){
             System.out.println("Terminated choreo sequence: Out of time");

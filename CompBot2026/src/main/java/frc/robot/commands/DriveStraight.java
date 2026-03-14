@@ -53,4 +53,9 @@ public class DriveStraight extends Command {
     public boolean isFinished() {
         return m_PID.atSetpoint();
     }
+
+    @Override
+    public void end(boolean interrupted){
+        m_drive.drive(0, 0, 0, false);
+    }
 }
