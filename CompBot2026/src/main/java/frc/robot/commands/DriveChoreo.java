@@ -34,7 +34,7 @@ public class DriveChoreo extends Command {
 
     double more_time;
 
-    private double[] rotation_matrix = {0,0};
+    private double rotation_offset;
 
     boolean intaking = false;
     boolean shooting = false;
@@ -79,9 +79,7 @@ public class DriveChoreo extends Command {
 
         m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
         
-        double rotation = trajectory.get().sampleAt(0, false).get().getPose().getRotation().getRadians();
-        rotation_matrix[0] = Math.cos(-rotation);
-        rotation_matrix[1] = Math.sin(-rotation);
+        rotation_offset = trajectory.get().sampleAt(0, false).get().getPose().getRotation().getRadians();
 
         m_timer.reset();
         m_timer.start();
@@ -133,6 +131,7 @@ public class DriveChoreo extends Command {
 
         double target_angle = previous_rotation + (angle_diff - 360 * Math.round(angle_diff / 360));
         previous_rotation = target_angle;
+        target_angle *= Math.PI/180;
 
         System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
 
@@ -143,7 +142,7 @@ public class DriveChoreo extends Command {
         m_drive.drive(
             vx * Math.cos(-current_pose.getRotation().getRadians()) - vy * Math.sin(-current_pose.getRotation().getRadians()),
             vx * Math.sin(-current_pose.getRotation().getRadians()) + vy * Math.cos(-current_pose.getRotation().getRadians()),
-            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_pose.getRotation().getRadians()) + target_speed.omegaRadiansPerSecond / rotation_coeff,
+            r_PID_controller.calculate(m_drive.getRotation2d().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / rotation_coeff,
             false
         );
     }

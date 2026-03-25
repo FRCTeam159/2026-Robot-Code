@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -35,12 +36,14 @@ public class DriveChoreo extends Command {
 
     boolean shooting = false;
 
-    final PIDController x_PID_controller = new PIDController(0, 0, 0);
-    final PIDController y_PID_controller = new PIDController(0, 0, 0);
+    final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
+    final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
     final PIDController r_PID_controller = new PIDController(0, 0, 0);
 
-    final double horizontal_coeff = 1.0;
-    final double rotation_coeff = 1.0;
+    final double horizontal_coeff = 3.0;
+    final double rotation_coeff = 3.0;
+
+    private double start_rotation = 0.0;
 
     private String file_path;
 
@@ -77,9 +80,11 @@ public class DriveChoreo extends Command {
 
         events = trajectory.get().events();
 
-        m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
+        previous_pose = trajectory.get().sampleAt(0, false).get().getPose();
+
+        m_drive.resetOdometry(previous_pose);
         
-        previous_pose = m_drive.getPose();
+        start_rotation = previous_pose.getRotation().getRadians();
         previous_rotation = previous_pose.getRotation().getDegrees();
 
         m_timer.reset();
@@ -122,15 +127,23 @@ public class DriveChoreo extends Command {
         //Unwraps the angle when it passes 180 degrees
         double target_angle = previous_rotation + (angle_diff - 360 * Math.round(angle_diff / 360));
         previous_rotation = target_angle;
-        //System.out.println(String.format("TX: %.2f, TY: %.2f, TR: %.2f", target_pose.getX(), target_pose.getY(), target_angle));
-        System.out.println(String.format("%.2f, %.2f", current_pose.getX(), current_pose.getY()));
         target_angle *= Math.PI/180;
 
+        System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
 
+        double dx = (target_pose.getX() - current_pose.getX()) / 10;
+        double dy = (target_pose.getY() - current_pose.getY()) / 10;
+
+        double x = dx * Math.cos(-start_rotation) - dy * Math.sin(-start_rotation);
+        double y = dx * Math.sin(-start_rotation) + dy * Math.cos(-start_rotation);
+
+        double vx = x_PID_controller.calculate(0, x) + target_speed.vxMetersPerSecond / horizontal_coeff / 10;
+        double vy = y_PID_controller.calculate(0, y) + target_speed.vyMetersPerSecond / horizontal_coeff / 10;
+
+        //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
-            x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / 3,
-            y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / 3,
-            r_PID_controller.calculate(current_pose.getRotation().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / 3,
+            vx, vy,
+            r_PID_controller.calculate(m_drive.getRotation2d().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / rotation_coeff,
             true
         );
     }

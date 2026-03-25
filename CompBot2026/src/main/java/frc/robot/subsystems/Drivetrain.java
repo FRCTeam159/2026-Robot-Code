@@ -156,6 +156,7 @@ public class Drivetrain extends SubsystemBase {
   public void updateOdometry() {
     updatePositions();
     m_pose = m_odometry.update(getRotation2d(), m_positions);
+    //m_pose = new Pose2d(m_pose.getTranslation(), getRotation2d());
   }
 
   public void resetPositions() {

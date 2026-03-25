@@ -89,11 +89,11 @@ public class Autonomous {
             );
         case WIGGLE:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Test", 10)
+                new DriveChoreo(m_drivetrain, m_shoot, "Test", 1)
             );
         case NEUTRAL:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "NeutralLeft", 10)
+                new DriveChoreo(m_drivetrain, m_shoot, "NeutralLeft", 1)
             );
         }
     }
