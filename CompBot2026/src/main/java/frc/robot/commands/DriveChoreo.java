@@ -77,9 +77,13 @@ public class DriveChoreo extends Command {
 
         events = trajectory.get().events();
 
-        m_drive.resetOdometry(trajectory.get().sampleAt(0, false).get().getPose());
+        Pose2d start_pose = trajectory.get().sampleAt(0, false).get().getPose();
+
+        m_drive.resetOdometry(start_pose);
+
+        previous_rotation = start_pose.getRotation().getRadians();
         
-        rotation_offset = trajectory.get().sampleAt(0, false).get().getPose().getRotation().getRadians();
+        rotation_offset = start_pose.getRotation().getRadians();
 
         m_timer.reset();
         m_timer.start();
@@ -140,10 +144,9 @@ public class DriveChoreo extends Command {
 
         //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
-            vx * Math.cos(-current_pose.getRotation().getRadians()) - vy * Math.sin(-current_pose.getRotation().getRadians()),
-            vx * Math.sin(-current_pose.getRotation().getRadians()) + vy * Math.cos(-current_pose.getRotation().getRadians()),
+            vx, vy,
             r_PID_controller.calculate(m_drive.getRotation2d().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / rotation_coeff,
-            false
+            true
         );
     }
 

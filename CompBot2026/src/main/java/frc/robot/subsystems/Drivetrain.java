@@ -76,7 +76,7 @@ public class Drivetrain extends SubsystemBase {
   public void setConfig() {
     m_frontRight.setConfig(false, kDistPerRot);
     m_backRight.setConfig(false, kDistPerRot);
-    m_frontLeft.setConfig(false, kDistPerRot);
+    m_frontLeft.setConfig(true, kDistPerRot);
     m_backLeft.setConfig(true, kDistPerRot);
   }
 
@@ -166,12 +166,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    m_gyro.set_yaw(pose.getRotation().getDegrees());
-
     resetPositions();
 
-    m_odometry.resetPosition(getRotation2d(), m_positions, pose);
-    last_heading = 0;
+    m_odometry.resetPosition(pose.getRotation(), m_positions, pose);
+
+    m_gyro.set_yaw(pose.getRotation().getDegrees());
+
+    last_heading = pose.getRotation().getDegrees();
     m_pose = pose;
     //updateOdometry();
     System.out.println("gryo angle" + m_gyro.getAngle());

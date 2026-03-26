@@ -62,8 +62,6 @@ public class Autonomous {
         case CENTER:
             return new SequentialCommandGroup(
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Center", 1),
-                new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case ALIGN:
@@ -74,32 +72,24 @@ public class Autonomous {
             );
         case HUMAN:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
-                new Wait(m_drivetrain, 0.02),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human", 0.5),
                 new Wait(m_drivetrain, 0.02),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case DEPOT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
-                new Wait(m_drivetrain, 0.02),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5),
                 new Wait(m_drivetrain, 0.02),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case NEUTRAL_RIGHT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
-                new Wait(m_drivetrain, 0.02),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right", 0.5),
                 new Wait(m_drivetrain, 1),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case NEUTRAL_LEFT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Wiggle", 1),
-                new Wait(m_drivetrain, 0.02),
                 new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left", 0.5),
                 new ShootForTime(m_drivetrain, m_shoot, 5),
                 new Wait(m_drivetrain, 1),

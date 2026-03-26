@@ -131,14 +131,14 @@ public class DriveChoreo extends Command {
 
         System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
 
-        double dx = (target_pose.getX() - current_pose.getX()) / 10;
-        double dy = (target_pose.getY() - current_pose.getY()) / 10;
+        double dx = target_pose.getX() - current_pose.getX();
+        double dy = target_pose.getY() - current_pose.getY();
 
         double x = dx * Math.cos(-start_rotation) - dy * Math.sin(-start_rotation);
         double y = dx * Math.sin(-start_rotation) + dy * Math.cos(-start_rotation);
 
-        double vx = x_PID_controller.calculate(0, x) + target_speed.vxMetersPerSecond / horizontal_coeff / 10;
-        double vy = y_PID_controller.calculate(0, y) + target_speed.vyMetersPerSecond / horizontal_coeff / 10;
+        double vx = x_PID_controller.calculate(0, x) + target_speed.vxMetersPerSecond / horizontal_coeff;
+        double vy = y_PID_controller.calculate(0, y) + target_speed.vyMetersPerSecond / horizontal_coeff;
 
         //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
