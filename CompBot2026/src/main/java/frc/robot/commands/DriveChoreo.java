@@ -39,9 +39,11 @@ public class DriveChoreo extends Command {
     boolean intaking = false;
     boolean shooting = false;
 
-    final PIDController x_PID_controller = new PIDController(2.5, 0, 0);
-    final PIDController y_PID_controller = new PIDController(2.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(2.5, 0, 0);
+    boolean isFirstPath;
+
+    final PIDController x_PID_controller = new PIDController(2, 0, 0);
+    final PIDController y_PID_controller = new PIDController(2, 0, 0);
+    final PIDController r_PID_controller = new PIDController(2, 0, 0);
 
     double top_speed = 4200;
     double bottom_speed = 4200;
@@ -61,12 +63,14 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Shooter shooter, Intake intake, String path, double extra_duration) {
+    public DriveChoreo(Drivetrain drive, Shooter shooter, Intake intake, String path, double extra_duration, boolean firstPath) {
         m_drive = drive;
         m_shooter = shooter;
         m_intake = intake;
         file_path = path;
         more_time = extra_duration;
+
+        isFirstPath = firstPath;
 
         addRequirements(drive, shooter, intake);
     }
@@ -78,8 +82,10 @@ public class DriveChoreo extends Command {
         events = trajectory.get().events();
 
         Pose2d start_pose = trajectory.get().sampleAt(0, false).get().getPose();
-
-        m_drive.resetOdometry(start_pose);
+        
+        if (isFirstPath) {
+            m_drive.resetOdometry(start_pose);
+        }
 
         previous_rotation = start_pose.getRotation().getRadians();
         

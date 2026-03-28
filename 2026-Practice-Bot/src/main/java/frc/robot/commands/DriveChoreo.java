@@ -36,9 +36,11 @@ public class DriveChoreo extends Command {
 
     boolean shooting = false;
 
+    boolean isFirstPath;
+
     final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
     final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(0, 0, 0);
+    final PIDController r_PID_controller = new PIDController(1.5, 0, 0);
 
     final double horizontal_coeff = 3.0;
     final double rotation_coeff = 3.0;
@@ -65,11 +67,13 @@ public class DriveChoreo extends Command {
 
     private Timer m_timer = new Timer();
 
-    public DriveChoreo(Drivetrain drive, Test shooter, String path, double extra_duration) {
+    public DriveChoreo(Drivetrain drive, Test shooter, String path, double extra_duration, boolean firstPath) {
         m_drive = drive;
         m_shooter = shooter;
         file_path = path;
         more_time = extra_duration;
+
+        isFirstPath = firstPath;
 
         addRequirements(drive, shooter);
     }
@@ -81,8 +85,9 @@ public class DriveChoreo extends Command {
         events = trajectory.get().events();
 
         previous_pose = trajectory.get().sampleAt(0, false).get().getPose();
-
-        m_drive.resetOdometry(previous_pose);
+        if (isFirstPath) {
+            m_drive.resetOdometry(previous_pose);
+        }
         
         start_rotation = previous_pose.getRotation().getRadians();
         previous_rotation = previous_pose.getRotation().getDegrees();
@@ -131,14 +136,8 @@ public class DriveChoreo extends Command {
 
         System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
 
-        double dx = target_pose.getX() - current_pose.getX();
-        double dy = target_pose.getY() - current_pose.getY();
-
-        double x = dx * Math.cos(-start_rotation) - dy * Math.sin(-start_rotation);
-        double y = dx * Math.sin(-start_rotation) + dy * Math.cos(-start_rotation);
-
-        double vx = x_PID_controller.calculate(0, x) + target_speed.vxMetersPerSecond / horizontal_coeff;
-        double vy = y_PID_controller.calculate(0, y) + target_speed.vyMetersPerSecond / horizontal_coeff;
+        double vx = x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff;
+        double vy = y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff;
 
         //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
@@ -150,53 +149,54 @@ public class DriveChoreo extends Command {
 
     @Override
     public boolean isFinished() {
-        double time = m_timer.get();
-        double duration = trajectory.get().getTotalTime();
+        return m_timer.get() >= trajectory.get().getTotalTime() + more_time;
+        // double time = m_timer.get();
+        // double duration = trajectory.get().getTotalTime();
 
-        Pose2d current_pose = m_drive.getPose();
-        double delta_t = time - previous_is_finished_sample;
+        // Pose2d current_pose = m_drive.getPose();
+        // double delta_t = time - previous_is_finished_sample;
 
-        double delta_x = current_pose.getX() - previous_pose.getX();
-        double delta_y = current_pose.getY() - previous_pose.getY();
-        double delta_r = current_pose.getRotation().getDegrees() - previous_pose.getRotation().getDegrees();
+        // double delta_x = current_pose.getX() - previous_pose.getX();
+        // double delta_y = current_pose.getY() - previous_pose.getY();
+        // double delta_r = current_pose.getRotation().getDegrees() - previous_pose.getRotation().getDegrees();
 
-        double x_velocity = delta_x / delta_t;
-        double y_velocity = delta_y / delta_t;
-        double r_velocity = delta_r / delta_t;
+        // double x_velocity = delta_x / delta_t;
+        // double y_velocity = delta_y / delta_t;
+        // double r_velocity = delta_r / delta_t;
 
-        previous_is_finished_sample = time;
-        previous_pose = current_pose;
+        // previous_is_finished_sample = time;
+        // previous_pose = current_pose;
 
-        Optional<SwerveSample> sample = trajectory.get().sampleAt(trajectory.get().getTotalTime(), false);
-        Pose2d target_pose = sample.get().getPose();
+        // Optional<SwerveSample> sample = trajectory.get().sampleAt(trajectory.get().getTotalTime(), false);
+        // Pose2d target_pose = sample.get().getPose();
 
-        double diff_x = target_pose.getX() - current_pose.getX();
-        double diff_y = target_pose.getY() - current_pose.getY();
-        double diff_r = target_pose.getRotation().getDegrees() - current_pose.getRotation().getDegrees();
+        // double diff_x = target_pose.getX() - current_pose.getX();
+        // double diff_y = target_pose.getY() - current_pose.getY();
+        // double diff_r = target_pose.getRotation().getDegrees() - current_pose.getRotation().getDegrees();
 
-        //System.out.println(String.format("VX: %.2f, VY: %.2f, VR: %.2f", x_velocity, y_velocity, r_velocity));
-        //System.out.println(String.format("X: %.2f, Y: %.2f, R: %.2f", diff_x, diff_y, diff_r));
+        // //System.out.println(String.format("VX: %.2f, VY: %.2f, VR: %.2f", x_velocity, y_velocity, r_velocity));
+        // //System.out.println(String.format("X: %.2f, Y: %.2f, R: %.2f", diff_x, diff_y, diff_r));
 
-        if (time >= duration + more_time ){
-            System.out.println("Terminated choreo sequence: Out of time");
-        } else if(time >= duration &&
-        (Math.abs(x_velocity) < max_end_velocity_linear) &&
-        (Math.abs(y_velocity) < max_end_velocity_linear) &&
-        (Math.abs(r_velocity) < max_end_velocity_rotation) &&
-        (Math.abs(diff_x) < position_threshold) &&
-        (Math.abs(diff_y) < position_threshold) &&
-        (Math.abs(diff_r) < rotation_threshold)
-        ){
-            System.out.println("Terminated choreo sequence: At Target Position");
-        }
+        // if (time >= duration + more_time ){
+        //     System.out.println("Terminated choreo sequence: Out of time");
+        // } else if(time >= duration &&
+        // (Math.abs(x_velocity) < max_end_velocity_linear) &&
+        // (Math.abs(y_velocity) < max_end_velocity_linear) &&
+        // (Math.abs(r_velocity) < max_end_velocity_rotation) &&
+        // (Math.abs(diff_x) < position_threshold) &&
+        // (Math.abs(diff_y) < position_threshold) &&
+        // (Math.abs(diff_r) < rotation_threshold)
+        // ){
+        //     System.out.println("Terminated choreo sequence: At Target Position");
+        // }
 
-        return (time >= duration + more_time || (time >= duration &&
-        (Math.abs(x_velocity) < max_end_velocity_linear) &&
-        (Math.abs(y_velocity) < max_end_velocity_linear) &&
-        (Math.abs(r_velocity) < max_end_velocity_rotation) &&
-        (Math.abs(diff_x) < position_threshold) &&
-        (Math.abs(diff_y) < position_threshold) &&
-        (Math.abs(diff_r) < rotation_threshold)
-        ));
+        // return (time >= duration + more_time || (time >= duration &&
+        // (Math.abs(x_velocity) < max_end_velocity_linear) &&
+        // (Math.abs(y_velocity) < max_end_velocity_linear) &&
+        // (Math.abs(r_velocity) < max_end_velocity_rotation) &&
+        // (Math.abs(diff_x) < position_threshold) &&
+        // (Math.abs(diff_y) < position_threshold) &&
+        // (Math.abs(diff_r) < rotation_threshold)
+        // ));
     }
 }

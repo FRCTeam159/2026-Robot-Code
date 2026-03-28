@@ -18,11 +18,12 @@ public class Autonomous {
     enum AutoMode {
         SHOOT,
         ALIGN,
+        CENTER,
         HUMAN,
         DEPOT,
-        CENTER,
-        WIGGLE,
-        NEUTRAL
+        NEUTRAL_RIGHT,
+        NEUTRAL_LEFT,
+        WIGGLE
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -33,13 +34,11 @@ public class Autonomous {
         m_drivetrain = drivetrain;
         m_shoot = shoot;
 
-        m_autochooser.addOption("Simple Shoot", AutoMode.SHOOT);
-        m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
+        m_autochooser.addOption("Center Full", AutoMode.CENTER);
         m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
-        m_autochooser.addOption("Center pickup", AutoMode.CENTER);
-        m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
-        m_autochooser.addOption("Neutral Zone", AutoMode.NEUTRAL);
+        m_autochooser.addOption("Neutral Right", AutoMode.NEUTRAL_RIGHT);
+        m_autochooser.addOption("Neutral Left", AutoMode.NEUTRAL_LEFT);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -57,43 +56,40 @@ public class Autonomous {
      switch (automode) {
         default:
             return null;
-        case SHOOT:
+        case CENTER:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
-                new DriveStraight(m_drivetrain, -1)
+                new DriveChoreo(m_drivetrain, m_shoot, "Full_Path_1", 1, true),
+                new Wait(m_drivetrain, 3),
+                new DriveChoreo(m_drivetrain, m_shoot, "Full_Path_2", 1, false)
             );
         case ALIGN:
             return new SequentialCommandGroup(
-                new ResetWheels(m_drivetrain),
                 new DriveStraight(m_drivetrain, -3),
                 new Wait(m_drivetrain, 0.5),
                 new DriveToTag(m_drivetrain)
             );
         case HUMAN:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
-                new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_1_1", 0.2)
+                new DriveChoreo(m_drivetrain, m_shoot, "Human_1", 0.5, true),
+                new Wait(m_drivetrain, 3),
+                new DriveChoreo(m_drivetrain, m_shoot, "Human_2", 0.5,false)
             );
         case DEPOT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
-                new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_2_1", 0.2)
+                new DriveChoreo(m_drivetrain, m_shoot, "Depot", 0.5,true),
+                new Wait(m_drivetrain, 0.02)
             );
-        case CENTER:
+        case NEUTRAL_RIGHT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Wiggle", 0.5),
-                new Wait(m_drivetrain, 0.02),
-                new DriveChoreo(m_drivetrain, m_shoot, "Comp_3_1", 0.2)
+                new DriveChoreo(m_drivetrain, m_shoot,"Neutral_Right_1", 0.5, true),
+                //new Wait(m_drivetrain, 1),
+                new DriveChoreo(m_drivetrain, m_shoot, "Neutral_Right_2", 0.5, false)
             );
-        case WIGGLE:
+        case NEUTRAL_LEFT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "Test", 1)
-            );
-        case NEUTRAL:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, "NeutralLeft", 1)
+                new DriveChoreo(m_drivetrain, m_shoot, "Neutral_Left_1", 0.5,true),
+                //new Wait(m_drivetrain, 1),
+                new DriveChoreo(m_drivetrain, m_shoot, "Neutral_Left_2", 0.5, false)
             );
         }
     }

@@ -9,7 +9,6 @@ import frc.robot.commands.Wait;
 import frc.robot.commands.DriveChoreo;
 import frc.robot.commands.DrivePath;
 import frc.robot.commands.DriveStraight;
-import frc.robot.commands.ResetWheels;
 
 public class Autonomous {
     Drivetrain m_drivetrain;
@@ -35,13 +34,11 @@ public class Autonomous {
         m_shoot = shoot;
         m_intake = intake;
 
-        m_autochooser.addOption("Align With Tag", AutoMode.ALIGN);
         m_autochooser.addOption("Center Shoot", AutoMode.CENTER);
         m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
         m_autochooser.addOption("Neutral Right", AutoMode.NEUTRAL_RIGHT);
         m_autochooser.addOption("Neutral Left", AutoMode.NEUTRAL_LEFT);
-        m_autochooser.addOption("Test Wiggle", AutoMode.WIGGLE);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -61,8 +58,10 @@ public class Autonomous {
             return null;
         case CENTER:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Center", 1),
-                new ShootForTime(m_drivetrain, m_shoot, 5)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_1", 1, true),
+                new Wait(m_drivetrain, 3),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_2", 1, false),
+                new ShootForTime(m_drivetrain, m_shoot, 8)
             );
         case ALIGN:
             return new SequentialCommandGroup(
@@ -72,32 +71,32 @@ public class Autonomous {
             );
         case HUMAN:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human", 0.5),
-                new Wait(m_drivetrain, 0.02),
-                new ShootForTime(m_drivetrain, m_shoot, 5)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_1", 0.5, true),
+                new Wait(m_drivetrain, 3),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_2", 0.5, false),
+                new ShootForTime(m_drivetrain, m_shoot, 7)
             );
         case DEPOT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5, true),
                 new Wait(m_drivetrain, 0.02),
                 new ShootForTime(m_drivetrain, m_shoot, 5)
             );
         case NEUTRAL_RIGHT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right", 0.5),
-                new Wait(m_drivetrain, 1),
-                new ShootForTime(m_drivetrain, m_shoot, 5)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_1", 0.5, true),
+                new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                //new Wait(m_drivetrain, 1),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_2", 0.5, false),
+                new ShootForTime(m_drivetrain, m_shoot, 3.25)
             );
         case NEUTRAL_LEFT:
             return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left", 0.5),
-                new ShootForTime(m_drivetrain, m_shoot, 5),
-                new Wait(m_drivetrain, 1),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5)
-            );
-        case WIGGLE:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "NeutralLeft", 1)
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_1", 0.5, true),
+                new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                //new Wait(m_drivetrain, 1),
+                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5, false),
+                new ShootForTime(m_drivetrain, m_shoot, 3.25)
             );
         }
     }

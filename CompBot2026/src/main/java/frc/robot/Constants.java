@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.config.RobotConfig;
-
 import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */

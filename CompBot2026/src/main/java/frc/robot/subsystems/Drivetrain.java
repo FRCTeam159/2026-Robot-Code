@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,7 +10,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.DrivePath;
@@ -29,9 +27,9 @@ public class Drivetrain extends SubsystemBase {
   double m_driveScale = 1;
   double m_turnScale = 0.6;
 
-  private double max_turn_speed = 4.0;
+  // private double max_turn_speed = 4.0;
 
-  private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
+  // private PIDController turn_pid_controller = new PIDController(0.03, 0, 0.00035);
 
   
 
@@ -174,7 +172,6 @@ public class Drivetrain extends SubsystemBase {
 
     last_heading = pose.getRotation().getDegrees();
     m_pose = pose;
-    //updateOdometry();
     System.out.println("gryo angle" + m_gyro.getAngle());
   }
 
