@@ -42,7 +42,7 @@ public class DriveChoreo extends Command {
     final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
     final PIDController r_PID_controller = new PIDController(1.5, 0, 0);
 
-    final double horizontal_coeff = 3.0;
+    final double horizontal_coeff = 6.0;
     final double rotation_coeff = 3.0;
 
     private double start_rotation = 0.0;
@@ -139,9 +139,9 @@ public class DriveChoreo extends Command {
         double vx = x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff;
         double vy = y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff;
 
-        //rotation matrix to convert to robot oriented velocities
         m_drive.drive(
-            vx, vy,
+            vx,
+            vy,
             r_PID_controller.calculate(m_drive.getRotation2d().getRadians(), target_angle) + target_speed.omegaRadiansPerSecond / rotation_coeff,
             true
         );

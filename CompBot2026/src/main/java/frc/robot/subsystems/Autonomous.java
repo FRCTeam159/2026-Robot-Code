@@ -16,13 +16,12 @@ public class Autonomous {
     Intake m_intake;
 
     enum AutoMode {
-        ALIGN,
         CENTER,
         HUMAN,
         DEPOT,
         NEUTRAL_RIGHT,
         NEUTRAL_LEFT,
-        WIGGLE
+        TEST
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -34,11 +33,12 @@ public class Autonomous {
         m_shoot = shoot;
         m_intake = intake;
 
-        m_autochooser.addOption("Center Shoot", AutoMode.CENTER);
+        m_autochooser.addOption("Center Full", AutoMode.CENTER);
         m_autochooser.addOption("Human Pickup", AutoMode.HUMAN);
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
         m_autochooser.addOption("Neutral Right", AutoMode.NEUTRAL_RIGHT);
         m_autochooser.addOption("Neutral Left", AutoMode.NEUTRAL_LEFT);
+        m_autochooser.addOption("Test", AutoMode.TEST);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -53,56 +53,48 @@ public class Autonomous {
     }
 
     private SequentialCommandGroup getAutoSequence(AutoMode automode) {
-     switch (automode) {
+        switch (automode) {
             default:
-            return null;
-        case CENTER:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_1", 1, true),
-                new Wait(m_drivetrain, 3),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_2", 1, false),
-                new ShootForTime(m_drivetrain, m_shoot, 8)
-            );
-        case ALIGN:
-            return new SequentialCommandGroup(
-                new DriveStraight(m_drivetrain, -3),
-                new Wait(m_drivetrain, 0.5),
-                new DriveToTag(m_drivetrain)
-            );
-        case HUMAN:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_1", 0.5, true),
-                new Wait(m_drivetrain, 3),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_2", 0.5, false),
-                new ShootForTime(m_drivetrain, m_shoot, 7)
-            );
-        case DEPOT:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5, true),
-                new Wait(m_drivetrain, 0.02),
-                new ShootForTime(m_drivetrain, m_shoot, 5)
-            );
-        case NEUTRAL_RIGHT:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_1", 0.5, true),
-                new ShootForTime(m_drivetrain, m_shoot, 3.25),
-                //new Wait(m_drivetrain, 1),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_2", 0.5, false),
-                new ShootForTime(m_drivetrain, m_shoot, 3.25)
-            );
-        case NEUTRAL_LEFT:
-            return new SequentialCommandGroup(
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_1", 0.5, true),
-                new ShootForTime(m_drivetrain, m_shoot, 3.25),
-                //new Wait(m_drivetrain, 1),
-                new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5, false),
-                new ShootForTime(m_drivetrain, m_shoot, 3.25)
-            );
+                return null;
+            case CENTER:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_1", 0.5, true),
+                        new Wait(m_drivetrain, 3),
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_2", 0.5, false),
+                        new ShootForTime(m_drivetrain, m_shoot, 8));
+            case HUMAN:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_1", 0.5, true),
+                        new Wait(m_drivetrain, 3),
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_2", 0.5, false),
+                        new ShootForTime(m_drivetrain, m_shoot, 7));
+            case DEPOT:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5, true),
+                        new Wait(m_drivetrain, 0.02),
+                        new ShootForTime(m_drivetrain, m_shoot, 5));
+            case NEUTRAL_RIGHT:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_1", 0.5, true),
+                        new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                        // new Wait(m_drivetrain, 1),
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_2", 0.5, false),
+                        new ShootForTime(m_drivetrain, m_shoot, 3.25));
+            case NEUTRAL_LEFT:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_1", 0.5, true),
+                        new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                        // new Wait(m_drivetrain, 1),
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5, false),
+                        new ShootForTime(m_drivetrain, m_shoot, 3.25));
+            case TEST:
+                return new SequentialCommandGroup(
+                        new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Test", 0.5, true));
         }
     }
 
     public void endAuto() {
-        
+
     }
 
     public void initAuto() {

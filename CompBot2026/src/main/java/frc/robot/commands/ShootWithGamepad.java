@@ -19,12 +19,14 @@ public class ShootWithGamepad extends Command {
     boolean intaking = false;
     boolean out_taking = false;
 
-    double top_speed = 4200;    //RPM
-    double bottom_speed = 4200; //RPM
+    double distance;
 
-    double feeder_speed = 1;    //Duty Cycle
-    double roller_speed = 0.35; //Duty Cycle
-    double intake_speed = 4000; //RPM
+    double top_speed = 3000;    //RPM 
+    double bottom_speed = -60; //RPM 
+
+    double feeder_speed = 0.75;    //Duty Cycle 1
+    double roller_speed = 0.35; //Duty Cycle .35
+    double intake_speed = 4000; //RPM 4000
 
     Timer m_timer;
 
@@ -55,11 +57,18 @@ public class ShootWithGamepad extends Command {
         SmartDashboard.putBoolean("Spewing", spewing);
         SmartDashboard.putBoolean("Intaking", intaking);
 
-        top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;           //RPM --> Rot per sec
-        bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60;  //RPM --> Rot per sec
-        feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);       //Duty Cycle
-        roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);       //Duty Cycle
-        intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;        //RPM --> Rot per sec
+
+        // top_speed = SmartDashboard.getNumber("Top Shoot Speed", top_speed) / 60;           //RPM --> Rot per sec
+        // bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60;  //RPM --> Rot per sec
+        // feeder_speed = SmartDashboard.getNumber("Shooter Feed Speed", feeder_speed);       //Duty Cycle
+        // roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);       //Duty Cycle
+        // intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;        //RPM --> Rot per sec
+        distance = SmartDashboard.getNumber("distance", distance);
+
+        if (distance < 20) {
+            //Replace equation with whatever lines up most with real samples
+            top_speed = (1048.157 * Math.sqrt(distance)) + 3000;
+        }
 
         shooting = m_controller.getRightBumperButton();
         shootFeeding = m_controller.getRightTriggerAxis() > 0.5;
