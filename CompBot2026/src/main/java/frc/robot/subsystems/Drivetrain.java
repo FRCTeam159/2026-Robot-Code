@@ -257,7 +257,7 @@ public class Drivetrain extends SubsystemBase {
 
   void displayAngles() {
     if ((count % 100) == 0) {
-      String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f\n",
+      String str = String.format("angles fl:%-1.4f fr:%-1.4f bl:%-1.4f br:%-1.4f",
           m_frontLeft.getRotations(), m_frontRight.getRotations(), 
           m_backLeft.getRotations(), m_backRight.getRotations());
       SmartDashboard.putString("Wheels ", str);

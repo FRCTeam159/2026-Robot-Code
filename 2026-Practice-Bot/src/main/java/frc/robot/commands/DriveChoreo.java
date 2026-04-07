@@ -22,7 +22,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
@@ -38,9 +38,15 @@ public class DriveChoreo extends Command {
 
     boolean isFirstPath;
 
-    final PIDController x_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController y_PID_controller = new PIDController(1.5, 0, 0);
-    final PIDController r_PID_controller = new PIDController(1.5, 0, 0);
+    double P = 2.5;
+    double Pr = 2.5;
+
+    //SmartDashboard.putNumber("Px",Px);
+
+    final PIDController x_PID_controller = new PIDController(P, 0, 0);
+    final PIDController y_PID_controller = new PIDController(P, 0, 0);
+    final PIDController r_PID_controller = new PIDController(Pr, 0, 0);
+    
 
     final double horizontal_coeff = 6.0;
     final double rotation_coeff = 3.0;
@@ -136,8 +142,8 @@ public class DriveChoreo extends Command {
 
         System.out.println(String.format("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f", current_pose.getX(), current_pose.getY(), x_PID_controller.calculate(current_pose.getX(), target_pose.getX()), y_PID_controller.calculate(current_pose.getY(), target_pose.getY()), target_pose.getX(), target_pose.getY()));
 
-        double vx = x_PID_controller.calculate(current_pose.getX(), target_pose.getX()) + target_speed.vxMetersPerSecond / horizontal_coeff;
-        double vy = y_PID_controller.calculate(current_pose.getY(), target_pose.getY()) + target_speed.vyMetersPerSecond / horizontal_coeff;
+        double vx = x_PID_controller.calculate(current_pose.getX(), target_pose.getX()); // + target_speed.vxMetersPerSecond / horizontal_coeff;
+        double vy = y_PID_controller.calculate(current_pose.getY(), target_pose.getY()); // + target_speed.vyMetersPerSecond / horizontal_coeff;
 
         m_drive.drive(
             vx,

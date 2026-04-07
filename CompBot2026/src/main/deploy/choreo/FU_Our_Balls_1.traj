@@ -213,5 +213,6 @@
  },
  "events":[
    {"name":"Intake_Start", "from":{"target":2, "targetTimestamp":2.30576, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
-   {"name":"Intake_End", "from":{"target":5, "targetTimestamp":6.30109, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
+   {"name":"Intake_End", "from":{"target":5, "targetTimestamp":6.30109, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
+   {"name":"Deploy_Intake", "from":{"target":0, "targetTimestamp":0.0, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

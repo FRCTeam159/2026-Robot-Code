@@ -16,14 +16,12 @@ public class Autonomous {
     Test m_shoot;
 
     enum AutoMode {
-        SHOOT,
-        ALIGN,
         CENTER,
         HUMAN,
         DEPOT,
         NEUTRAL_RIGHT,
         NEUTRAL_LEFT,
-        WIGGLE
+        TEST
     }
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
@@ -39,6 +37,7 @@ public class Autonomous {
         m_autochooser.addOption("Depot Pickup", AutoMode.DEPOT);
         m_autochooser.addOption("Neutral Right", AutoMode.NEUTRAL_RIGHT);
         m_autochooser.addOption("Neutral Left", AutoMode.NEUTRAL_LEFT);
+        m_autochooser.addOption("Test", AutoMode.TEST);
 
         SmartDashboard.putData(m_autochooser);
     }
@@ -62,12 +61,6 @@ public class Autonomous {
                 new Wait(m_drivetrain, 3),
                 new DriveChoreo(m_drivetrain, m_shoot, "Full_Path_2", 1, false)
             );
-        case ALIGN:
-            return new SequentialCommandGroup(
-                new DriveStraight(m_drivetrain, -3),
-                new Wait(m_drivetrain, 0.5),
-                new DriveToTag(m_drivetrain)
-            );
         case HUMAN:
             return new SequentialCommandGroup(
                 new DriveChoreo(m_drivetrain, m_shoot, "Human_1", 0.5, true),
@@ -90,6 +83,10 @@ public class Autonomous {
                 new DriveChoreo(m_drivetrain, m_shoot, "Neutral_Left_1", 0.5,true),
                 //new Wait(m_drivetrain, 1),
                 new DriveChoreo(m_drivetrain, m_shoot, "Neutral_Left_2", 0.5, false)
+            );
+        case TEST:
+            return new SequentialCommandGroup(
+                new DriveChoreo(m_drivetrain, m_shoot, "Test", 2,true)
             );
         }
     }

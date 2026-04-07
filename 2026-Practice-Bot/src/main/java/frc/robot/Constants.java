@@ -61,7 +61,7 @@ public class Constants {
     static public final double kDriveGearRatio = 8.14; // MK4i drive (standard)
     static public final double kTurnGearRatio = 21.429; // MK4i turn (all)
 
-    public static final double kWheelRadius = 2;
+    public static final double kWheelRadius = 1.88;
     public static final double kDistPerRot = (Units.inchesToMeters(kWheelRadius) * 2 * Math.PI) / kDriveGearRatio;
     public static final double kRadiansPerRot = Math.PI * 2 / kTurnGearRatio;
   

@@ -3,12 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.DriveToTag;
 import frc.robot.commands.ShootForTime;
 import frc.robot.commands.Wait;
 import frc.robot.commands.DriveChoreo;
 import frc.robot.commands.DrivePath;
-import frc.robot.commands.DriveStraight;
 
 public class Autonomous {
     Drivetrain m_drivetrain;
@@ -26,6 +24,7 @@ public class Autonomous {
 
     static SendableChooser<AutoMode> m_autochooser = new SendableChooser<AutoMode>();
     double m_Target = 1;
+
     // distance for everything is in meters
 
     public Autonomous(Drivetrain drivetrain, Shooter shoot, Intake intake) {
@@ -61,32 +60,32 @@ public class Autonomous {
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_1", 0.5, true),
                         new Wait(m_drivetrain, 3),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, 8));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 8));
             case HUMAN:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_1", 0.5, true),
                         new Wait(m_drivetrain, 3),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, 7));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7));
             case DEPOT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5, true),
                         new Wait(m_drivetrain, 0.02),
-                        new ShootForTime(m_drivetrain, m_shoot, 5));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 5));
             case NEUTRAL_RIGHT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_1", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 3.25),
                         // new Wait(m_drivetrain, 1),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, 3.25));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 3.25));
             case NEUTRAL_LEFT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_1", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, 3.25),
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 3.25),
                         // new Wait(m_drivetrain, 1),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, 3.25));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 3.25));
             case TEST:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Test", 0.5, true));

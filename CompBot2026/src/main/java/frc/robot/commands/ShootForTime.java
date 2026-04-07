@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class ShootForTime extends Command {
    
     private final Drivetrain m_drive;
     private final Shooter m_Shoot;
+    private final Intake m_intake;
     boolean shooting = false;
     double top_speed = 4200;     //RPM
     double bottom_speed = 4200;  //RPM
@@ -20,12 +22,13 @@ public class ShootForTime extends Command {
 
     Timer m_timer = new Timer();
 
-    public ShootForTime(Drivetrain drive, Shooter shooter, double time) {
+    public ShootForTime(Drivetrain drive, Shooter shooter, Intake intake, double time) {
         duration = time;
 
         m_drive = drive;
         m_Shoot = shooter;
-        addRequirements(shooter);
+        m_intake = intake;
+        addRequirements(shooter, drive, intake);
     }
 
     @Override
@@ -42,6 +45,10 @@ public class ShootForTime extends Command {
         // roller_speed = SmartDashboard.getNumber("Shooter Roll Speed", roller_speed);      //Duty Cycle
         
         m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
+
+        if (m_timer.get() > 2) {
+            
+        }
 
         m_drive.drive(0, 0, 0, false);
     }

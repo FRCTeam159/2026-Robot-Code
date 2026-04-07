@@ -22,7 +22,7 @@ public class Constants {
     public static final double kFrontLeftOffset = -0.343262;//0.145752; //-0.330566;//0.165283;
 
     // distance for everything is in meters
-    public static final double limelight_height = 0.6096;
+    public static final double limelight_height = 0.635;
     public static final double limelight_angle = 0.0;
     public static final double apriltag_height = 1.1234;
 
@@ -44,11 +44,15 @@ public class Constants {
 
     public static final int top_shooter = 14;
     public static final int bottom_shooter = 13;
+
+    public static final int hopper_roller = 15;
+    
+    public static final int intake_winch = 16;
+    public static final int intake_1 = 17;
+    
     public static final int shooter_feeder_1 = 18;
     public static final int shooter_feeder_2 = 19;
 
-    public static final int hopper_roller = 15;
-    public static final int intake_1 = 17;
 
     public static final int kPigeonCanId = 30;
 

@@ -38,6 +38,7 @@ public class DriveChoreo extends Command {
 
     boolean intaking = false;
     boolean shooting = false;
+    boolean deploying = false;
 
     boolean isFirstPath;
 
@@ -60,6 +61,8 @@ public class DriveChoreo extends Command {
 
     private double previous_sample = -1.0;
     private double previous_rotation = 0.0;
+
+    private double targetAngle;
 
     private Timer m_timer = new Timer();
 
@@ -100,6 +103,9 @@ public class DriveChoreo extends Command {
             switch (event.event) {
                 default:
                     break;
+                case "Deploy_Intake" :
+                    m_intake.open_intake();
+                    break;
                 case "Intake_Start":
                     intaking = true;
                     break;
@@ -130,8 +136,12 @@ public class DriveChoreo extends Command {
         bottom_speed = SmartDashboard.getNumber("Bottom Shoot Speed", bottom_speed) / 60;
         intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;
 
+        if (shooting) {
+            m_shooter.shoot(top_speed, bottom_speed, 0, 0);
+        }
         m_intake.intake(intaking ? intake_speed : 0);
-        m_shooter.shoot(shooting ? top_speed : 0, shooting ? bottom_speed : 0, 0, 0);
+
+        m_intake.spin();
 
         previous_sample = sample_time;
 
@@ -164,5 +174,6 @@ public class DriveChoreo extends Command {
     @Override
     public void end(boolean interrupted){
         m_drive.drive(0, 0, 0, false);
+        m_intake.stop_spinning();
     }
 }

@@ -19,7 +19,7 @@ public class ShootWithGamepad extends Command {
         m_Shoot = shooter;
         m_controller = controller;
         addRequirements(shooter);
-
+        
         SmartDashboard.putNumber("Top Shoot Speed", top_speed);
         SmartDashboard.putNumber("Bottom Shoot Speed", bottom_speed);
     }

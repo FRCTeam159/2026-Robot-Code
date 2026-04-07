@@ -22,10 +22,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setConfig() {
-        top_shoot_motor.setConfig(false, false, 1, 0.00, 0.000);
-        bottom_shoot_motor.setConfig(false, false, 1, 0.00, 0.000);
-        shooter_feeder_motor_1.setConfig(false, 1);
-        shooter_feeder_motor_2.setConfig(false, 1);
+        top_shoot_motor.setConfig(false, false, 1, 0.0, 0.000);
+        //keep kp 0.05
+        bottom_shoot_motor.setConfig(false, false, 1, 0.04, 0.000);
+        shooter_feeder_motor_1.setConfig(true, 1);
+        shooter_feeder_motor_2.setConfig(true, 1);
         roller_motor.setConfig(false, 1);
     }
 

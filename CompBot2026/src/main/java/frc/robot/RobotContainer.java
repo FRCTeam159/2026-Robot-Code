@@ -13,6 +13,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import com.ctre.phoenix6.SignalLogger;
+import com.revrobotics.util.StatusLogger;
 
 
 public class RobotContainer {
@@ -36,6 +37,8 @@ public class RobotContainer {
   public void robotInit() {
     //Disable phoenix diagnostics automatic logging
     SignalLogger.enableAutoLogging(false);
+    //Disable rev automatic logging
+    StatusLogger.disableAutoLogging();
 
     m_drivetrain.init();
     m_drivetrain.reset();
