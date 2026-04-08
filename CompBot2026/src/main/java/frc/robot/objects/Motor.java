@@ -1,5 +1,6 @@
 package frc.robot.objects;
 
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -11,6 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 
 public class Motor {
 
@@ -89,6 +91,7 @@ public class Motor {
             LimitSwitchConfig.Type lowerType = lowerLimitNormalyClosed?LimitSwitchConfig.Type.kNormallyClosed:LimitSwitchConfig.Type.kNormallyOpen;
             config.limitSwitch.reverseLimitSwitchType(lowerType);
         }
+
         // config.closedLoop
         // .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         // .pid(1.0, 0.0, 0.0);

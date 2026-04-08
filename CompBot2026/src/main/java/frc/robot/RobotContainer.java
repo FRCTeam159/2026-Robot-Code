@@ -11,6 +11,7 @@ import frc.robot.commands.ShootWithGamepad;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.util.StatusLogger;
@@ -19,7 +20,7 @@ import com.revrobotics.util.StatusLogger;
 public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final Drivetrain m_drivetrain = new Drivetrain();
-  //private final Limelight m_limelight = new Limelight();
+  private final Limelight m_limelight = new Limelight();
   public final Autonomous m_autonomous;
 
   private final Shooter m_shooter = new Shooter();

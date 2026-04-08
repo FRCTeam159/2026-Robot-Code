@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
     private Motor winch_motor = new Motor(intake_winch);
 
     private final double closed_rotations = 0;
-    private final double open_rotations = 3.3;
+    private final double open_rotations = 3.7;
     private final double shooting_rotations = 1.25;
 
     private final double winch_gear_ratio = 90.0;
@@ -27,6 +27,8 @@ public class Intake extends SubsystemBase {
 
     public void setConfig() {
         intake_motor_1.setConfig(false, false, 1, 0.001, 0);
+
+        //winch_motor.setLowerLimit(true);
         winch_motor.setConfig(false, true, 1 / winch_gear_ratio);
 
         winch_motor.reset();
@@ -59,7 +61,6 @@ public class Intake extends SubsystemBase {
 
     public void change_target(double diff){
         target_rotations += diff;
-        System.out.println(target_rotations);
         target_rotations = Math.min(Math.max(target_rotations, closed_rotations), open_rotations);
     }
 

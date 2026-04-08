@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Arm Up" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="7" y="487"/>
+	</widget>
 	<widget field="Spewing" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="283" y="72"/>
 		<width>70</width>
@@ -26,7 +29,7 @@
 		<location x="2" y="246"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="257" y="92"/>
+		<location x="273" y="130"/>
 		<width>866</width>
 		<height>640</height>
 		<property name="Camera Choice" value="limelight"/>
@@ -95,6 +98,9 @@
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="Choreo Alerts"/>
-	<hidden field="PathPlanner"/>
+	<hidden field="limelight_Interface"/>
+	<hidden field="limelight_PipelineName"/>
+	<hidden field="ta distance"/>
+	<hidden field="limelight_Stream"/>
+	<hidden field="Arm Stationary"/>
 </xml>

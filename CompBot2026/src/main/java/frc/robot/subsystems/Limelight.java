@@ -44,7 +44,7 @@ public class Limelight extends SubsystemBase {
         //area the april tag takes on the screen
         double ta = LimelightHelpers.getTA("limelight");
 
-        SmartDashboard.putNumber("distance", distance * 39.37);
+        SmartDashboard.putNumber("distance", distance);
         SmartDashboard.putNumber("ta distance", distance_coefficient / Math.sqrt(ta));
     }
 }
