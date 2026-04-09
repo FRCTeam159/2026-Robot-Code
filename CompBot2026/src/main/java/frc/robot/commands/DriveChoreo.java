@@ -46,8 +46,8 @@ public class DriveChoreo extends Command {
     final PIDController y_PID_controller = new PIDController(2, 0, 0);
     final PIDController r_PID_controller = new PIDController(2, 0, 0);
 
-    double top_speed = 4200;
-    double bottom_speed = 4200;
+    double top_speed = 5600;
+    double bottom_speed = -100;
     double intake_speed = 3000;
 
     final double horizontal_coeff = 6;
@@ -137,7 +137,7 @@ public class DriveChoreo extends Command {
         intake_speed = SmartDashboard.getNumber("Intake Speed", intake_speed) / 60;
 
         if (shooting) {
-            m_shooter.shoot(top_speed, bottom_speed, 0, 0);
+            m_shooter.shoot(top_speed / 60, bottom_speed / 60, 0, 0);
         }
         m_intake.intake(intaking ? intake_speed : 0);
 

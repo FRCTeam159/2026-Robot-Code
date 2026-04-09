@@ -96,14 +96,14 @@ public class ShootWithGamepad extends Command {
         out_taking = m_controller.getXButton();
         intaking = m_controller.getLeftBumperButton();
 
-        if(m_controller.getYButton()){
-            top_speed = close_top_speed / 60;
-            bottom_speed = close_bottom_speed / 60;
-            close_shot = true;
-        } else {
+        if(m_controller.getYButton() || (shooting && !shootFeeding)){
             top_speed = far_top_speed / 60;
             bottom_speed = far_bottom_speed / 60;
             close_shot = false;
+        } else {
+            top_speed = close_top_speed / 60;
+            bottom_speed = close_bottom_speed / 60;
+            close_shot = true;
         }
 
         if (shootFeeding) {
@@ -133,8 +133,8 @@ public class ShootWithGamepad extends Command {
                     m_timer.start();
                 }
 
-                if (shootFeeding && m_timer.get() > 2) {
-                    m_Intake.change_target(m_Intake.getTarget() > 1.25 ? -0.05 : 0);
+                if (shootFeeding && m_timer.get() > 4) {
+                    m_Intake.goto_shoot_position();
                 } else {
                     m_Intake.open_intake();
                 }

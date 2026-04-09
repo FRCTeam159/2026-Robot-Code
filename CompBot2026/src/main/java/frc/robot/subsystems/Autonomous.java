@@ -13,6 +13,12 @@ public class Autonomous {
     Shooter m_shoot;
     Intake m_intake;
 
+    double top_speed = -100; // RPM
+    double bottom_speed = 5600; // RPM
+
+    double close_top_speed = -700;
+    double close_bottom_speed = 4400;
+
     enum AutoMode {
         CENTER,
         HUMAN,
@@ -58,30 +64,30 @@ public class Autonomous {
             case CENTER:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Full_Path", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7, top_speed, bottom_speed));
             case HUMAN:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Human", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7, close_top_speed, close_bottom_speed));
             case DEPOT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Depot", 0.5, true),
                         new Wait(m_drivetrain, 0.02),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 5));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 5, top_speed, bottom_speed));
             case NEUTRAL_RIGHT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_1", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 4.4),
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 4.4, close_top_speed, close_bottom_speed),
                         // new Wait(m_drivetrain, 1),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Right_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7, close_top_speed, close_bottom_speed));
             case NEUTRAL_LEFT:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_1", 0.5, true),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 4.4),
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 4.4, close_top_speed, close_bottom_speed),
                         // new Wait(m_drivetrain, 1),
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Neutral_Left_2", 0.5, false),
-                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7));
+                        new ShootForTime(m_drivetrain, m_shoot, m_intake, 7, close_top_speed, close_bottom_speed));
             case TEST:
                 return new SequentialCommandGroup(
                         new DriveChoreo(m_drivetrain, m_shoot, m_intake, "Test", 0.5, true));

@@ -1,5 +1,12 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Close Shooting" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="282" y="97"/>
+		<width>97</width>
+	</widget>
+	<widget field="Arm Stationary" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="6" y="509"/>
+	</widget>
 	<widget field="Arm Up" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="7" y="487"/>
 	</widget>
@@ -101,6 +108,6 @@
 	<hidden field="limelight_Interface"/>
 	<hidden field="limelight_PipelineName"/>
 	<hidden field="ta distance"/>
+	<hidden field="Choreo Alerts"/>
 	<hidden field="limelight_Stream"/>
-	<hidden field="Arm Stationary"/>
 </xml>

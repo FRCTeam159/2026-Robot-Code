@@ -16,18 +16,20 @@ public class ShootForTime extends Command {
     double top_speed = 4200;     //RPM
     double bottom_speed = 4200;  //RPM
     double feeder_speed = 1;    //Duty Cycle
-    double roller_speed = 0.12; //Duty Cycle
+    double roller_speed = 0.35; //Duty Cycle
 
     double duration = 5.0;
 
     Timer m_timer = new Timer();
 
-    public ShootForTime(Drivetrain drive, Shooter shooter, Intake intake, double time) {
+    public ShootForTime(Drivetrain drive, Shooter shooter, Intake intake, double time, double top, double bottom) {
         duration = time;
 
         m_drive = drive;
         m_Shoot = shooter;
         m_intake = intake;
+        top_speed = top / 60;
+        bottom_speed = bottom / 60;
         addRequirements(shooter, drive, intake);
     }
 
@@ -47,7 +49,7 @@ public class ShootForTime extends Command {
         m_Shoot.shoot(top_speed, bottom_speed, feeder_speed, roller_speed);
 
         if (m_timer.get() > 2) {
-            
+            m_intake.change_target(m_intake.getTarget() > 1.25 ? -0.05 : 0);
         }
 
         m_drive.drive(0, 0, 0, false);
